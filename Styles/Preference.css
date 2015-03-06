@@ -1,0 +1,29 @@
+.canister 
+{
+   width:900px;
+   margin: 10px auto 0 auto;
+   border:2px solid #CC0066;
+   border-top-left-radius:15px;
+   border-top-right-radius:15px;
+}
+.canistercontainer 
+{
+    padding:10px;
+}
+.canistertitle h2, .canistertitle 
+{
+    margin:0;
+    padding:0px 0 0px 0;
+}
+.canistertitle 
+{
+    text-align:center;
+    border:2px solid #CC0066;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    background-color:#CC0066;
+    color:White;
+    height:40px;
+    font-size:10pt;
+   
+}
