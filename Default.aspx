@@ -12,7 +12,7 @@
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
         ConnectionString="<%$ ConnectionStrings:myConnectionString %>" 
-        SelectCommand="SELECT [deptCode] FROM [User]"></asp:SqlDataSource>
+        SelectCommand="SELECT [deptCode] FROM [Users]"></asp:SqlDataSource>
     
     <div class="canister">
         <div class="canistertitle blue">
