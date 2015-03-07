@@ -127,6 +127,7 @@ namespace Team11
 
         public void SearchRooms()
         {
+            return;
             SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["ParkConnectionString"].ToString());
             conn.Open();
 
@@ -1629,12 +1630,13 @@ namespace Team11
             SqlConnection connect = new SqlConnection(WebConfigurationManager.ConnectionStrings["ParkConnectionString"].ToString());
             connect.Open();
             int selectedpark = RadioButtonList1.SelectedIndex + 1;
-            string buildingsql = "Select buildingName from [Building] where parkID =" + selectedpark;
+            string buildingsql = "Select buildingName from [Building] where parkID = 'C'";
             SqlCommand buildingscommand = new SqlCommand(buildingsql, connect);
             SqlDataReader buildings = buildingscommand.ExecuteReader();
             while (buildings.Read())
             {
-                DropDownListBuildings.Items.Add(buildings.GetString(0));
+                string building = buildings.GetString(0);
+                //DropDownListBuildings.Items.Add();
             }
 
             connect.Close();

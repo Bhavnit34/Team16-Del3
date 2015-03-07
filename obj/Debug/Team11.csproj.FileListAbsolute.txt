@@ -48,3 +48,10 @@ C:\Users\cobp.LUNET\Desktop\Team16-Del3\obj\Debug\Team11.Properties.Resources.re
 C:\Users\cobp.LUNET\Desktop\Team16-Del3\obj\Debug\Team11.csproj.GenerateResource.Cache
 C:\Users\cobp.LUNET\Desktop\Team16-Del3\obj\Debug\Team11.dll
 C:\Users\cobp.LUNET\Desktop\Team16-Del3\obj\Debug\Team11.pdb
+D:\Documents\Team16-Del3\bin\Team11.dll
+D:\Documents\Team16-Del3\bin\Team11.pdb
+D:\Documents\Team16-Del3\obj\Debug\Team11.csprojResolveAssemblyReference.cache
+D:\Documents\Team16-Del3\obj\Debug\Team11.Properties.Resources.resources
+D:\Documents\Team16-Del3\obj\Debug\Team11.csproj.GenerateResource.Cache
+D:\Documents\Team16-Del3\obj\Debug\Team11.dll
+D:\Documents\Team16-Del3\obj\Debug\Team11.pdb
