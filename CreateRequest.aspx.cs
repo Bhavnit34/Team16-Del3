@@ -127,6 +127,7 @@ namespace Team11
 
         public void SearchRooms()
         {
+            //return;
             SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["ParkConnectionString"].ToString());
             conn.Open();
 
@@ -140,14 +141,15 @@ namespace Team11
             string boardtwo = "";
             string roomtype = RadioButtonListRoomType.Text;
 
-            int buildingID = 0;
+            string buildingID = ""; //int = 0
             string building = DropDownListBuildings.Text;
 
             if (building != "")
             {
                 string buildingidquery = "Select buildingID from [Building] where buildingName='" + building + "'";
                 SqlCommand buildingcommand = new SqlCommand(buildingidquery, conn);
-                buildingID = Convert.ToInt32(buildingcommand.ExecuteScalar().ToString());
+                //buildingID = Convert.ToInt32(buildingcommand.ExecuteScalar().ToString());
+                buildingID = building;
             }
             if (roomtype == "Lecture")
             { roomtype = "1"; }
@@ -189,43 +191,45 @@ namespace Team11
             /* Make SQL addition for if any facilities have been selected */
             string facilitysql = "";
             if (roomtype != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + roomtype + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + roomtype + ")";
             if (arrangement != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + arrangement + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + arrangement + ")";
             if (projector != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + projector + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + projector + ")";
             if (wheel != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + wheel + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + wheel + ")";
             if (visualiser != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + visualiser + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + visualiser + ")";
             if (computer != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + computer + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + computer + ")";
             if (board != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + board + ")";
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + board + ")";
             if (boardtwo != "")
-                facilitysql += " AND RoomID IN (SELECT DISTINCT RoomID FROM [RoomFacilities] WHERE facilityID = " + boardtwo + ")";
-            if (building != "")
-                facilitysql += " AND [Building].buildingID=" + buildingID;
+                facilitysql += " AND RoomName IN (SELECT DISTINCT roomName FROM [RoomFacilities] WHERE facilityID = " + boardtwo + ")";
 
             string roomquery = "";
             /* SQL to find rooms */
-            if (TextBoxCapacity.Text != "")
+            if (TextBoxCapacity.Text != "") //create this query if a capacity has been entered
             {
                 int number = 0;
                 bool isNumeric = int.TryParse(TextBoxCapacity.Text, out number);
-                if (isNumeric)
+                if (isNumeric) //check that the capacity entered is numeric
                 {
-                    roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingID = [Building].buildingID LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Room].capacity >='" + TextBoxCapacity.Text + "' AND [Park].parkName ='" + RadioButtonList1.Text + "'";
+                    roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingCode = [Building].buildingCode LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Room].capacity >='" + TextBoxCapacity.Text + "' AND [Park].parkName ='" + RadioButtonList1.Text + "'";
                 }
-                else
-                    roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingID = [Building].buildingID LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Park].parkName ='" + RadioButtonList1.Text + "'";
+                else //else execute query without capacity constraint
+                    roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingCode = [Building].buildingCode LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Park].parkName ='" + RadioButtonList1.Text + "'";
             }
-            else
-                roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingID = [Building].buildingID LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Park].parkName ='" + RadioButtonList1.Text + "'";
+            else //create this query if a capacity has not been entered
+                roomquery = "SELECT roomName FROM [Room] LEFT JOIN [Building] ON [Room].buildingCode = [Building].buildingCode LEFT JOIN [Park] ON [Building].parkID = [Park].parkID WHERE [Park].parkName ='" + RadioButtonList1.Text + "'";
+            
+            
             /* Add facilities information if any were selected */
             if (facilitysql != "")
                 roomquery += facilitysql;
 
+            if (building != "") //add building constraint
+                roomquery += " AND [Building].buildingName='" + building + "'";
 
             SqlCommand roomsql = new SqlCommand(roomquery, conn);
             SqlDataReader rooms = roomsql.ExecuteReader();
@@ -1623,18 +1627,25 @@ namespace Team11
             SearchRooms();
         }
 
-        public void buildings()
+        public void buildings() //function to display the list of buildings, given the selected park
         {
             DropDownListBuildings.Items.Clear();
             SqlConnection connect = new SqlConnection(WebConfigurationManager.ConnectionStrings["ParkConnectionString"].ToString());
             connect.Open();
-            int selectedpark = RadioButtonList1.SelectedIndex + 1;
-            string buildingsql = "Select buildingName from [Building] where parkID =" + selectedpark;
+            string selectedpark = RadioButtonList1.SelectedValue; //input checked park
+            string selectedParkChar = RadioButtonList1.SelectedValue.Substring(0, 1); //take first character
+            string buildingsql = "Select buildingName from [Building] where parkID = '" + selectedParkChar + "'";
             SqlCommand buildingscommand = new SqlCommand(buildingsql, connect);
             SqlDataReader buildings = buildingscommand.ExecuteReader();
-            while (buildings.Read())
+            DropDownListBuildings.Items.Add("ANY " + selectedpark); //add an ANY BUILDING option for a park at the beginning of the list
+            while (buildings.Read()) //read in each row of result
             {
-                DropDownListBuildings.Items.Add(buildings.GetString(0));
+                string building = buildings.GetString(0);
+                 if(building == selectedpark) //check that the buildingName isnt 'East', 'West' or 'Central'
+                    continue;
+                if(building == "James France" && DropDownListBuildings.Items.Count > 3) // Dont allow 2 'James France' options
+                    continue;
+                DropDownListBuildings.Items.Add(building); //append to building dropdown list
             }
 
             connect.Close();
