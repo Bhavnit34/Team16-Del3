@@ -1624,19 +1624,22 @@ namespace Team11
             SearchRooms();
         }
 
-        public void buildings()
+        public void buildings() //function to display the list of buildings, given the selected park
         {
             DropDownListBuildings.Items.Clear();
             SqlConnection connect = new SqlConnection(WebConfigurationManager.ConnectionStrings["ParkConnectionString"].ToString());
             connect.Open();
-            int selectedpark = RadioButtonList1.SelectedIndex + 1;
-            string buildingsql = "Select buildingName from [Building] where parkID = 'C'";
+            string selectedpark = RadioButtonList1.SelectedValue; //input checked park
+            string selectedParkChar = RadioButtonList1.SelectedValue.Substring(0, 1); //take first character
+            string buildingsql = "Select buildingName from [Building] where parkID = '" + selectedParkChar + "'";
             SqlCommand buildingscommand = new SqlCommand(buildingsql, connect);
             SqlDataReader buildings = buildingscommand.ExecuteReader();
-            while (buildings.Read())
+            while (buildings.Read()) //read in each row of result
             {
                 string building = buildings.GetString(0);
-                //DropDownListBuildings.Items.Add();
+                 if(building == selectedpark) //check that the buildingName isnt 'East', 'West' or 'Central'
+                    continue;
+                DropDownListBuildings.Items.Add(building); //append to building dropdown list
             }
 
             connect.Close();
