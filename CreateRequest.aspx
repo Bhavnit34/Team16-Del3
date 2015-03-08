@@ -474,7 +474,6 @@
                                 <asp:ListItem class="btn btn-primary">Central</asp:ListItem>
                                 <asp:ListItem class="btn btn-primary leftmarglittle">East</asp:ListItem>
                                 <asp:ListItem class="btn btn-primary leftmarglittle">West</asp:ListItem>
-                                <asp:ListItem class="btn btn-primary leftmarglittle">Any</asp:ListItem>
                             </asp:RadioButtonList>
                         </div>
 

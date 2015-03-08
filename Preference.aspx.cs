@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Web.Configuration;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Team11
 {
@@ -67,8 +68,28 @@ namespace Team11
                     header3.SelectedValue = header3Text;
                 }
                 conn.Close();
-            }
-        }
+
+
+                //Populate Buildings List
+                SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["myConnectionString"].ToString());
+                connection.Open();
+                string allBuildingsQuery = "Select buildingName from [Building]";
+                SqlCommand allBuildingsql = new SqlCommand(allBuildingsQuery, connection);
+                SqlDataReader buildings = allBuildingsql.ExecuteReader();
+                while(buildings.Read()){
+                    //check buildingName isnt east, west or central
+                    if((buildings.GetString(0) == "East") || (buildings.GetString(0) == "West") || (buildings.GetString(0) == "Central"))
+                        continue;
+                    //check for double occurance of James France
+                    if((buildings.GetString(0) == "James France") && (DropDownListAllBuildings.Items.Count > 2))
+                        continue;
+                    DropDownListAllBuildings.Items.Add(buildings.GetString(0));
+                }
+                connection.Close();
+
+
+            } //end isPostBack
+        } //end function
         protected void Button1_Click(object sender, EventArgs e)
         {
             if (create.Checked)
@@ -103,6 +124,89 @@ namespace Team11
             conn.Open();
             preferencessql.ExecuteNonQuery();
             conn.Close();
+        }
+
+        protected void DropDownListAllBuildings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update the list of rooms based on the chosen building
+            DropDownListAllRooms.Items.Clear();
+           
+            bool JF = false; //boolean to check for James France as the chosen room
+            if (DropDownListAllBuildings.SelectedValue == "James France")
+                JF = true;
+
+
+            SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["myConnectionString"].ToString());
+            connection.Open();
+            string buildingCodeQuery = "Select buildingCode from [Building] where buildingName = '" + DropDownListAllBuildings.SelectedValue +"'";
+            SqlCommand buildingCodesql = new SqlCommand(buildingCodeQuery, connection);
+            SqlDataReader building = buildingCodesql.ExecuteReader();
+            while(building.Read())
+                buildingCodeQuery = building.GetString(0);
+            connection.Close();
+            connection.Open();
+            string allBuildingsQuery = "";
+            if (JF) //Change the query if the building chosen is James France, to allow for buildingCode CC and D
+            {
+                allBuildingsQuery = "Select roomName from [Room] where buildingCode in ('CC','D')";
+            }
+            else //else run query as normal
+            {
+                allBuildingsQuery = "Select roomName from [Room] where buildingCode = '" + buildingCodeQuery + "'";
+            }
+                
+                SqlCommand allBuildingsql = new SqlCommand(allBuildingsQuery, connection);
+                SqlDataReader buildings = allBuildingsql.ExecuteReader();
+                while (buildings.Read()) //loop through the query results
+                {
+                    DropDownListAllRooms.Items.Add(buildings.GetString(0)); //append the rooms to a dropdown list
+                }
+                connection.Close();
+            
+        }
+
+        protected void addFacility_Click(object sender, EventArgs e)
+        {
+            //Validate the input
+            string input = addFacilityText.Text;
+            if (!(Regex.IsMatch(input, @"^[a-zA-Z]+$"))) //regex match against letters only
+            {
+                //JavaScript alert message
+                ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('Facility name not valid');", true);
+                return;
+            }
+
+            //Connect to database
+            SqlConnection connection = new SqlConnection(WebConfigurationManager.ConnectionStrings["myConnectionString"].ToString());
+            connection.Open();
+            string room = DropDownListAllRooms.SelectedValue; //get chosen room
+            string getFacilityQuery = "Select facilityName from [Facility] left join [RoomFacilities] on [Facility].facilityID = [RoomFacilities].facilityID";
+            getFacilityQuery += " Where roomName = '" + room + "'";
+
+            SqlCommand getFacilitysql = new SqlCommand(getFacilityQuery, connection);
+            SqlDataReader facility = getFacilitysql.ExecuteReader();
+            List<string> fac = new List<string>(); //initalize array of facilities
+            while (facility.Read())
+                fac.Add(facility.GetString(0)); //push facilities into an array
+            
+            connection.Close();
+
+            //loop through array and see if the facility already exists
+            for (int i = 0; i < fac.Count; i++)
+            {
+                if (fac[i].ToUpper() == input.ToUpper())
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + input + " already exists in this room');", true); //JavaScript Alert Message
+                    return;
+                }
+
+            }
+
+
+
+            connection.Open();
+
+
         }
     }
 }

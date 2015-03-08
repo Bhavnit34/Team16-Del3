@@ -125,6 +125,23 @@
             </div>
         </div><!-- ./canistercontainer -->
     </div><!-- ./canister -->
+
+    <div class="canister">
+        <div class="canistertitle">
+            <h2>Edit Features</h2>
+        </div>
+        <div class="canistercontainer">
+            <table>
+                <tr>
+                    <td><h3>Add a Facility</h3></td>
+                    <td><asp:TextBox runat="server" ID="addFacilityText"></asp:TextBox></td>
+                    <td><asp:DropDownList class="form-control" ID="DropDownListAllBuildings" runat="server" OnSelectedIndexChanged="DropDownListAllBuildings_SelectedIndexChanged" OnLoad ="DropDownListAllBuildings_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList></td>
+                    <td><asp:DropDownList class="form-control" ID="DropDownListAllRooms" runat="server" AutoPostBack="true"></asp:DropDownList></td>
+                    <td><asp:Button ID="addFacility" OnClick="addFacility_Click" runat="server" Value="Add" Text="Add" /></td>
+                </tr>
+            </table>
+        </div> <!-- end container -->
+    </div> <!-- end canister -->
    
 
     
