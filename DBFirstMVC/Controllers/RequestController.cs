@@ -91,6 +91,25 @@ namespace DBFirstMVC.Controllers
             return View(request);
         }
 
+        public ActionResult CreateNew()
+        {
+            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title");
+            
+
+
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
         //
         // GET: /Request/Edit/5
 

@@ -34,6 +34,7 @@ a {
 header, footer, hgroup,
 nav, section {
     display: block;
+    background-color: rgba(51, 0, 102, 1);
 }
 
 mark {
@@ -114,6 +115,15 @@ h5, h6 {
         background: url("../Images/heroAccent.png") no-repeat;
     }
 
+/*for the general request area div. This div is in Views/Request/Create.cshtml */
+.generalRequest {
+    border-style: double;
+    border-color: rgba(51, 0, 102, 1);
+    float: left;
+    margin: auto;
+    padding: 1%;
+}
+
 header .content-wrapper {
     padding-top: 20px; 
 }
@@ -129,7 +139,7 @@ footer {
 /* site title
 ----------------------------------------------------------*/
 .site-title {
-    color: #c8c8c8;
+    color: rgba(51, 0, 102, 1);
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
@@ -137,7 +147,7 @@ footer {
 
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
-    color: #c8c8c8;
+    color: rgba(51, 0, 102, 1);
     outline: none;
     text-decoration: none;
 }
@@ -195,7 +205,7 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #FFFFFF;
             text-decoration: none;
         }
 
@@ -626,7 +636,7 @@ tr.pager td {
 
         #login a {
             background: none;
-            color: #999;
+            color: #FFFFFF;
             font-weight: 600;
             margin: 2px;
             padding: 0;

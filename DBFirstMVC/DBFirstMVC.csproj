@@ -224,6 +224,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\RequestAndFacility.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Model1.tt</DependentUpon>

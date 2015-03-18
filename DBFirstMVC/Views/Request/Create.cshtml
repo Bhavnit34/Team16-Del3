@@ -3,111 +3,112 @@
 @{
     ViewBag.Title = "Create a Request";
 }
+<div class="generalRequest">
+    <h2>Create a Request</h2>
 
-<h2>Create a Request</h2>
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Request</legend>
 
-    <fieldset>
-        <legend>Request</legend>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ModCode, "Module")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("ModCode","--Select Module--")
+                @Html.ValidationMessageFor(model => model.ModCode)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ModCode, "Module")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("ModCode","--Select Module--")
-            @Html.ValidationMessageFor(model => model.ModCode)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SessionType, "Session Type")
-        </div>
-        <div class="editor-field">     
-            <label>@Html.RadioButtonFor(model => model.SessionType, "Lecture", true ) Lecture</label>
-            <label>@Html.RadioButtonFor(Model => Model.SessionType, "Tutorial", false) Tutorial</label> 
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SessionType, "Session Type")
+            </div>
+            <div class="editor-field">     
+                <label>@Html.RadioButtonFor(model => model.SessionType, "Lecture", true ) Lecture</label>
+                <label>@Html.RadioButtonFor(Model => Model.SessionType, "Tutorial", false) Tutorial</label> 
     
-            @Html.ValidationMessageFor(model => model.SessionType)
-        </div>
+                @Html.ValidationMessageFor(model => model.SessionType)
+            </div>
 
-         <div class="editor-label">
-            @Html.LabelFor(model => model.DayID, "Day")
-        </div>
-        <div class="editor-field">
-        @{
-            List<SelectListItem> listItems= new List<SelectListItem>();
-            listItems.Add(new SelectListItem
-                {
-                    Text = "Monday", Value = "1"
-                });
+             <div class="editor-label">
+                @Html.LabelFor(model => model.DayID, "Day")
+            </div>
+            <div class="editor-field">
+            @{
+                List<SelectListItem> listItems= new List<SelectListItem>();
+                listItems.Add(new SelectListItem
+                    {
+                        Text = "Monday", Value = "1"
+                    });
 
-            listItems.Add(new SelectListItem
-            {
-                Text = "Tuesday", Value = "2"
-            });
-            listItems.Add(new SelectListItem
+                listItems.Add(new SelectListItem
                 {
-                    Text = "Wednesday", Value = "3"
+                    Text = "Tuesday", Value = "2"
                 });
-            listItems.Add(new SelectListItem
-            {
-                Text = "Thursday", Value = "4"
-            });
-            listItems.Add(new SelectListItem
-            {
-                Text = "Friday", Value = "5"
-            });  
+                listItems.Add(new SelectListItem
+                    {
+                        Text = "Wednesday", Value = "3"
+                    });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Thursday", Value = "4"
+                });
+                listItems.Add(new SelectListItem
+                {
+                    Text = "Friday", Value = "5"
+                });  
                 
                 
-        }
+            }
 
-        @Html.DropDownListFor(model => model.DayID, listItems, "-- Select Day --")
+            @Html.DropDownListFor(model => model.DayID, listItems, "-- Select Day --")
 
-            @Html.ValidationMessageFor(model => model.DayID)
-        </div>
+                @Html.ValidationMessageFor(model => model.DayID)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PeriodID, "Period")
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PeriodID)
-            @Html.ValidationMessageFor(model => model.PeriodID)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PeriodID, "Period")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.PeriodID)
+                @Html.ValidationMessageFor(model => model.PeriodID)
+            </div>
 
-         <div class="editor-label">
-            @Html.LabelFor(model => model.SessionLength)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SessionLength)
-            @Html.ValidationMessageFor(model => model.SessionLength)
-        </div>
+             <div class="editor-label">
+                @Html.LabelFor(model => model.SessionLength)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.SessionLength)
+                @Html.ValidationMessageFor(model => model.SessionLength)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PriorityRequest)
-        </div>
-        <div class="editor-field">
-            <!--<input type="checkbox" id="cbPriorityRequest" /> -->
-            @Html.CheckBox("cbPriorityRequest")
-            @Html.ValidationMessageFor(model => model.PriorityRequest)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PriorityRequest)
+            </div>
+            <div class="editor-field">
+                <!--<input type="checkbox" id="cbPriorityRequest" /> -->
+                @Html.CheckBox("cbPriorityRequest")
+                @Html.ValidationMessageFor(model => model.PriorityRequest)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SpecialRequirements)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SpecialRequirements)
-            @Html.ValidationMessageFor(model => model.SpecialRequirements)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SpecialRequirements)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.SpecialRequirements)
+                @Html.ValidationMessageFor(model => model.SpecialRequirements)
+            </div>
 
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
-}
+            <p>
+                <input type="submit" value="Create" />
+            </p>
+        </fieldset>
+    }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
 
 @section Scripts {
