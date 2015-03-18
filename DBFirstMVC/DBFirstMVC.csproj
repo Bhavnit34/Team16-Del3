@@ -392,6 +392,7 @@
     <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Request\Delete.cshtml" />
     <Content Include="Views\Request\GetRequest.cshtml" />
+    <Content Include="Views\Request\CreateNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

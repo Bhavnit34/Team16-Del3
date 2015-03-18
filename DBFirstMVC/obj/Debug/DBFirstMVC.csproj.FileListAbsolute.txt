@@ -238,6 +238,5 @@ D:\Documents\Team16-Del3\DBFirstMVC\bin\ko\System.Spatial.resources.dll
 D:\Documents\Team16-Del3\DBFirstMVC\bin\ru\System.Spatial.resources.dll
 D:\Documents\Team16-Del3\DBFirstMVC\bin\zh-Hans\System.Spatial.resources.dll
 D:\Documents\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spatial.resources.dll
-D:\Documents\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 D:\Documents\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 D:\Documents\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
