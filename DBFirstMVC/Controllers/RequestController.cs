@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace DBFirstMVC.Controllers
 {
@@ -98,13 +99,24 @@ namespace DBFirstMVC.Controllers
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
             ViewBag.Facility = new SelectList(db.Facilities, "Facility1", "Facility1"); //Facility1 as the table name is Facility so the column name must be Facility1
-
+            ViewBag.Park = new SelectList(db.Parks, "Park1", "Park1");
 
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
 
+        public ActionResult GetBuildings()
+        {
+           return RedirectToAction("CreateNew");
+        }
 
+        [HttpPost]
+        public ActionResult GetBuildings(string chosenPark)
+        {
+            var v = db.Buildings.Where(p => p.Park1.Buildings.Equals(chosenPark)); 
+            ViewBag.Building = new SelectList(v, "BuildingName1", "BuildingName1");
 
+            return RedirectToAction("CreateNew");
+        }
 
 
 

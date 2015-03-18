@@ -123,7 +123,7 @@
                     @Html.LabelFor(model => model.Request.ModCode, "Facilites")
                 </div>
                 <div class="editor-field">
-                    @Html.DropDownList("Facility","--Select Facility--")
+                    @Html.DropDownList("Facility", "--Select Facility--")
                     @Html.ValidationMessageFor(model => model.Facilities)
                 </div>
                 <div>
@@ -139,9 +139,55 @@
          
      }
 </div>
+<div class="generalRequest">
+     @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+         <fieldset>
+                <legend>Request</legend>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Parks, "Park")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownList("Park","--Select Park--")
+                    @Html.ValidationMessageFor(model => model.Parks)
+                    
+                </div>
+                 
+     
+
+
+
+         </fieldset>
+         
+         
+     }
+</div>
 
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+@section MyScripts {
+   <script type="text/javascript">
+       $("#Park").on('change', function () {
+           var park = $(this).val();
+           $.ajax({
+               url: 'GetBuildings',
+               type: 'POST',
+               data: JSON.stringify({
+                   chosenPark: park
+               }),
+               contentType: 'application/json; charset=utf-8',
+               success: function (data) {
+                   alert(data);
+               }
+           });
+          
+           
+       });
+   </script>
+ }
