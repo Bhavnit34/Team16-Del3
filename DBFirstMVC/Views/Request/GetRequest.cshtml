@@ -1,0 +1,104 @@
+﻿@model DBFirstMVC.Models.RequestAndFacility
+
+@{
+    ViewBag.Title = "Request";
+}
+
+<h2>Request @Model.Request.RequestID</h2>
+
+<table>
+        <tr>
+            <h2> Facilities</h2>
+        <th></th>
+    </tr>
+@foreach (var item in Model.FacilityRequests) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Facility.Facility1) <!-- Display the facility name -->
+        </td>
+    </tr>
+}
+    <tr>
+        <td>
+            <h2>Information </h2>
+        </td>
+    </tr>
+       <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Module.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SessionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SessionLength)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.DayID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.PeriodID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.PriorityRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.AdhocRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SpecialRequirements)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Semester)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.RoundID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Status)
+        </th>
+    </tr>
+<tr>
+        <td
+            @Html.DisplayFor(modelItem => modelItem.Request.RequestID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Module.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SessionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SessionLength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.DayID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SpecialRequirements)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Status)
+        </td>
+    </tr>
+    
+
+</table>

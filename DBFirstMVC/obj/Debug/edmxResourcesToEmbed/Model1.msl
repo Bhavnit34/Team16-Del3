@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="team16ModelStoreContainer" CdmEntityContainer="team16Entities">
+    <EntitySetMapping Name="Buildings">
+      <EntityTypeMapping TypeName="team16Model.Building">
+        <MappingFragment StoreEntitySet="Building">
+          <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+          <ScalarProperty Name="Building1" ColumnName="Building" />
+          <ScalarProperty Name="Park" ColumnName="Park" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Degrees">
+      <EntityTypeMapping TypeName="team16Model.Degree">
+        <MappingFragment StoreEntitySet="Degree">
+          <ScalarProperty Name="DegreeID" ColumnName="DegreeID" />
+          <ScalarProperty Name="DegreeName" ColumnName="DegreeName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="Part" ColumnName="Part" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Depts">
+      <EntityTypeMapping TypeName="team16Model.Dept">
+        <MappingFragment StoreEntitySet="Dept">
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Facilities">
+      <EntityTypeMapping TypeName="team16Model.Facility">
+        <MappingFragment StoreEntitySet="Facility">
+          <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
+          <ScalarProperty Name="Facility1" ColumnName="Facility" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FacilityRequests">
+      <EntityTypeMapping TypeName="team16Model.FacilityRequest">
+        <MappingFragment StoreEntitySet="FacilityRequest">
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Lecturers">
+      <EntityTypeMapping TypeName="team16Model.Lecturer">
+        <MappingFragment StoreEntitySet="Lecturer">
+          <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Modules">
+      <EntityTypeMapping TypeName="team16Model.Module">
+        <MappingFragment StoreEntitySet="Module">
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Part" ColumnName="Part" />
+          <ScalarProperty Name="Students" ColumnName="Students" />
+          <ScalarProperty Name="Hours" ColumnName="Hours" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ModuleDegrees">
+      <EntityTypeMapping TypeName="team16Model.ModuleDegree">
+        <MappingFragment StoreEntitySet="ModuleDegree">
+          <ScalarProperty Name="DegreeID" ColumnName="DegreeID" />
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parks">
+      <EntityTypeMapping TypeName="team16Model.Park">
+        <MappingFragment StoreEntitySet="Park">
+          <ScalarProperty Name="ParkID" ColumnName="ParkID" />
+          <ScalarProperty Name="Park1" ColumnName="Park" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requests">
+      <EntityTypeMapping TypeName="team16Model.Request">
+        <MappingFragment StoreEntitySet="Request">
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+          <ScalarProperty Name="SessionType" ColumnName="SessionType" />
+          <ScalarProperty Name="SessionLength" ColumnName="SessionLength" />
+          <ScalarProperty Name="DayID" ColumnName="DayID" />
+          <ScalarProperty Name="PeriodID" ColumnName="PeriodID" />
+          <ScalarProperty Name="PriorityRequest" ColumnName="PriorityRequest" />
+          <ScalarProperty Name="AdhocRequest" ColumnName="AdhocRequest" />
+          <ScalarProperty Name="SpecialRequirements" ColumnName="SpecialRequirements" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequestToRooms">
+      <EntityTypeMapping TypeName="team16Model.RequestToRoom">
+        <MappingFragment StoreEntitySet="RequestToRoom">
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="team16Model.Room">
+        <MappingFragment StoreEntitySet="Room">
+          <ScalarProperty Name="Room1" ColumnName="Room" />
+          <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="Lab" ColumnName="Lab" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomFacilities">
+      <EntityTypeMapping TypeName="team16Model.RoomFacility">
+        <MappingFragment StoreEntitySet="RoomFacility">
+          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomRequests">
+      <EntityTypeMapping TypeName="team16Model.RoomRequest">
+        <MappingFragment StoreEntitySet="RoomRequest">
+          <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
+          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
+          <ScalarProperty Name="PriorityRoom" ColumnName="PriorityRoom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="team16Model.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Weeks">
+      <EntityTypeMapping TypeName="team16Model.Week">
+        <MappingFragment StoreEntitySet="Week">
+          <ScalarProperty Name="WeekID" ColumnName="WeekID" />
+          <ScalarProperty Name="Week1" ColumnName="Week1" />
+          <ScalarProperty Name="Week2" ColumnName="Week2" />
+          <ScalarProperty Name="Week3" ColumnName="Week3" />
+          <ScalarProperty Name="Week4" ColumnName="Week4" />
+          <ScalarProperty Name="Week5" ColumnName="Week5" />
+          <ScalarProperty Name="Week6" ColumnName="Week6" />
+          <ScalarProperty Name="Week7" ColumnName="Week7" />
+          <ScalarProperty Name="Week8" ColumnName="Week8" />
+          <ScalarProperty Name="Week9" ColumnName="Week9" />
+          <ScalarProperty Name="Week10" ColumnName="Week10" />
+          <ScalarProperty Name="Week11" ColumnName="Week11" />
+          <ScalarProperty Name="Week12" ColumnName="Week12" />
+          <ScalarProperty Name="Week13" ColumnName="Week13" />
+          <ScalarProperty Name="Week14" ColumnName="Week14" />
+          <ScalarProperty Name="Week15" ColumnName="Week15" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ModuleLecturer" TypeName="team16Model.ModuleLecturer" StoreEntitySet="ModuleLecturer">
+      <EndProperty Name="Lecturer">
+        <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
+      </EndProperty>
+      <EndProperty Name="Module">
+        <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
