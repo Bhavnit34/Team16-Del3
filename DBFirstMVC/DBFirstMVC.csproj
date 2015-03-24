@@ -239,6 +239,9 @@
     <Compile Include="RoomRequest.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>Team16Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Team16Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

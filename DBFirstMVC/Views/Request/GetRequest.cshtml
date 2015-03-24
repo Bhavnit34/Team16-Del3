@@ -6,18 +6,26 @@
 
 <h2>Request @Model.Request.RequestID</h2>
 
-<table>
-        <tr>
+
             <h2> Facilities</h2>
-        <th></th>
-    </tr>
+<ol>
 @foreach (var item in Model.FacilityRequests) {
-    <tr>
-        <td>
+
+    <li>
             @Html.DisplayFor(modelItem => item.Facility.FacilityName) <!-- Display the facility name -->
-        </td>
-    </tr>
+        </li>
+    
 }
+</ol>
+        <h2>Rooms</h2>
+<ol>
+@foreach(var item in Model.RequestToRooms){
+
+       <li>@Html.DisplayFor(modelItem => item.RoomRequest.RoomName) <!-- Display the room name --> </li>         
+
+}
+    </ol>
+<table>
     <tr>
         <td>
             <h2>Information </h2>

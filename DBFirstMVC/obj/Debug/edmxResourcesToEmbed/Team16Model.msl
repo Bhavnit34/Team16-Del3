@@ -117,7 +117,7 @@
     <EntitySetMapping Name="RequestToRooms">
       <EntityTypeMapping TypeName="team16Model.RequestToRoom">
         <MappingFragment StoreEntitySet="RequestToRoom">
-          <ScalarProperty Name="RequsetToRoomID" ColumnName="RequsetToRoomID" />
+          <ScalarProperty Name="RequestToRoomID" ColumnName="RequestToRoomID" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
           <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
         </MappingFragment>
@@ -182,6 +182,17 @@
           <ScalarProperty Name="Week13" ColumnName="Week13" />
           <ScalarProperty Name="Week14" ColumnName="Week14" />
           <ScalarProperty Name="Week15" ColumnName="Week15" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="team16Model.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

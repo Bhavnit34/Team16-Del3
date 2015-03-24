@@ -98,6 +98,7 @@
       <End Role="Room" EntitySet="Rooms" />
       <End Role="RoomRequest" EntitySet="RoomRequests" />
     </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="team16Model.sysdiagram" />
   </EntityContainer>
   <EntityType Name="Building">
     <Key>
@@ -231,13 +232,13 @@
   </EntityType>
   <EntityType Name="RequestToRoom">
     <Key>
-      <PropertyRef Name="RequsetToRoomID" />
+      <PropertyRef Name="RequestToRoomID" />
     </Key>
-    <Property Name="RequsetToRoomID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="RequestID" Type="Int32" Nullable="false" />
     <Property Name="RoomRequestID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Request" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="RequestToRoom" ToRole="Request" />
     <NavigationProperty Name="RoomRequest" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RequestToRoom" ToRole="RoomRequest" />
+    <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
   <EntityType Name="Room">
     <Key>
@@ -546,4 +547,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="principal_id" Nullable="false" />
+    <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="version" />
+    <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
+  </EntityType>
 </Schema>

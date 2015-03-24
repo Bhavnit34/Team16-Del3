@@ -42,6 +42,7 @@
         <AssociationConnector Association="team16Model.FK_RequestToRoom_RoomRequestID" ManuallyRouted="false" />
         <AssociationConnector Association="team16Model.FK_RoomFacility_Room" ManuallyRouted="false" />
         <AssociationConnector Association="team16Model.FK_RoomRequest_RoomName" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="team16Model.sysdiagram" Width="1.5" PointX="9.83696548540004" PointY="14.75889348180913" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

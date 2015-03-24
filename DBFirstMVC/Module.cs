@@ -11,7 +11,6 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     
     public partial class Module
     {
@@ -21,9 +20,8 @@ namespace DBFirstMVC
             this.ModuleLecturers = new HashSet<ModuleLecturer>();
             this.Requests = new HashSet<Request>();
         }
-        [Required]
+    
         public string ModCode { get; set; }
-        [Required]
         public string Title { get; set; }
         public string Part { get; set; }
         public Nullable<short> Students { get; set; }

@@ -4,8 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="team16Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="team16Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="team16ModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="team16Model.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Building" EntityType="team16Model.Store.Building" store:Type="Tables" Schema="team16" />
           <EntitySet Name="Degree" EntityType="team16Model.Store.Degree" store:Type="Tables" Schema="team16" />
           <EntitySet Name="Dept" EntityType="team16Model.Store.Dept" store:Type="Tables" Schema="team16" />
@@ -104,6 +105,16 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="BuildingCode" />
@@ -208,9 +219,9 @@
         </EntityType>
         <EntityType Name="RequestToRoom">
           <Key>
-            <PropertyRef Name="RequsetToRoomID" />
+            <PropertyRef Name="RequestToRoomID" />
           </Key>
-          <Property Name="RequsetToRoomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RequestToRoomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RequestID" Type="int" Nullable="false" />
           <Property Name="RoomRequestID" Type="int" Nullable="false" />
         </EntityType>
@@ -237,7 +248,7 @@
           <Key>
             <PropertyRef Name="RoomRequestID" />
           </Key>
-          <Property Name="RoomRequestID" Type="int" Nullable="false" />
+          <Property Name="RoomRequestID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RoomName" Type="varchar" MaxLength="10" />
           <Property Name="GroupSize" Type="smallint" />
           <Property Name="PriorityRoom" Type="tinyint" />
@@ -511,8 +522,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -614,6 +624,7 @@
             <End Role="Room" EntitySet="Rooms" />
             <End Role="RoomRequest" EntitySet="RoomRequests" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="team16Model.sysdiagram" />
         </EntityContainer>
         <EntityType Name="Building">
           <Key>
@@ -747,13 +758,13 @@
         </EntityType>
         <EntityType Name="RequestToRoom">
           <Key>
-            <PropertyRef Name="RequsetToRoomID" />
+            <PropertyRef Name="RequestToRoomID" />
           </Key>
-          <Property Name="RequsetToRoomID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="RequestID" Type="Int32" Nullable="false" />
           <Property Name="RoomRequestID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Request" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="RequestToRoom" ToRole="Request" />
           <NavigationProperty Name="RoomRequest" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RequestToRoom" ToRole="RoomRequest" />
+          <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -1062,6 +1073,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="principal_id" Nullable="false" />
+          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="version" />
+          <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1184,7 +1205,7 @@
           <EntitySetMapping Name="RequestToRooms">
             <EntityTypeMapping TypeName="team16Model.RequestToRoom">
               <MappingFragment StoreEntitySet="RequestToRoom">
-                <ScalarProperty Name="RequsetToRoomID" ColumnName="RequsetToRoomID" />
+                <ScalarProperty Name="RequestToRoomID" ColumnName="RequestToRoomID" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
                 <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
               </MappingFragment>
@@ -1249,6 +1270,17 @@
                 <ScalarProperty Name="Week13" ColumnName="Week13" />
                 <ScalarProperty Name="Week14" ColumnName="Week14" />
                 <ScalarProperty Name="Week15" ColumnName="Week15" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="team16Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
