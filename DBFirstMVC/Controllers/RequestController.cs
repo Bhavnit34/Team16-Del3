@@ -95,7 +95,7 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateNew()
         {
             ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title"); //Add list of modules to the view. It will referred to as ModCode
-            ViewBag.Modules = db.Modules;
+            ViewBag.Modules = db.Modules; //this will be used as the list of modules
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
@@ -115,15 +115,18 @@ namespace DBFirstMVC.Controllers
             else
                 myRequest.Request.PriorityRequest = 0;
 
+              //set auto defined variables, these should be calculated later
               myRequest.Request.RoundID = 1;
               myRequest.Request.UserID = 1;
               myRequest.Request.Semester = 1;
               myRequest.Request.AdhocRequest = 0;
+            
+              //check any facilities have been chosen
               if(facList == null)
                   validFacilities = false;
 
 
-              db.Requests.Add(myRequest.Request);
+              db.Requests.Add(myRequest.Request); //add the request to the table
               db.SaveChanges();
               int key = myRequest.Request.RequestID; //get the newly created key made for the new request
 
@@ -132,15 +135,16 @@ namespace DBFirstMVC.Controllers
                     FacilityRequest facilityRequest = new FacilityRequest(); //create a list of facilityRequest rows to add to the table
                     if (validFacilities == true)
                     {
-                        for (var i = 0; i < facList.Length; i++)
+                        for (var i = 0; i < facList.Length; i++) //loop through list of chosen facilities
                         {
-                            string fac = facList[i];
+                            string fac = facList[i]; //put facility into string so it can be used in LINQ
                             int id = (from d in db.Facilities
                                       where (d.FacilityName == fac)
                                       select d.FacilityID).SingleOrDefault();
-                            facilityRequest.FacilityID = id;
+                            //assign the values to the object
+                            facilityRequest.FacilityID = id; 
                             facilityRequest.RequestID = key;
-                            db.FacilityRequests.Add(facilityRequest);
+                            db.FacilityRequests.Add(facilityRequest); //add the facilityRequest to the table
                             db.SaveChanges();
                         }
                     }
@@ -148,13 +152,8 @@ namespace DBFirstMVC.Controllers
             
                
                
-               return RedirectToAction("Index");
+               return RedirectToAction("Index"); //redirect to the list of requests
         }
-
-
-
-
-
 
 
 
@@ -163,8 +162,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult GetBuildings(string chosenPark)
         {
-           //var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
-            //ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
             var b = from d in db.Buildings
                     where (d.ParkName == chosenPark.Substring(0, 1))
                     select d.BuildingName;
@@ -176,8 +173,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult GetRooms(string chosenBuilding)
         {
-            //var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
-            //ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
             var rm = from d in db.Rooms
                     where (d.Building.BuildingName == chosenBuilding)
                     select d.RoomName;
