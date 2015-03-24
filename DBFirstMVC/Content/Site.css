@@ -1,5 +1,4 @@
 ﻿html {
-    background-color: #e2e2e2;
     margin: 0;
     padding: 0;
 }
@@ -34,7 +33,7 @@ a {
 header, footer, hgroup,
 nav, section {
     display: block;
-    background-color: rgba(51, 0, 102, 1);
+    background-color: fff;
 }
 
 mark {
@@ -121,7 +120,7 @@ h5, h6 {
     border-color: rgba(51, 0, 102, 1);
     float: left;
     margin: auto;
-    padding: 1%;
+    padding: 10%;
 }
 
 header .content-wrapper {
@@ -205,7 +204,7 @@ ul#menu {
 
         ul#menu li a {
             background: none;
-            color: #FFFFFF;
+            color: #5D008F;
             text-decoration: none;
         }
 
@@ -223,18 +222,18 @@ ul#menu {
 }
 
     .featured .content-wrapper {
-        background-color: #7ac0da;
+        background-color: #fff;
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
         background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        color: #3e5667;
+        color: #5D008F;
         padding: 20px 40px 30px 40px;
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
-            color: #fff;
+            color: #5D008F;
         }
 
         .featured p {
@@ -636,7 +635,7 @@ tr.pager td {
 
         #login a {
             background: none;
-            color: #FFFFFF;
+            color: #5D008F;
             font-weight: 600;
             margin: 2px;
             padding: 0;
@@ -673,6 +672,7 @@ tr.pager td {
     .content-wrapper {
         padding-right: 10px;
         padding-left: 10px;
+        background-color:ffffff;
     }
 
     .featured .content-wrapper {
@@ -715,13 +715,6 @@ tr.pager td {
         padding: 10px;
         width: auto;
      }
-
-        section.feature img {
-            color: #999;
-            content: attr(alt);
-            font-size: 1.5em;
-            font-weight: 600;
-        }
 
     /* forms */
     input {
