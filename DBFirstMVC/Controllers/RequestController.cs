@@ -95,19 +95,21 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateNew()
         {
             ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title"); //Add list of modules to the view. It will referred to as ModCode
+            ViewBag.Modules = db.Modules;
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
             ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); //Facility1 as the table name is Facility so the column name must be Facility1
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
-
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
 
 
         [HttpPost]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, bool cbPriorityRequest = false, string Park = "")
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, bool cbPriorityRequest = false, string Park = "")
         {
+            bool validFacilities = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
                 myRequest.Request.PriorityRequest = 1;
             else
@@ -117,18 +119,36 @@ namespace DBFirstMVC.Controllers
               myRequest.Request.UserID = 1;
               myRequest.Request.Semester = 1;
               myRequest.Request.AdhocRequest = 0;
+              if(facList == null)
+                  validFacilities = false;
 
 
+              db.Requests.Add(myRequest.Request);
+              db.SaveChanges();
+              int key = myRequest.Request.RequestID; //get the newly created key made for the new request
 
-           /* if (ModelState.IsValid)
-            {
-                db.Requests.Add(request);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            */
-
-            return View(myRequest);
+                if (validFacilities)
+                {
+                    FacilityRequest facilityRequest = new FacilityRequest(); //create a list of facilityRequest rows to add to the table
+                    if (validFacilities == true)
+                    {
+                        for (var i = 0; i < facList.Length; i++)
+                        {
+                            string fac = facList[i];
+                            int id = (from d in db.Facilities
+                                      where (d.FacilityName == fac)
+                                      select d.FacilityID).SingleOrDefault();
+                            facilityRequest.FacilityID = id;
+                            facilityRequest.RequestID = key;
+                            db.FacilityRequests.Add(facilityRequest);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            
+               
+               
+               return RedirectToAction("Index");
         }
 
 
