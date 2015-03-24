@@ -5,179 +5,222 @@
 }
 
 <h2>CreateNew</h2>
-
-<div class="generalRequest">
-        @using (Html.BeginForm()) {
+ @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
+        <div class="generalRequest">
+       
 
-            <fieldset>
-                <legend>Request</legend>
+                    <fieldset>
+                        <legend>Request</legend>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.ModCode, "Module")
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("ModCode","--Select Module--")
-                    @Html.ValidationMessageFor(model => model.Request.ModCode)
-                </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.ModCode, "Module")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("ModCode","--Select Module--")
+                            @Html.ValidationMessageFor(model => model.Request.ModCode)
+                        </div>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.SessionType, "Session Type")
-                </div>
-                <div class="editor-field">     
-                    <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
-                    <label>@Html.RadioButtonFor(Model => Model.Request.SessionType, "Tutorial", false) Tutorial</label> 
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
+                        </div>
+                        <div class="editor-field">     
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
     
-                    @Html.ValidationMessageFor(model => model.Request.SessionType)
-                </div>
+                            @Html.ValidationMessageFor(model => model.Request.SessionType)
+                        </div>
 
-                 <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.DayID, "Day")
-                </div>
-                <div class="editor-field">
-                @{
-                    List<SelectListItem> listItems= new List<SelectListItem>();
-                    listItems.Add(new SelectListItem
-                        {
-                            Text = "Monday", Value = "1"
-                        });
+                         <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.DayID, "Day")
+                        </div>
+                        <div class="editor-field">
+                        @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem
+                                {
+                                    Text = "Monday", Value = "1"
+                                });
 
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Tuesday", Value = "2"
-                    });
-                    listItems.Add(new SelectListItem
-                        {
-                            Text = "Wednesday", Value = "3"
-                        });
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Thursday", Value = "4"
-                    });
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Friday", Value = "5"
-                    });  
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Tuesday", Value = "2"
+                            });
+                            listItems.Add(new SelectListItem
+                                {
+                                    Text = "Wednesday", Value = "3"
+                                });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Thursday", Value = "4"
+                            });
+                            listItems.Add(new SelectListItem
+                            {
+                                Text = "Friday", Value = "5"
+                            });  
                 
+                        
+                        }
+
+                        @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
+
+                            @Html.ValidationMessageFor(model => model.Request.DayID)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.PeriodID, "Period")
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Request.PeriodID)
+                            @Html.ValidationMessageFor(model => model.Request.PeriodID)
+                        </div>
+
+                         <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SessionLength)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Request.SessionLength)
+                            @Html.ValidationMessageFor(model => model.Request.SessionLength)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.PriorityRequest)
+                        </div>
+                        <div class="editor-field">
+                            <!--<input type="checkbox" id="cbPriorityRequest" /> -->
+                            @Html.CheckBox("cbPriorityRequest")
+                            @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SpecialRequirements)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Request.SpecialRequirements)
+                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
+                        </div>
+
+                        
+                        <p>
+                            @Ajax.ActionLink("CreateRequest","CreateRequest",new AjaxOptions { HttpMethod = "Post" })
+                        </p>
+                    </fieldset>
                 
-                }
-
-                @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
-
-                    @Html.ValidationMessageFor(model => model.Request.DayID)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.PeriodID, "Period")
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Request.PeriodID)
-                    @Html.ValidationMessageFor(model => model.Request.PeriodID)
-                </div>
-
-                 <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.SessionLength)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Request.SessionLength)
-                    @Html.ValidationMessageFor(model => model.Request.SessionLength)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.PriorityRequest)
-                </div>
-                <div class="editor-field">
-                    <!--<input type="checkbox" id="cbPriorityRequest" /> -->
-                    @Html.CheckBox("cbPriorityRequest")
-                    @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
-                </div>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.SpecialRequirements)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.Request.SpecialRequirements)
-                    @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
-                </div>
-
-                <p>
-                    <input type="submit" value="Create" />
-                </p>
-            </fieldset>
-        }
     
-        <div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-</div>
-<div class="generalRequest">
-     @using (Html.BeginForm()) {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
-
-         <fieldset>
-                <legend>Request</legend>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Request.ModCode, "Facilites")
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("Facility", "--Select Facility--")
-                    @Html.ValidationMessageFor(model => model.Facilities)
-                </div>
                 <div>
-                    @foreach (var item in Model.Facilities) {
-                        <input type="checkbox" name="SelectedSources" value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
-                    }
+                    @Html.ActionLink("Back to List", "Index")
                 </div>
+        </div>
+ 
+        <div class="generalRequest">
+                    <fieldset>
+                        <legend>Request</legend>
 
-
-
-         </fieldset>
-         
-         
-     }
-</div>
-<div class="generalRequest">
-     @using (Html.BeginForm()) {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
-
-         <fieldset>
-                <legend>Request</legend>
-
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.Parks, "Park")
-                </div>
-                <div class="editor-field">
-                    @Html.DropDownList("Park","--Select Park--")
-                    @Html.ValidationMessageFor(model => model.Parks)
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.ModCode, "Facilites")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("Facility","--Select Facility--")
+                            @Html.ValidationMessageFor(model => model.Parks)
                     
-                </div>
-                 
-     
+                        </div>
+                        <div>
+                            @foreach (var item in Model.Facilities) {
+                                <input type="checkbox"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
+                            }
+                    
+                        </div>                                  
+
+                    </fieldset>
+         
+        </div>
+        <div class="generalRequest">
+
+
+                    <fieldset>
+                        <legend>Request</legend>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Parks, "Park")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("Park","--Select Park--")
+                            @Html.ValidationMessageFor(model => model.Parks)
+                    
+                        </div>
+                        <select id="Building"></select><br />
+                        <select id="Room"></select><br />
 
 
 
-         </fieldset>
+                    </fieldset>
          
          
-     }
-</div>
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+}
 
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-@section MyScripts {
-   <script type="text/javascript">
-       $("#Park").on('change', function () {
-           var park = $(this).val();
+@section MyScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Building').hide();
+            $('#Room').hide();
+        });
 
-          
-           
-       });
-   </script>
- }
+
+        //Function to add the list of buildings based on park choice
+        $("#Park").on('change', function () {
+            var park = $(this).val();
+            $('#Room').hide(200);
+            if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
+                $('#Building').hide(200);
+                return;
+            }
+
+            $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
+            // Postback response of buildings
+            buildings = data;
+            html = "";
+            //create a dropdown list of buildings
+            for (var i = 0; i < buildings.length; i++) {
+                if (buildings[i] != park)
+                    html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
+            }
+            $('#Building').html(html); //add this html to the tag
+            $('#Building').show(200);
+            });  //end $.post
+        }); //end function
+
+
+        //Function to add the list of rooms based on building choice
+        $("#Building").on('change', function () {
+            var building = $(this).val();
+
+            $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
+                // Postback response of rooms
+                rooms = data;
+                html = "";
+                //create a dropdown list of rooms
+                for (var i = 0; i < rooms.length; i++) {
+                        html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                }
+                $('#Room').html(html); //add this html to the tag
+                $('#Room').show(200);
+            });  //end $.post
+        }); //end function
+
+
+
+    </script>
+
+}
+
+

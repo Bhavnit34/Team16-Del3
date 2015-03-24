@@ -11,6 +11,7 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Request
     {
@@ -22,10 +23,18 @@ namespace DBFirstMVC
     
         public int RequestID { get; set; }
         public Nullable<short> UserID { get; set; }
+        [Required]
         public string ModCode { get; set; }
+        [Required]
         public string SessionType { get; set; }
+        [Required]
+        [Range(1, 9)]
         public Nullable<byte> SessionLength { get; set; }
+        [Required]
+        [Range(1, 5)]
         public Nullable<byte> DayID { get; set; }
+        [Required]
+        [Range(1, 9)]
         public Nullable<byte> PeriodID { get; set; }
         public Nullable<byte> PriorityRequest { get; set; }
         public Nullable<byte> AdhocRequest { get; set; }

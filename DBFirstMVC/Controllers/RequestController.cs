@@ -104,21 +104,66 @@ namespace DBFirstMVC.Controllers
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
 
-        public ActionResult GetBuildings()
+
+        [HttpPost]
+        public ActionResult CreateRequest(CreateNewRequest myRequest, bool cbPriorityRequest = false, string Park = "")
         {
-           return RedirectToAction("CreateNew");
+            if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
+                myRequest.Request.PriorityRequest = 1;
+            else
+                myRequest.Request.PriorityRequest = 0;
+
+              myRequest.Request.RoundID = 1;
+              myRequest.Request.UserID = 1;
+              myRequest.Request.Semester = 1;
+              myRequest.Request.AdhocRequest = 0;
+
+
+
+           /* if (ModelState.IsValid)
+            {
+                db.Requests.Add(request);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            */
+
+            return View(myRequest);
         }
 
+
+
+
+
+
+
+
+
+        //Function thats posted to which returns the list of buildings of a given park
         [HttpPost]
         public ActionResult GetBuildings(string chosenPark)
         {
-            var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
-            ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
+           //var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
+            //ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
+            var b = from d in db.Buildings
+                    where (d.ParkName == chosenPark.Substring(0, 1))
+                    select d.BuildingName;
 
-            return RedirectToAction("CreateNew");
+            return Json(b);
         }
 
+        //Function thats posted to which returns the list of rooms of a given building
+        [HttpPost]
+        public ActionResult GetRooms(string chosenBuilding)
+        {
+            //var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
+            //ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
+            var rm = from d in db.Rooms
+                    where (d.Building.BuildingName == chosenBuilding)
+                    select d.RoomName;
 
+            return Json(rm);
+        }
 
 
 
