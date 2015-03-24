@@ -20,7 +20,7 @@ namespace DBFirstMVC
         }
     
         public string ParkID { get; set; }
-        public string Park1 { get; set; }
+        public string ParkName { get; set; }
     
         public virtual ICollection<Building> Buildings { get; set; }
     }

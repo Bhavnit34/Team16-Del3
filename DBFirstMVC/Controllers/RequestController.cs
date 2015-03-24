@@ -98,8 +98,8 @@ namespace DBFirstMVC.Controllers
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
-            ViewBag.Facility = new SelectList(db.Facilities, "Facility1", "Facility1"); //Facility1 as the table name is Facility so the column name must be Facility1
-            ViewBag.Park = new SelectList(db.Parks, "Park1", "Park1");
+            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); //Facility1 as the table name is Facility so the column name must be Facility1
+            ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
 
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
@@ -112,8 +112,8 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult GetBuildings(string chosenPark)
         {
-            var v = db.Buildings.Where(p => p.Park1.Buildings.Equals(chosenPark)); 
-            ViewBag.Building = new SelectList(v, "BuildingName1", "BuildingName1");
+            var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
+            ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
 
             return RedirectToAction("CreateNew");
         }

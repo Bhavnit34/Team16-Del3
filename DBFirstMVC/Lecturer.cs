@@ -16,7 +16,7 @@ namespace DBFirstMVC
     {
         public Lecturer()
         {
-            this.Modules = new HashSet<Module>();
+            this.ModuleLecturers = new HashSet<ModuleLecturer>();
         }
     
         public int LecturerID { get; set; }
@@ -24,6 +24,7 @@ namespace DBFirstMVC
         public string LastName { get; set; }
         public string DeptCode { get; set; }
     
-        public virtual ICollection<Module> Modules { get; set; }
+        public virtual Dept Dept { get; set; }
+        public virtual ICollection<ModuleLecturer> ModuleLecturers { get; set; }
     }
 }

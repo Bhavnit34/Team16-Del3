@@ -14,11 +14,17 @@ namespace DBFirstMVC
     
     public partial class RoomRequest
     {
+        public RoomRequest()
+        {
+            this.RequestToRooms = new HashSet<RequestToRoom>();
+        }
+    
         public int RoomRequestID { get; set; }
-        public string Room { get; set; }
+        public string RoomName { get; set; }
         public Nullable<short> GroupSize { get; set; }
         public Nullable<byte> PriorityRoom { get; set; }
     
-        public virtual Room Room1 { get; set; }
+        public virtual ICollection<RequestToRoom> RequestToRooms { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

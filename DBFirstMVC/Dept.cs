@@ -17,6 +17,7 @@ namespace DBFirstMVC
         public Dept()
         {
             this.Degrees = new HashSet<Degree>();
+            this.Lecturers = new HashSet<Lecturer>();
             this.Modules = new HashSet<Module>();
             this.Rooms = new HashSet<Room>();
             this.Users = new HashSet<User>();
@@ -26,6 +27,7 @@ namespace DBFirstMVC
         public string DeptName { get; set; }
     
         public virtual ICollection<Degree> Degrees { get; set; }
+        public virtual ICollection<Lecturer> Lecturers { get; set; }
         public virtual ICollection<Module> Modules { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<User> Users { get; set; }

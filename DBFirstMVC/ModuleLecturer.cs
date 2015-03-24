@@ -12,13 +12,13 @@ namespace DBFirstMVC
     using System;
     using System.Collections.Generic;
     
-    public partial class ModuleDegree
+    public partial class ModuleLecturer
     {
-        public int ModuleDegreeID { get; set; }
-        public int DegreeID { get; set; }
+        public int ModuleLecturerID { get; set; }
         public string ModCode { get; set; }
+        public int LecturerID { get; set; }
     
-        public virtual Degree Degree { get; set; }
+        public virtual Lecturer Lecturer { get; set; }
         public virtual Module Module { get; set; }
     }
 }

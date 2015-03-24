@@ -14,11 +14,17 @@ namespace DBFirstMVC
     
     public partial class Degree
     {
+        public Degree()
+        {
+            this.ModuleDegrees = new HashSet<ModuleDegree>();
+        }
+    
         public int DegreeID { get; set; }
         public string DegreeName { get; set; }
         public string DeptCode { get; set; }
         public string Part { get; set; }
     
         public virtual Dept Dept { get; set; }
+        public virtual ICollection<ModuleDegree> ModuleDegrees { get; set; }
     }
 }

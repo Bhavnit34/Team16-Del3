@@ -14,9 +14,11 @@ namespace DBFirstMVC
     
     public partial class FacilityRequest
     {
+        public int FacilityRequestID { get; set; }
         public int RequestID { get; set; }
         public int FacilityID { get; set; }
     
         public virtual Facility Facility { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

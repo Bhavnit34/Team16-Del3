@@ -11,36 +11,33 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
     
     public partial class Request
     {
         public Request()
         {
+            this.FacilityRequests = new HashSet<FacilityRequest>();
             this.RequestToRooms = new HashSet<RequestToRoom>();
         }
     
         public int RequestID { get; set; }
         public Nullable<short> UserID { get; set; }
-        [Required]
         public string ModCode { get; set; }
-        [Required]
         public string SessionType { get; set; }
-        [Required]
         public Nullable<byte> SessionLength { get; set; }
-        [Required]
         public Nullable<byte> DayID { get; set; }
-        [Range(1, 9)]
-        [Required]
         public Nullable<byte> PeriodID { get; set; }
         public Nullable<byte> PriorityRequest { get; set; }
         public Nullable<byte> AdhocRequest { get; set; }
         public string SpecialRequirements { get; set; }
         public Nullable<byte> Semester { get; set; }
+        public Nullable<int> WeekID { get; set; }
         public Nullable<byte> RoundID { get; set; }
         public string Status { get; set; }
     
+        public virtual ICollection<FacilityRequest> FacilityRequests { get; set; }
         public virtual Module Module { get; set; }
+        public virtual Week Week { get; set; }
         public virtual ICollection<RequestToRoom> RequestToRooms { get; set; }
     }
 }

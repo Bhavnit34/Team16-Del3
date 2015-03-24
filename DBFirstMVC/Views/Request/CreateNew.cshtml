@@ -128,7 +128,7 @@
                 </div>
                 <div>
                     @foreach (var item in Model.Facilities) {
-                        <input type="checkbox" name="SelectedSources" value="@item.Facility1" id="fac@(item.FacilityID)"> @item.Facility1<br />
+                        <input type="checkbox" name="SelectedSources" value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
                     }
                 </div>
 
@@ -175,17 +175,7 @@
    <script type="text/javascript">
        $("#Park").on('change', function () {
            var park = $(this).val();
-           $.ajax({
-               url: 'GetBuildings',
-               type: 'POST',
-               data: JSON.stringify({
-                   chosenPark: park
-               }),
-               contentType: 'application/json; charset=utf-8',
-               success: function (data) {
-                   alert(data);
-               }
-           });
+
           
            
        });

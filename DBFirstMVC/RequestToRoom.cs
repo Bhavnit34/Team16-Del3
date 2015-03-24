@@ -14,9 +14,11 @@ namespace DBFirstMVC
     
     public partial class RequestToRoom
     {
+        public int RequsetToRoomID { get; set; }
         public int RequestID { get; set; }
         public int RoomRequestID { get; set; }
     
         public virtual Request Request { get; set; }
+        public virtual RoomRequest RoomRequest { get; set; }
     }
 }

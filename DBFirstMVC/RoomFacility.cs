@@ -14,9 +14,11 @@ namespace DBFirstMVC
     
     public partial class RoomFacility
     {
-        public string Room { get; set; }
+        public int RoomFacilityID { get; set; }
+        public string RoomName { get; set; }
         public int FacilityID { get; set; }
     
         public virtual Facility Facility { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

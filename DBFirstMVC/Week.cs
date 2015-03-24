@@ -14,6 +14,11 @@ namespace DBFirstMVC
     
     public partial class Week
     {
+        public Week()
+        {
+            this.Requests = new HashSet<Request>();
+        }
+    
         public int WeekID { get; set; }
         public Nullable<byte> Week1 { get; set; }
         public Nullable<byte> Week2 { get; set; }
@@ -30,5 +35,7 @@ namespace DBFirstMVC
         public Nullable<byte> Week13 { get; set; }
         public Nullable<byte> Week14 { get; set; }
         public Nullable<byte> Week15 { get; set; }
+    
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

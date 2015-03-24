@@ -20,10 +20,10 @@ namespace DBFirstMVC
         }
     
         public string BuildingCode { get; set; }
-        public string Building1 { get; set; }
-        public string Park { get; set; }
+        public string BuildingName { get; set; }
+        public string ParkName { get; set; }
     
-        public virtual Park Park1 { get; set; }
+        public virtual Park Park { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

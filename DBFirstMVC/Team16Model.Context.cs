@@ -33,6 +33,7 @@ namespace DBFirstMVC
         public DbSet<Lecturer> Lecturers { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<ModuleDegree> ModuleDegrees { get; set; }
+        public DbSet<ModuleLecturer> ModuleLecturers { get; set; }
         public DbSet<Park> Parks { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestToRoom> RequestToRooms { get; set; }
