@@ -45,10 +45,12 @@ namespace DBFirstMVC.Controllers
                 return RedirectToAction("Index"); //back to home page if request doesnt exist
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
+            var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
             if (v != null)
             {
-               var results = v.Include(b => b.Facility); //add foreign key for facilityID
-               return View(new RequestAndFacility() { Request = r, FacilityRequests = results }); //return view with the data filled model
+               var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
+               var roomReq = res.Include(c => c.RoomRequest);
+               return View(new RequestAndFacility() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
             }
             return View();
         }
@@ -95,30 +97,90 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateNew()
         {
             ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title"); //Add list of modules to the view. It will referred to as ModCode
+            ViewBag.Modules = db.Modules; //this will be used as the list of modules
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
             ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); //Facility1 as the table name is Facility so the column name must be Facility1
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
-
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
 
-        public ActionResult GetBuildings()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, bool cbPriorityRequest = false, string Park = "")
         {
-           return RedirectToAction("CreateNew");
+            bool validFacilities = true;
+            if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
+                myRequest.Request.PriorityRequest = 1;
+            else
+                myRequest.Request.PriorityRequest = 0;
+
+              //set auto defined variables, these should be calculated later
+              myRequest.Request.RoundID = 1;
+              myRequest.Request.UserID = 1;
+              myRequest.Request.Semester = 1;
+              myRequest.Request.AdhocRequest = 0;
+            
+              //check any facilities have been chosen
+              if(facList == null)
+                  validFacilities = false;
+
+
+              db.Requests.Add(myRequest.Request); //add the request to the table
+              db.SaveChanges();
+              int key = myRequest.Request.RequestID; //get the newly created key made for the new request
+
+                if (validFacilities)
+                {
+                    FacilityRequest facilityRequest = new FacilityRequest(); //create a list of facilityRequest rows to add to the table
+                    if (validFacilities == true)
+                    {
+                        for (var i = 0; i < facList.Length; i++) //loop through list of chosen facilities
+                        {
+                            string fac = facList[i]; //put facility into string so it can be used in LINQ
+                            int id = (from d in db.Facilities
+                                      where (d.FacilityName == fac)
+                                      select d.FacilityID).SingleOrDefault();
+                            //assign the values to the object
+                            facilityRequest.FacilityID = id; 
+                            facilityRequest.RequestID = key;
+                            db.FacilityRequests.Add(facilityRequest); //add the facilityRequest to the table
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            
+               
+               
+               return RedirectToAction("Index"); //redirect to the list of requests
         }
 
+
+
+
+        //Function thats posted to which returns the list of buildings of a given park
         [HttpPost]
         public ActionResult GetBuildings(string chosenPark)
         {
-            var v = db.Buildings.Where(p => p.Park.Buildings.Equals(chosenPark)); 
-            ViewBag.Building = new SelectList(v, "BuildingName", "BuildingName");
+            var b = from d in db.Buildings
+                    where (d.ParkName == chosenPark.Substring(0, 1))
+                    select d.BuildingName;
 
-            return RedirectToAction("CreateNew");
+            return Json(b);
         }
 
+        //Function thats posted to which returns the list of rooms of a given building
+        [HttpPost]
+        public ActionResult GetRooms(string chosenBuilding)
+        {
+            var rm = from d in db.Rooms
+                    where (d.Building.BuildingName == chosenBuilding)
+                    select d.RoomName;
 
+            return Json(rm);
+        }
 
 
 

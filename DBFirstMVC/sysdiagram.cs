@@ -12,13 +12,12 @@ namespace DBFirstMVC
     using System;
     using System.Collections.Generic;
     
-    public partial class RequestToRoom
+    public partial class sysdiagram
     {
-        public int RequestID { get; set; }
-        public int RoomRequestID { get; set; }
-        public int RequestToRoomID { get; set; }
-    
-        public virtual Request Request { get; set; }
-        public virtual RoomRequest RoomRequest { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
