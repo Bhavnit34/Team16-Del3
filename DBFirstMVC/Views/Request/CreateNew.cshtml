@@ -145,10 +145,10 @@
                             @Html.ValidationMessageFor(model => model.Parks)
                     
                         </div>
-                        <select id="Building"></select><br />
-                        <select id="Room"></select><br />
-
-
+                        <select id="Building"></select><br /><!-- this will dynamically altered -->
+                        <select id="Room"></select><br /><!-- this will dynamically altered -->
+                        <input type="button" id="btnAddToRoom" value="Add To List" />
+                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
 
                     </fieldset>
          
@@ -169,6 +169,7 @@
         $(document).ready(function () {
             $('#Building').hide();
             $('#Room').hide();
+            $('#btnAddToRoom').hide();
         });
 
 
@@ -176,6 +177,7 @@
         $("#Park").on('change', function () {
             var park = $(this).val();
             $('#Room').hide(200);
+            $('#btnAddToRoom').hide();
             if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
                 $('#Building').hide(200);
                 return;
@@ -183,7 +185,7 @@
 
             $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
             // Postback response of buildings
-            buildings = data;
+            var buildings = data;
             html = "";
             //create a dropdown list of buildings
             for (var i = 0; i < buildings.length; i++) {
@@ -202,7 +204,7 @@
 
             $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                 // Postback response of rooms
-                rooms = data;
+                var rooms = data;
                 html = "";
                 //create a dropdown list of rooms
                 for (var i = 0; i < rooms.length; i++) {
@@ -210,8 +212,43 @@
                 }
                 $('#Room').html(html); //add this html to the tag
                 $('#Room').show(200);
+                $('#btnAddToRoom').show(200);
             });  //end $.post
         }); //end function
+
+
+        //Function to add a room to the displayed list of chosen rooms
+        $('#btnAddToRoom').click(function(){
+            var room = $('#Room').val();
+            var roomID = room.replace(/\./g,'');
+            var len = $('#listOfRooms').children().children().length;
+
+            //return if they have picked 3 rooms
+            if (len > 2)
+                return;
+
+
+            //Check that the room doesnt already exist in the list
+            for (var i = 0; i < len; i++) {
+                if ($('#listOfRooms').children().eq(i).attr('id') == roomID)
+                    return;
+            }
+
+            //Create html for the room item and add it to the list
+            var html = "<tr id='" + roomID + "'>";
+            html += "<td>" + room + "</td>";
+            html += "<td><img src='/Images/delete.png' id='del"+roomID+"' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
+            html += "</tr>";
+            $('#listOfRooms').append(html);
+            $('#listOfRoomsDiv').show();
+        });
+
+
+        //Function to delete the room chosen
+        function deleteRoom(id) {
+            id = id.substr(3, id.length); //change 'delJB021' to 'JB021'
+            $('#' + id).remove(); //remove the html <tr> element
+        }
 
 
 
