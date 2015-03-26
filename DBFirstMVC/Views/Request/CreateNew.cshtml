@@ -229,13 +229,15 @@
 
 
             //Check that the room doesnt already exist in the list
-            for (var i = 0; i < len; i++) {
-                if ($('#listOfRooms').children().eq(i).attr('id') == roomID)
+            for (var i = 0; i < len; i+=2) {
+                if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
                     return;
             }
 
             //Create html for the room item and add it to the list
             var html = "<tr id='" + roomID + "'>";
+            //we need to add this hidden input so that we can pass the room value to the controller
+            html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
             html += "<td>" + room + "</td>";
             html += "<td><img src='/Images/delete.png' id='del"+roomID+"' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
             html += "</tr>";
