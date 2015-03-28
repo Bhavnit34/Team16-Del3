@@ -21,7 +21,7 @@
                         <div class="editor-field">
                             <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
                             <input type="button" id="btnModSearch" value="Filter" />
-                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules, "ModCode", "FullModule"))
+                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules, "ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
 
@@ -265,9 +265,22 @@
             }
 
         });
-
         //Function to filter the modules based on the search string
+        $('#btnModSearch').click(function () {
+            var str = $('#txtModSearch').val();
+            if (str.replace(/ /g, '') == "")
+                str = "";
+            var results;
+            $.post('@Url.Action("getModules", "Request")', { searchString: str }, function (data) {
+                results = data;
+                $('#Request_ModCode').html('<option value="">-- Select Module --</option>');
+                for (var i = 0; i < results.length; i++) {
+                    var modCode = results[i].Whole.substr(0, 6); //extract modcode from string
+                    $('#Request_ModCode').append('<option value="'+modCode+'">' + results[i].Whole + '</option>');
+                }
 
+            });
+        });
 
 
 

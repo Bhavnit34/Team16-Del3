@@ -236,7 +236,17 @@ namespace DBFirstMVC.Controllers
             return Json(rm);
         }
 
+        [HttpPost]
+        public ActionResult GetModules(string searchString)
+        {
+            var modules = from d in db.Modules
+                          where ((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString)))
+                          select new { Whole = d.ModCode + " - " + d.Title};
+            
 
+
+            return Json(modules);
+        }
 
 
 
