@@ -96,8 +96,26 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CreateNew()
         {
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title"); //Add list of modules to the view. It will referred to as ModCode
+            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
             ViewBag.Modules = db.Modules; //this will be used as the list of modules
+
+            List<SelectListItem> Period = new List<SelectListItem>();
+            Period.Add(new SelectListItem{Text = "p1 - 9:00", Value = "1"});
+            Period.Add(new SelectListItem{Text = "p2 - 10:00", Value = "2"});
+            Period.Add(new SelectListItem{Text = "p3 - 11:00", Value = "3"});
+            Period.Add(new SelectListItem{Text = "p4 - 12:00", Value = "4"});
+            Period.Add(new SelectListItem{Text = "p5 - 13:00", Value = "5"});
+            Period.Add(new SelectListItem{Text = "p6 - 14:00", Value = "6"});
+            Period.Add(new SelectListItem{Text = "p7 - 15:00", Value = "7"});
+            Period.Add(new SelectListItem{Text = "p8 - 16:00", Value = "8"});
+            Period.Add(new SelectListItem{Text = "p9 - 17:00", Value = "9"});
+
+            ViewBag.Periods = Period; //This will be passed into the view for the dropdownlist
+            
+            
+            
+            
+            
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
@@ -109,35 +127,41 @@ namespace DBFirstMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, bool cbPriorityRequest = false, string Park = "")
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, bool cbPriorityRequest = false, string Park = "")
         {
             bool validFacilities = true;
+            bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
                 myRequest.Request.PriorityRequest = 1;
             else
                 myRequest.Request.PriorityRequest = 0;
 
-              //set auto defined variables, these should be calculated later
-              myRequest.Request.RoundID = 1;
-              myRequest.Request.UserID = 1;
-              myRequest.Request.Semester = 1;
-              myRequest.Request.AdhocRequest = 0;
+            //set auto defined variables, these should be calculated later
+            myRequest.Request.RoundID = 1;
+            myRequest.Request.UserID = 1;
+            myRequest.Request.Semester = 1;
+            myRequest.Request.AdhocRequest = 0;
             
-              //check any facilities have been chosen
-              if(facList == null)
-                  validFacilities = false;
+            //check any facilities have been chosen
+            if(facList == null)
+                validFacilities = false;
+
+            //check any rooms have been chosen
+            if (chosenRooms == null)
+                validRooms = false;
 
 
               db.Requests.Add(myRequest.Request); //add the request to the table
               db.SaveChanges();
-              int key = myRequest.Request.RequestID; //get the newly created key made for the new request
+              int newRequestID = myRequest.Request.RequestID; //get the newly created key made for the new request
 
+                //Add facility requests
                 if (validFacilities)
                 {
                     FacilityRequest facilityRequest = new FacilityRequest(); //create a list of facilityRequest rows to add to the table
                     if (validFacilities == true)
                     {
-                        for (var i = 0; i < facList.Length; i++) //loop through list of chosen facilities
+                        for (int i = 0; i < facList.Length; i++) //loop through list of chosen facilities
                         {
                             string fac = facList[i]; //put facility into string so it can be used in LINQ
                             int id = (from d in db.Facilities
@@ -145,10 +169,40 @@ namespace DBFirstMVC.Controllers
                                       select d.FacilityID).SingleOrDefault();
                             //assign the values to the object
                             facilityRequest.FacilityID = id; 
-                            facilityRequest.RequestID = key;
+                            facilityRequest.RequestID = newRequestID;
                             db.FacilityRequests.Add(facilityRequest); //add the facilityRequest to the table
                             db.SaveChanges();
                         }
+                    }
+                }
+
+                //Add room requests
+                int newRoomRequestID = 0;
+                if (validRooms)
+                {
+                    RequestToRoom requestToRoom = new RequestToRoom();
+                    
+
+                    for (int i = 0; i < chosenRooms.Length; i++)
+                    {
+                        //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
+                        RoomRequest roomRequest = new RoomRequest();
+                        string room = chosenRooms[i];
+                        roomRequest.RoomRequestID = 0;
+                        roomRequest.GroupSize = 0;
+                        roomRequest.PriorityRoom = 0;
+                        roomRequest.RoomName = room;
+
+                        //create RoomRequest row and add to table
+                        db.RoomRequests.Add(roomRequest);
+                        db.SaveChanges();
+                        newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
+
+                        //create RequestToRoom row and add to table
+                        requestToRoom.RequestID = newRequestID;
+                        requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
+                        db.RequestToRooms.Add(requestToRoom);
+                        db.SaveChanges();
                     }
                 }
             
@@ -182,7 +236,17 @@ namespace DBFirstMVC.Controllers
             return Json(rm);
         }
 
+        [HttpPost]
+        public ActionResult GetModules(string searchString)
+        {
+            var modules = from d in db.Modules
+                          where ((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString)))
+                          select new { Whole = d.ModCode + " - " + d.Title};
+            
 
+
+            return Json(modules);
+        }
 
 
 
