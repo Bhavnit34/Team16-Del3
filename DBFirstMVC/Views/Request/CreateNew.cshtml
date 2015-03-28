@@ -1,10 +1,10 @@
 ﻿@model DBFirstMVC.Models.CreateNewRequest
 
 @{
-    ViewBag.Title = "CreateNew";
+    ViewBag.Title = "Create a Request";
 }
 
-<h2>CreateNew</h2>
+<h2>Create a Request</h2>
  @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
@@ -16,10 +16,12 @@
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Module")
+                            Search below or choose from list:
                         </div>
                         <div class="editor-field">
-                            <!--@Html.DropDownList("ModCode","--Select Module--")-->
-                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules, "ModCode", "Title"))
+                            <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
+                            <input type="button" id="btnModSearch" value="Filter" />
+                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules, "ModCode", "FullModule"))
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
 
@@ -39,29 +41,11 @@
                         <div class="editor-field">
                         @{
                             List<SelectListItem> listItems= new List<SelectListItem>();
-                            listItems.Add(new SelectListItem
-                                {
-                                    Text = "Monday", Value = "1"
-                                });
-
-                            listItems.Add(new SelectListItem
-                            {
-                                Text = "Tuesday", Value = "2"
-                            });
-                            listItems.Add(new SelectListItem
-                                {
-                                    Text = "Wednesday", Value = "3"
-                                });
-                            listItems.Add(new SelectListItem
-                            {
-                                Text = "Thursday", Value = "4"
-                            });
-                            listItems.Add(new SelectListItem
-                            {
-                                Text = "Friday", Value = "5"
-                            });  
-                
-                        
+                            listItems.Add(new SelectListItem{Text = "Monday", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "Tuesday", Value = "2"});
+                            listItems.Add(new SelectListItem{Text = "Wednesday", Value = "3"});
+                            listItems.Add(new SelectListItem{Text = "Thursday", Value = "4"});
+                            listItems.Add(new SelectListItem{Text = "Friday", Value = "5"});   
                         }
 
                         @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
@@ -73,20 +57,21 @@
                             @Html.LabelFor(model => model.Request.PeriodID, "Period")
                         </div>
                         <div class="editor-field">
-                            @Html.EditorFor(model => model.Request.PeriodID)
+                            @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.PeriodID)
                         </div>
 
                          <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SessionLength)
+                           @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
                         </div>
                         <div class="editor-field">
-                            @Html.EditorFor(model => model.Request.SessionLength)
+                            @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
+                            @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
 
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.PriorityRequest)
+                            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
                         </div>
                         <div class="editor-field">
                             <!--<input type="checkbox" id="cbPriorityRequest" /> -->
@@ -95,7 +80,7 @@
                         </div>
 
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SpecialRequirements)
+                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
                         </div>
                         <div class="editor-field">
                             @Html.EditorFor(model => model.Request.SpecialRequirements)
@@ -103,10 +88,7 @@
                         </div>
                     </fieldset>
                 
-    
-                <div>
-                    @Html.ActionLink("Back to List", "Index")
-                </div>
+   
         </div>
  
         <div class="generalRequest">
@@ -115,11 +97,6 @@
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Facilites")
-                        </div>
-                        <div class="editor-field">
-                            @Html.DropDownList("Facility","--Select Facility--")
-                            @Html.ValidationMessageFor(model => model.Parks)
-                    
                         </div>
                         <div>
                             @foreach (var item in Model.Facilities) {
@@ -145,8 +122,14 @@
                             @Html.ValidationMessageFor(model => model.Parks)
                     
                         </div>
-                        <select id="Building"></select><br /><!-- this will dynamically altered -->
-                        <select id="Room"></select><br /><!-- this will dynamically altered -->
+                        <div class="editor-label" id="BuildingDiv"></div>
+                        <div class="editor-field">
+                            <select id="Building"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <div class="editor-label" id="RoomDiv"></div>
+                        <div class="editor-field">
+                            <select id="Room"></select><br /><!-- this will dynamically altered -->
+                        </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
                         <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
 
@@ -170,6 +153,10 @@
             $('#Building').hide();
             $('#Room').hide();
             $('#btnAddToRoom').hide();
+
+            $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
+
+
         });
 
 
@@ -178,6 +165,8 @@
             var park = $(this).val();
             $('#Room').hide(200);
             $('#btnAddToRoom').hide();
+            $('#RoomDiv').html("");
+            $('#BuildingDiv').html("");
             if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
                 $('#Building').hide(200);
                 return;
@@ -187,12 +176,14 @@
             // Postback response of buildings
             var buildings = data;
             html = "";
+            html += "<option value='--Select Building--'>--Select Building--</option>";
             //create a dropdown list of buildings
             for (var i = 0; i < buildings.length; i++) {
                 if (buildings[i] != park)
                     html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
             }
             $('#Building').html(html); //add this html to the tag
+            $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
             $('#Building').show(200);
             });  //end $.post
         }); //end function
@@ -201,7 +192,12 @@
         //Function to add the list of rooms based on building choice
         $("#Building").on('change', function () {
             var building = $(this).val();
-
+            if (building.substr(0, 1) == "-") {
+                $('#Room').hide();
+                $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                return;
+            }
             $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                 // Postback response of rooms
                 var rooms = data;
@@ -211,6 +207,7 @@
                         html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
                 }
                 $('#Room').html(html); //add this html to the tag
+                $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
                 $('#Room').show(200);
                 $('#btnAddToRoom').show(200);
             });  //end $.post
@@ -251,6 +248,26 @@
             id = id.substr(3, id.length); //change 'delJB021' to 'JB021'
             $('#' + id).remove(); //remove the html <tr> element
         }
+
+        //Function to change the session lengths available from the chosen period
+        $('#Request_PeriodID').change(function () {
+            var period = $(this).val();
+            var max = 10 - period;
+            if (period == "")
+                max = 0;
+           $('#Request_SessionLength').html("");
+           $('#Request_SessionLength').append('<option value="">-- Select Length --</option>');
+            for (var i = 1; i <= max; i++) {
+                if(i==1)
+                    $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hour</option>");
+                else
+                    $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hours</option>");
+            }
+
+        });
+
+        //Function to filter the modules based on the search string
+
 
 
 

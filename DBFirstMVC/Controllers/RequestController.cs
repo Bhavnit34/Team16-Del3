@@ -96,8 +96,26 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CreateNew()
         {
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title"); //Add list of modules to the view. It will referred to as ModCode
+            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
             ViewBag.Modules = db.Modules; //this will be used as the list of modules
+
+            List<SelectListItem> Period = new List<SelectListItem>();
+            Period.Add(new SelectListItem{Text = "p1 - 9:00", Value = "1"});
+            Period.Add(new SelectListItem{Text = "p2 - 10:00", Value = "2"});
+            Period.Add(new SelectListItem{Text = "p3 - 11:00", Value = "3"});
+            Period.Add(new SelectListItem{Text = "p4 - 12:00", Value = "4"});
+            Period.Add(new SelectListItem{Text = "p5 - 13:00", Value = "5"});
+            Period.Add(new SelectListItem{Text = "p6 - 14:00", Value = "6"});
+            Period.Add(new SelectListItem{Text = "p7 - 15:00", Value = "7"});
+            Period.Add(new SelectListItem{Text = "p8 - 16:00", Value = "8"});
+            Period.Add(new SelectListItem{Text = "p9 - 17:00", Value = "9"});
+
+            ViewBag.Periods = Period; //This will be passed into the view for the dropdownlist
+            
+            
+            
+            
+            
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
