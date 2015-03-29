@@ -1,0 +1,145 @@
+﻿@model DBFirstMVC.Request
+
+@{
+    ViewBag.Title = "Change the status";
+}
+
+<h2>Change the status</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+        @Html.HiddenFor(model => model.RequestID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserID)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.UserID)
+             @Html.HiddenFor(model => model.UserID)
+            @Html.ValidationMessageFor(model => model.UserID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ModCode, "Module")
+        </div>
+        <div class="editor-field">
+           @Html.DisplayFor(model => model.ModCode)
+             @Html.HiddenFor(model => model.ModCode)
+            @Html.ValidationMessageFor(model => model.ModCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SessionType)
+        </div>
+        <div class="editor-field">
+           @Html.DisplayFor(model => model.SessionType)
+            @Html.HiddenFor(model => model.SessionType)
+            @Html.ValidationMessageFor(model => model.SessionType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SessionLength)
+        </div>
+        <div class="editor-field">
+              @Html.DisplayFor(model => model.SessionLength)
+             @Html.HiddenFor(model => model.SessionLength)
+            @Html.ValidationMessageFor(model => model.SessionLength)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DayID)
+        </div>
+        <div class="editor-field">
+             @Html.DisplayFor(model => model.DayID)
+             @Html.HiddenFor(model => model.DayID)
+            @Html.ValidationMessageFor(model => model.DayID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodID)
+        </div>
+        <div class="editor-field">
+              @Html.DisplayFor(model => model.PeriodID)
+             @Html.HiddenFor(model => model.PeriodID)
+            @Html.ValidationMessageFor(model => model.PeriodID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PriorityRequest)
+        </div>
+        <div class="editor-field">
+             @Html.DisplayFor(model => model.PriorityRequest)
+             @Html.HiddenFor(model => model.PriorityRequest)
+            @Html.ValidationMessageFor(model => model.PriorityRequest)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AdhocRequest)
+        </div>
+        <div class="editor-field">
+              @Html.DisplayFor(model => model.AdhocRequest)
+             @Html.HiddenFor(model => model.AdhocRequest)
+            @Html.ValidationMessageFor(model => model.AdhocRequest)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SpecialRequirements)
+        </div>
+        <div class="editor-field">
+             @Html.DisplayFor(model => model.SpecialRequirements)
+             @Html.HiddenFor(model => model.SpecialRequirements)
+            @Html.ValidationMessageFor(model => model.SpecialRequirements)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Semester)
+        </div>
+        <div class="editor-field">
+             @Html.DisplayFor(model => model.Semester)
+             @Html.HiddenFor(model => model.Semester)
+            @Html.ValidationMessageFor(model => model.Semester)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WeekID, "Week")
+        </div>
+        <div class="editor-field">
+              @Html.DisplayFor(model => model.WeekID)
+             @Html.HiddenFor(model => model.WeekID)
+            @Html.ValidationMessageFor(model => model.WeekID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoundID)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.RoundID)
+             @Html.HiddenFor(model => model.RoundID)
+            @Html.ValidationMessageFor(model => model.RoundID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

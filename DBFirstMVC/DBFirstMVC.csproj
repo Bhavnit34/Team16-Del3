@@ -187,6 +187,7 @@
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Degree.cs">
@@ -400,6 +401,13 @@
       <DependentUpon>Team16Model.edmx</DependentUpon>
       <LastGenOutput>Team16Model.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Admin\GetRequest.cshtml" />
+    <Content Include="Views\Admin\EditPool.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DBFirstMVC.Room>
+
+@{
+    ViewBag.Title = "Edit-Room";
+}
+
+<h2>Edit pool Room</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RoomName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Building.BuildingName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lab)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeptCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Building.ParkName)
+        </th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoomName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Building.BuildingName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Capacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lab)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeptCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Building.ParkName)
+        </td>
+ 
+        <td>
+           @* @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID }) |
+            @Html.ActionLink("Get Request", "GetRequest", new { id=item.RequestID})*@
+        </td>
+    </tr>
+}
+
+</table>
