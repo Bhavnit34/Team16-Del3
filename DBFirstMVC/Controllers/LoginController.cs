@@ -53,16 +53,11 @@ namespace DBFirstMVC.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-
         public ActionResult Logout()
         {
-            Session.Remove("Username"); //Remove user's session status and log out
-            return RedirectToAction("Index", "Login");
+            Session.Remove("User"); //Remove user's session status and log out
+            return RedirectToAction("Index");
         }
-
-
-
-
 
 
         //
