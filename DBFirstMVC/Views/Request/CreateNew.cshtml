@@ -21,7 +21,7 @@
                         <div class="editor-field">
                             <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
                             <input type="button" id="btnModSearch" value="Filter" />
-                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules, "ModCode", "FullModule"), "-- Select Module --")
+                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules,"ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
 
@@ -147,7 +147,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-@section MyScripts{
+@section CreateNewScript{
     <script type="text/javascript">
         $(document).ready(function () {
             $('#Building').hide();

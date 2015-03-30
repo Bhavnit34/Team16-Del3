@@ -1,0 +1,44 @@
+﻿@model DBFirstMVC.User
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<section id="loginForm">
+<h2>Use a local account to log in.</h2>
+@using (Html.BeginForm("Login", "Login", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(model => model.Username)
+                @Html.DropDownListFor(model => model.Username,new SelectList(ViewBag.Users,"DeptCode","FullDept"), "-- Select Department --")
+                @Html.ValidationMessageFor(m => m.Username)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+}
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section LoginScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Username').children().eq(2).css("font-weight","Bold");
+
+        });
+    </script>
+
+}
