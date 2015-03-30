@@ -12,7 +12,9 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Team 16", "Index", "Home")</p>
+                    <p id="siteTitle" class="site-title">@Html.ActionLink("Team 16", "Index", "Home")
+                        <a style="color:gray; font-style:italic; font-size:0.6em">@ViewBag.CurrentUserTitle</a>
+                    </p>
                 </div>
                 <div class="float-right">
                     <section id="login">

@@ -41,7 +41,7 @@ namespace DBFirstMVC.Controllers
                 if (results.FirstOrDefault() != null) //if a row has been found
                 {
                     //Create a session for the user
-                    Session["Username"] = model.Username;
+                    Session["User"] = model;
                     Session.Timeout = 10;
                     //Advance to request page
                     return RedirectToAction("CreateNew", "Request");
@@ -56,7 +56,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Logout()
         {
-            Session.Remove("Username");
+            Session.Remove("Username"); //Remove user's session status and log out
             return RedirectToAction("Index", "Login");
         }
 

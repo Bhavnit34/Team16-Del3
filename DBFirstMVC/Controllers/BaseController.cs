@@ -13,11 +13,11 @@ namespace DBFirstMVC.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["Username"] != null)
-                base.OnActionExecuting(filterContext);
+            if (Session["User"] != null)
+                base.OnActionExecuting(filterContext); //Continue as normal
             else
             {
-                TempData["Message"] = "Please log in to use the timetabling system";
+                TempData["Message"] = "Please log in to use the timetabling system"; //This message will show once
                 filterContext.Result = new RedirectResult("~/Login/Index");
             }
         }
