@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace DBFirstMVC.Controllers
 {
-    public class RequestController : Controller
+    public class RequestController : BaseController //Inherits our own overrided controller. Please see BaseController
     {
         private team16Entities db = new team16Entities();
 
@@ -96,6 +96,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CreateNew()
         {
+
             ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
             ViewBag.Modules = db.Modules; //this will be used as the list of modules
 

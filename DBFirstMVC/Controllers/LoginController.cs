@@ -31,24 +31,34 @@ namespace DBFirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(User model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //Check the username and password are valid inputs
             {
-
+                //find rows that match the input (if any)
                 var results = from d in db.Users
                               where (d.Username == model.Username && d.Password == model.Password)
                               select d;
-                if (results.FirstOrDefault() != null)
-                    return RedirectToAction("CreateNew","Request");
+
+                if (results.FirstOrDefault() != null) //if a row has been found
+                {
+                    //Create a session for the user
+                    Session["Username"] = model.Username;
+                    Session.Timeout = 10;
+                    //Advance to request page
+                    return RedirectToAction("CreateNew", "Request");
+                }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
             TempData["Message"] = "The password provided is incorrect";
             return Redirect(Request.UrlReferrer.ToString());
         }
 
 
-
+        public ActionResult Logout()
+        {
+            Session.Remove("Username");
+            return RedirectToAction("Index", "Login");
+        }
 
 
 
