@@ -1,0 +1,105 @@
+﻿@model IEnumerable<DBFirstMVC.Request>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Module.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SessionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SessionLength)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DayID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PeriodID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PriorityRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdhocRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SpecialRequirements)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Semester)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Week.WeekID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoundID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Module.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SessionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SessionLength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DayID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PeriodID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PriorityRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdhocRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SpecialRequirements)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Week.WeekID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoundID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID })
+        </td>
+    </tr>
+}
+
+</table>

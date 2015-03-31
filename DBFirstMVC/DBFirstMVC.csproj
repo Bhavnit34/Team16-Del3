@@ -190,6 +190,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Degree.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -407,7 +408,18 @@
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Admin\GetRequest.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Test\Details.cshtml" />
+    <Content Include="Views\Test\Create.cshtml" />
+    <Content Include="Views\Test\Edit.cshtml" />
+    <Content Include="Views\Test\Delete.cshtml" />
+    <Content Include="Views\Admin\Test.cshtml" />
     <Content Include="Views\Admin\EditPool.cshtml" />
+    <Content Include="Views\Admin\EditRoom.cshtml" />
+    <Content Include="Views\Admin\ShowFacility.cshtml" />
+    <Content Include="Views\Admin\EditFacility.cshtml" />
+    <Content Include="Views\Admin\DeleteFacility.cshtml" />
+    <Content Include="Views\Admin\CreateFacility.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,12 @@ namespace DBFirstMVC
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+              name: "abc",
+              url: "{controller}/{action}/{id1}",
+              defaults: new { controller = "Index2", action = "Index", id1 = UrlParameter.Optional }
+          );
         }
     }
 }

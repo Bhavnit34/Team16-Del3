@@ -54,10 +54,9 @@
         </td>
  
         <td>
-           @* @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.RequestID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID }) |
-            @Html.ActionLink("Get Request", "GetRequest", new { id=item.RequestID})*@
+            @Html.ActionLink("Delete Room","Delete", new {id1=item.RoomName})|
+              @Html.ActionLink("Edit Room","EditRoom", new {id1=item.RoomName})|
+ 
         </td>
     </tr>
 }

@@ -1,7 +1,7 @@
-﻿@model DBFirstMVC.Request
+﻿@model DBFirstMVC.Room
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Room";
 }
 
 <h2>Delete</h2>
@@ -11,99 +11,45 @@
     <legend>Request</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserID)
+         @Html.DisplayNameFor(model => model.RoomName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UserID)
+        @Html.DisplayFor(model => model.RoomName)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Module.Title)
+         @Html.DisplayNameFor(model => model.Building.BuildingName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Module.Title)
+        @Html.DisplayFor(model => model.Building.BuildingName)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SessionType)
+         @Html.DisplayNameFor(model => model.Capacity)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.SessionType)
+        @Html.DisplayFor(model => model.Capacity)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SessionLength)
+         @Html.DisplayNameFor(model => model.Lab)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.SessionLength)
+        @Html.DisplayFor(model => model.Lab)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.DayID)
+         @Html.DisplayNameFor(model => model.DeptCode)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.DayID)
+        @Html.DisplayFor(model => model.DeptCode)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PeriodID)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PeriodID)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PriorityRequest)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PriorityRequest)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.AdhocRequest)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.AdhocRequest)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SpecialRequirements)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SpecialRequirements)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Semester)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Semester)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Week.WeekID)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Week.WeekID)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.RoundID)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.RoundID)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
-    </div>
+   
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "EditPool")
     </p>
 }

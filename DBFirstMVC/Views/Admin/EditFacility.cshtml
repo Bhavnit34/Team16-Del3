@@ -1,0 +1,45 @@
+﻿@model DBFirstMVC.Facility
+
+@{
+    ViewBag.Title = "Edit Facility";
+}
+
+<h2>Edit Facility</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+           <div class="editor-label">
+            @Html.LabelFor(model => model.FacilityID)
+            @Html.HiddenFor(model => model.FacilityID)
+        </div>
+          <div class="editor-field">
+        @Html.DisplayFor(model => model.FacilityID)
+        @Html.ValidationMessageFor(model => model.FacilityID)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FacilityName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FacilityName)
+          
+            @Html.ValidationMessageFor(model => model.FacilityName)
+        </div>
+
+        
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ShowFacility")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,33 +1,29 @@
 ﻿@model DBFirstMVC.Room
 
 @{
-    ViewBag.Title = "Add new Room";
+    ViewBag.Title = "Edit room";
 }
 
-<h2>Add New Room</h2>
+<h2>Edit pool room</h2>
 
 @using (Html.BeginForm()) {
-           // @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Request</legend>
-
-        <div class="editor-label">
+           <div class="editor-label">
             @Html.LabelFor(model => model.RoomName)
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.RoomName)
-            @Html.ValidationMessageFor(model => model.RoomName)
+          <div class="editor-field">
+        @Html.EditorFor(model => model.RoomName)
+        @Html.ValidationMessageFor(model => model.RoomName)
         </div>
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.BuildingCode, "Building")
+            @Html.LabelFor(model => model.BuildingCode)
         </div>
         <div class="editor-field">
-             @Html.DropDownList("BuildingCode", String.Empty)
-                
-            
+            @Html.EditorFor(model => model.BuildingCode)
+          
             @Html.ValidationMessageFor(model => model.BuildingCode)
         </div>
 
@@ -35,7 +31,8 @@
             @Html.LabelFor(model => model.Capacity)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Capacity)
+           @Html.EditorFor(model => model.Capacity)
+          
             @Html.ValidationMessageFor(model => model.Capacity)
         </div>
 
@@ -43,22 +40,24 @@
             @Html.LabelFor(model => model.Lab)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Lab)
+           @Html.EditorFor(model => model.Lab)
+           
             @Html.ValidationMessageFor(model => model.Lab)
         </div>
-
+           @Html.HiddenFor(model => model.URL)
         <div class="editor-label">
             @Html.LabelFor(model => model.DeptCode)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.DeptCode)
+              @Html.EditorFor(model => model.DeptCode)
+        
             @Html.ValidationMessageFor(model => model.DeptCode)
         </div>
 
        
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Save" />
         </p>
     </fieldset>
 }
@@ -70,4 +69,3 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
