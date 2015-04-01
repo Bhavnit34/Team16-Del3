@@ -162,6 +162,7 @@
           <Property Name="FirstName" Type="varchar" MaxLength="20" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="DeptCode" Type="varchar" MaxLength="7" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -688,6 +689,7 @@
           <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Dept" Relationship="team16Model.FK_Lecturer_DeptCode" FromRole="Lecturer" ToRole="Dept" />
           <NavigationProperty Name="ModuleLecturers" Relationship="team16Model.FK_ModuleLecturer_LecturerID" FromRole="Lecturer" ToRole="ModuleLecturer" />
+          <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -1136,6 +1138,7 @@
           <EntitySetMapping Name="Lecturers">
             <EntityTypeMapping TypeName="team16Model.Lecturer">
               <MappingFragment StoreEntitySet="Lecturer">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

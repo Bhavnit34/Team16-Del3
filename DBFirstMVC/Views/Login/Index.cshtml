@@ -8,25 +8,31 @@
 <h2>Please log in using your departments account</h2>
 @using (Html.BeginForm("Login", "Login", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    <div id="loginDiv">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(model => model.Username)
-                @Html.DropDownListFor(model => model.Username,new SelectList(ViewBag.Users,"DeptCode","FullDept"), "-- Select Department --")
-                @Html.ValidationMessageFor(m => m.Username)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
-    </fieldset>
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(model => model.Username)
+                    @Html.DropDownListFor(model => model.Username,new SelectList(ViewBag.Users,"DeptCode","FullDept"), "-- Select Department --")
+                    @Html.ValidationMessageFor(m => m.Username)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+            </ol>
+            <input type="submit" id="Login" value="Log in" />
+            <a id="btnForgotPassword" style="cursor:pointer;">Forgot Password</a>
+            
+
+        </fieldset>
+    </div>
+    <div id="popupForgotPasswordDiv" title="Reset Password"></div>
 }
 </section>
 
@@ -37,8 +43,59 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#Username').children().eq(2).css("font-weight","Bold");
-
+  
         });
-    </script>
+
+
+        //This function handles the validation and confirmation of resetting a users password
+        $('#btnForgotPassword').click(function () {
+            if ($('#Username :selected').text() == "-- Select Department --")
+                return;
+            $('#Password').val("");
+            $('#loginDiv').hide(400);
+
+            var deptName = $('#Username :selected').text().substr(5, 100); //get dept name
+            var html = "";
+            html += "<p id='confirm'> Please confirm you want to <u>reset the password</u> for <strong>" + deptName + "</strong></p>";
+            html += "<input type='button' id='btnYes' value='Yes'/>";
+            html += "<input type='button' id='btnNo' value='No'/>";
+            html += "<input type='button' id='btnOk' value='Ok' />";
+            $('#popupForgotPasswordDiv').html(html);
+            $('#popupForgotPasswordDiv').fadeIn(1000);
+            $('#btnOk').hide();
+            $('#btnNo').on('click', function () { //Saying 'No' to reset password
+                $('#popupForgotPasswordDiv').fadeOut(500, function () {
+                    $('#loginDiv').fadeIn(500);
+                });
+                
+                
+            });
+            $('#btnYes').on('click', function () {
+                $('#popupForgotPasswordDiv').fadeOut(500);
+                $('#popupForgotPasswordDiv').promise().done(function () {
+                    $('#confirm').text("Your password has been reset, an email has been sent to your account.");
+                    $('#btnOk').fadeIn(500);
+                    $('#popupForgotPasswordDiv').fadeIn(500);
+                });
+               
+                $('#btnYes').fadeOut();
+                $('#btnNo').fadeOut();
+                
+            });
+
+            $('#btnOk').on('click', function () {
+                $('#popupForgotPasswordDiv').fadeOut(500);
+                $('#popupForgotPasswordDiv').promise().done(function () {
+                    $('#loginDiv').fadeIn(500);
+                });
+            });
+
+
+        }); //end btnForgotPassword click event
+
+       
+
+        
+   </script>
 
 }

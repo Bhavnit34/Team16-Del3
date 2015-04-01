@@ -162,6 +162,7 @@
     <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_Lecturer_DeptCode" FromRole="Lecturer" ToRole="Dept" />
     <NavigationProperty Name="ModuleLecturers" Relationship="team16Model.FK_ModuleLecturer_LecturerID" FromRole="Lecturer" ToRole="ModuleLecturer" />
+    <Property Type="String" Name="Email" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Module">
     <Key>

@@ -157,6 +157,7 @@
     <Property Name="FirstName" Type="varchar" MaxLength="20" />
     <Property Name="LastName" Type="varchar" MaxLength="50" />
     <Property Name="DeptCode" Type="varchar" MaxLength="7" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Module">
     <Key>

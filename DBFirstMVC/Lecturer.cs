@@ -23,6 +23,7 @@ namespace DBFirstMVC
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DeptCode { get; set; }
+        public string Email { get; set; }
     
         public virtual Dept Dept { get; set; }
         public virtual ICollection<ModuleLecturer> ModuleLecturers { get; set; }

@@ -6,7 +6,10 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
+        <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
         @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
     </head>
     <body>
         <header>
@@ -47,8 +50,7 @@
             </div>
         </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
+
         @RenderSection("CreateNewScript", required: false)
         @RenderSection("LoginScript", required: false)
     </body>
