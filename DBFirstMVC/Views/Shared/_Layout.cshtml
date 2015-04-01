@@ -6,13 +6,18 @@
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
+        <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
         @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
     </head>
     <body>
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Team 16", "Index", "Home")</p>
+                    <p id="siteTitle" class="site-title">@Html.ActionLink("Team 16", "Index", "Home")
+                        <a style="color:gray; font-style:italic; font-size:0.6em">@ViewBag.CurrentUserTitle</a>
+                    </p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -23,7 +28,7 @@
                             <li>@Html.ActionLink("Create Request", "CreateNew", "Request")</li>
                             <li>@Html.ActionLink("History","Index","Request")</li>
                             <li>@Html.ActionLink("Ad-Hoc","Index","Request")</li>
-                            <li>@Html.ActionLink("Log out","Index","Home")</li>
+                            <li>@Html.ActionLink("Log out","Logout","Login")</li>
                             
                         </ul>
                     </nav>
@@ -33,6 +38,7 @@
         <div id="body">
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
+                @Html.Action(actionName: "TempMessage", controllerName: "Message")   
                 @RenderBody()
             </section>
         </div>
@@ -44,8 +50,8 @@
             </div>
         </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-        @RenderSection("MyScripts", required: false)
+
+        @RenderSection("CreateNewScript", required: false)
+        @RenderSection("LoginScript", required: false)
     </body>
 </html>

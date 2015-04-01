@@ -48,6 +48,7 @@
     <EntitySetMapping Name="Lecturers">
       <EntityTypeMapping TypeName="team16Model.Lecturer">
         <MappingFragment StoreEntitySet="Lecturer">
+          <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />

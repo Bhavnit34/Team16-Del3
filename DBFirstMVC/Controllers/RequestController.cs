@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace DBFirstMVC.Controllers
 {
-    public class RequestController : Controller
+    public class RequestController : BaseController //Inherits our own overrided controller. Please see BaseController
     {
         private team16Entities db = new team16Entities();
 
@@ -20,6 +20,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.CurrentUser = getCurrentUser();
             var requests = db.Requests.Include(r => r.Module);
             return View(requests.ToList());
         }
@@ -29,6 +30,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Details(int id = 0)
         {
+            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -39,7 +41,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult GetRequest(int id = 0)
         {
-    
+            ViewBag.CurrentUser = getCurrentUser();
             Request r = db.Requests.Find(id); //input id from chosen request
             if (r == null)
                 return RedirectToAction("Index"); //back to home page if request doesnt exist
@@ -96,8 +98,13 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CreateNew()
         {
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
-            ViewBag.Modules = db.Modules; //this will be used as the list of modules
+
+            //ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
+            User userSession = (User)HttpContext.Session["User"];
+            var row = db.Depts.Find(userSession.Username);
+            ViewBag.CurrentUser = row.FullDept;
+
+            ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username)); //this will be used as the list of modules
 
             List<SelectListItem> Period = new List<SelectListItem>();
             Period.Add(new SelectListItem{Text = "p1 - 9:00", Value = "1"});
@@ -239,11 +246,11 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult GetModules(string searchString)
         {
+            User userSession = (User)HttpContext.Session["User"]; //Use session to filter results to the user's dept.
             var modules = from d in db.Modules
-                          where ((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString)))
+                          where (((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString))) && (d.DeptCode.Equals(userSession.Username)))
                           select new { Whole = d.ModCode + " - " + d.Title};
             
-
 
             return Json(modules);
         }
@@ -256,6 +263,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -272,6 +280,7 @@ namespace DBFirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Request request)
         {
+            ViewBag.CurrentUser = getCurrentUser();
             if (ModelState.IsValid)
             {
                 db.Entry(request).State = EntityState.Modified;
@@ -287,6 +296,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Delete(int id = 0)
         {
+            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -306,6 +316,13 @@ namespace DBFirstMVC.Controllers
             db.Requests.Remove(request);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private string getCurrentUser()
+        {
+            User userSession = (User)HttpContext.Session["User"];
+            var row = db.Depts.Find(userSession.Username);
+            return(row.FullDept);
         }
 
         protected override void Dispose(bool disposing)
