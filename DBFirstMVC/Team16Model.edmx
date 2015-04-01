@@ -68,6 +68,10 @@
             <End Role="Module" EntitySet="Module" />
             <End Role="Request" EntitySet="Request" />
           </AssociationSet>
+          <AssociationSet Name="FK_Request_UserID" Association="team16Model.Store.FK_Request_UserID">
+            <End Role="User" EntitySet="User" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
           <AssociationSet Name="FK_Request_WeekID" Association="team16Model.Store.FK_Request_WeekID">
             <End Role="Week" EntitySet="Week" />
             <End Role="Request" EntitySet="Request" />
@@ -415,6 +419,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Request_UserID">
+          <End Role="User" Type="team16Model.Store.User" Multiplicity="0..1" />
+          <End Role="Request" Type="team16Model.Store.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Request_WeekID">
           <End Role="Week" Type="team16Model.Store.Week" Multiplicity="0..1" />
           <End Role="Request" Type="team16Model.Store.Request" Multiplicity="*" />
@@ -626,6 +642,10 @@
             <End Role="RoomRequest" EntitySet="RoomRequests" />
           </AssociationSet>
           <EntitySet Name="sysdiagrams" EntityType="team16Model.sysdiagram" />
+          <AssociationSet Name="FK_Request_UserID" Association="team16Model.FK_Request_UserID">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Building">
           <Key>
@@ -757,6 +777,7 @@
           <NavigationProperty Name="Module" Relationship="team16Model.FK_Request_ModCode" FromRole="Request" ToRole="Module" />
           <NavigationProperty Name="Week" Relationship="team16Model.FK_Request_WeekID" FromRole="Request" ToRole="Week" />
           <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="Request" ToRole="RequestToRoom" />
+          <NavigationProperty Name="User" Relationship="team16Model.FK_Request_UserID" FromRole="Request" ToRole="User" />
         </EntityType>
         <EntityType Name="RequestToRoom">
           <Key>
@@ -812,6 +833,7 @@
           <Property Name="Username" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
           <Property Name="Password" Type="String" MaxLength="16" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Dept" Relationship="team16Model.FK_User_Username" FromRole="User" ToRole="Dept" />
+          <NavigationProperty Name="Requests" Relationship="team16Model.FK_Request_UserID" FromRole="User" ToRole="Request" />
         </EntityType>
         <EntityType Name="Week">
           <Key>
@@ -1085,6 +1107,18 @@
           <Property Type="Int32" Name="version" />
           <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <Association Name="FK_Request_UserID">
+          <End Type="team16Model.User" Role="User" Multiplicity="0..1" />
+          <End Type="team16Model.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

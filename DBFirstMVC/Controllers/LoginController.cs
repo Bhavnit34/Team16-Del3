@@ -37,10 +37,14 @@ namespace DBFirstMVC.Controllers
                 var results = from d in db.Users
                               where (d.Username == model.Username && d.Password == model.Password)
                               select d;
+                var id = from d in db.Users
+                         where (d.Username == model.Username && d.Password == model.Password)
+                         select d.UserID;
 
                 if (results.FirstOrDefault() != null) //if a row has been found
                 {
                     //Create a session for the user
+                    model.UserID = id.FirstOrDefault();
                     Session["User"] = model;
                     Session.Timeout = 10;
                     //Advance to request page

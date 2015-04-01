@@ -213,7 +213,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateNewRequest.cs" />
-    <Compile Include="Models\RequestAndFacility.cs" />
+    <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>

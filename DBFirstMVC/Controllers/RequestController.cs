@@ -52,7 +52,7 @@ namespace DBFirstMVC.Controllers
             {
                var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                var roomReq = res.Include(c => c.RoomRequest);
-               return View(new RequestAndFacility() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+               return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
             }
             return View();
         }
@@ -104,7 +104,11 @@ namespace DBFirstMVC.Controllers
             var row = db.Depts.Find(userSession.Username);
             ViewBag.CurrentUser = row.FullDept;
 
-            ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username)); //this will be used as the list of modules
+            if (row.DeptCode == "CA")
+                ViewBag.Modules = db.Modules; //this will be used as the list of modules
+            else
+                ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username)); //this will be used as the list of modules
+
 
             List<SelectListItem> Period = new List<SelectListItem>();
             Period.Add(new SelectListItem{Text = "p1 - 9:00", Value = "1"});
@@ -145,7 +149,8 @@ namespace DBFirstMVC.Controllers
 
             //set auto defined variables, these should be calculated later
             myRequest.Request.RoundID = 1;
-            myRequest.Request.UserID = 1;
+            User user = (User)Session["User"];
+            myRequest.Request.UserID = user.UserID;
             myRequest.Request.Semester = 1;
             myRequest.Request.AdhocRequest = 0;
             
@@ -250,7 +255,14 @@ namespace DBFirstMVC.Controllers
             var modules = from d in db.Modules
                           where (((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString))) && (d.DeptCode.Equals(userSession.Username)))
                           select new { Whole = d.ModCode + " - " + d.Title};
-            
+
+            if (userSession.Username == "CA")
+            {
+                modules = from d in db.Modules
+                              where ((d.ModCode.Contains(searchString)) || (d.Title.Contains(searchString)))
+                              select new { Whole = d.ModCode + " - " + d.Title };
+            }
+
 
             return Json(modules);
         }

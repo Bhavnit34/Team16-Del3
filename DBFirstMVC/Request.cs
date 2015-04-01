@@ -39,5 +39,6 @@ namespace DBFirstMVC
         public virtual Module Module { get; set; }
         public virtual Week Week { get; set; }
         public virtual ICollection<RequestToRoom> RequestToRooms { get; set; }
+        public virtual User User { get; set; }
     }
 }

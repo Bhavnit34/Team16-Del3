@@ -63,6 +63,10 @@
       <End Role="Module" EntitySet="Module" />
       <End Role="Request" EntitySet="Request" />
     </AssociationSet>
+    <AssociationSet Name="FK_Request_UserID" Association="team16Model.Store.FK_Request_UserID">
+      <End Role="User" EntitySet="User" />
+      <End Role="Request" EntitySet="Request" />
+    </AssociationSet>
     <AssociationSet Name="FK_Request_WeekID" Association="team16Model.Store.FK_Request_WeekID">
       <End Role="Week" EntitySet="Week" />
       <End Role="Request" EntitySet="Request" />
@@ -407,6 +411,18 @@
       </Principal>
       <Dependent Role="Request">
         <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Request_UserID">
+    <End Role="User" Type="team16Model.Store.User" Multiplicity="0..1" />
+    <End Role="Request" Type="team16Model.Store.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Request">
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

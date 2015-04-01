@@ -14,10 +14,16 @@ namespace DBFirstMVC
     
     public partial class User
     {
+        public User()
+        {
+            this.Requests = new HashSet<Request>();
+        }
+    
         public short UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
     
         public virtual Dept Dept { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }
