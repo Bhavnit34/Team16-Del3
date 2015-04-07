@@ -1,0 +1,332 @@
+﻿@model DBFirstMVC.Room
+
+@{
+    ViewBag.Title = "Room facilities";
+}
+
+<h2>Edit Room Facilities</h2>
+
+@using (Html.BeginForm()) {
+          
+            @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+    
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BuildingCode, "Building")
+        </div>
+        <div class="editor-field">
+             @Html.DropDownList("BuildingCode", "--Select Building--")
+            </div>
+         <div class="editor-label" id="RoomDiv"></div>
+         <div class="editor-field">
+         <select id="Room"></select><br /><!-- this will dynamically altered -->
+         </div>
+        <br />
+        <br />
+      
+        <div class="editor-field"id ="Room_name_div">
+          <label  for="room_name" id="room_name"></label><!-- this will dynamically altered -->
+         </div>
+
+       
+        <br />
+        <br />
+
+         <div class="editor-label" id="RoomFacDiv"></div>
+         <div class="editor-field">
+         <table id="Facility"></table><br /><!-- this will dynamically altered -->
+         </div>
+        <div class="editor-field"id ="Add_fac">
+          <label  for="AddNew" id="AddFacility">Add Facilities</label><!-- this will dynamically altered -->
+         </div>
+           <div class="editor-label" id="NewRoomFacDiv"></div><!--add new facility-->
+          
+         <div class="editor-field">
+         <input type="button" id="btnAddToRoom" value="Add To Room" />
+
+       
+         </div>
+                
+         </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section MyScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Room').hide();
+            $('#Facility').hide();
+            $('#btnAddToRoom').hide();
+            $('#AddFacility').hide();
+
+         
+
+        });
+
+
+
+        $("#BuildingCode").on('change', function () {
+            var building = $(this).val();
+            $('#Facility').hide();
+            $('#NewRoomFacDiv').hide();
+            $('#Room_name_div').hide();
+            $('#btnAddToRoom').hide();
+            $('#AddFacility').hide();
+            $('#RoomFacDiv').hide();
+          
+            if (building.substr(0, 1) == "-") {
+                $('#Room').hide();
+                $('#btnAddToRoom').hide();
+              
+                return;
+            }
+            $.post('@Url.Action("GetRooms", "Admin")', { chosenBuilding: building }, function (data) {
+                // Postback response of rooms
+                var rooms = data;
+           
+                html = "";
+                html += "<option value='--Select Room--'>--Select Room--</option>";
+                //create a dropdown list of rooms
+                for (var i = 0; i < rooms.length; i++) {
+                    html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                }
+
+                
+                $('#Room').html(html); //add this html to the tag
+                $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                $('#Room').show(200);
+          
+            });  //end $.post
+          }); //end function
+        //generate room's facility facilities that can be added into the room
+         $("#Room").on('change', function () {
+            var room = $(this).val();
+            jQuery("label[for='room_name']").html(room);
+            var facilities = [];
+                //if nothing selected (index 0 in select)
+            if (room.substr(0, 1) == "-") {
+                $('#Facility').hide();
+                $('#NewRoomFacDiv').hide();
+                $('#Room_name_div').hide();
+                $('#btnAddToRoom').hide();
+                $('#AddFacility').hide();
+                $('#RoomFacDiv').hide();
+           
+            return;
+        }
+            $.post('@Url.Action("GetFacility", "Admin")', { chosenRoom: room }, function (data) {
+                // Postback response of rooms
+                  facilities = data;
+                  var temp = "delButton";
+                  var temp1 = "Remove";
+                  var temp2 = "button";
+                  html = "";
+                 for (var i = 0; i < facilities.length; i++) {
+                      html += "<tr>";
+                      html += "<td>" + facilities[i] + "</td>";
+                      html += "<td> <input type='"+temp2+"' class = '" + temp + "'value = '" + temp1 + "' id='" + facilities[i] + "' ></input>"; "</td>";
+                      html +="</tr>";
+
+                 }
+
+                //first version
+            
+             // for (var i = 0; i < facilities.length; i++) {
+                 //  var myID = facilities[i];
+                   // var link = '@Html.ActionLink("Delete Facility", "DeleteRoomFac", new { id1 = "-1", id2="-2" })';
+                   // link = link.replace("-1", myID);
+                   // link = link.replace("-2", room);
+                   // html += "<tr>";
+                   // html += "<td>" + facilities[i] + "</td>";
+                   // html += "<td>" + link + "</td>";
+                    //html += "</tr>";
+
+              //  }
+
+
+
+
+                $.post('@Url.Action("GetAllFacility", "Admin")', function (data) {
+
+                    //removing facilities that are already in the room
+                    var allFac = data.filter(function (val) {
+                    return facilities.indexOf(val) == -1;
+                    });
+               
+                    html1 = "";
+                        for (var i = 0; i < allFac.length; i++) {
+                   
+                            html1 += "<input class='publish' type='checkbox' id ='" + allFac[i] + "'value='" + allFac[i] + "' />";
+                            html1 += " "+allFac[i];
+                            html1 += "<br>";
+                
+
+                       $('#NewRoomFacDiv').html(html1);
+                        }
+                });
+
+               
+                $('#AddFacility').show(200);
+                $('#Facility').html(html); //add this html to the tag
+                $('#RoomFacDiv').html("<label for='Request_Facility'>Facilities</label>").show(200);               
+                $('#Facility').show(200);
+                $('#btnAddToRoom').show(200);
+                $('#NewRoomFacDiv').show(200);
+                $('#Room_name_div').show(200);
+        
+           });  //end $.post
+        }); //end functi
+
+   
+
+
+        // removing facility
+       $("#Facility").on("click", "input.delButton", function () {
+           var facility = ($(this).attr("id"));
+           var value = $("#room_name").text();
+      
+           $.post('@Url.Action("DeleteRoomFac", "Admin")', { id1: facility, id2: value }, function (data) {
+
+               alert("Facility: "+facility+" "+"removed.");
+               $.post('@Url.Action("GetFacility", "Admin")', { chosenRoom: value}, function (data) {
+                   // Postback response of rooms
+                   facilities = data;
+                   var temp = "delButton";
+                   var temp1 = "Remove";
+                   var temp2 = "button";
+                   html = "";
+                   for (var i = 0; i < facilities.length; i++) {
+                       html += "<tr>";
+                       html += "<td>" + facilities[i] + "</td>";
+                       html += "<td> <input type='"+temp2+"' class = '" + temp + "'value = '" + temp1 + "' id='" + facilities[i] + "' ></input>"; "</td>";
+                       html +="</tr>";
+
+                   }
+                   $.post('@Url.Action("GetAllFacility", "Admin")', function (data) {
+
+                       //sorting facilities
+                       var allFac = data.filter(function (val) {
+                       return facilities.indexOf(val) == -1;
+                       });
+
+                       html1 = "";
+                       for (var i = 0; i < allFac.length; i++) {
+
+                           html1 += "<input class='publish' type='checkbox' id ='" + allFac[i] + "'value='" + allFac[i] + "' />";
+                           html1 += " " + allFac[i];
+                           html1 += "<br>";
+                    
+
+
+                           $('#NewRoomFacDiv').html(html1);
+                       }
+                   });
+
+                  
+                   $('#AddFacility').show(200);
+                   $('#Facility').html(html); //add this html to the tag
+                   $('#RoomFacDiv').html("<label for='Request_Facility'>Facilities</label>").show(200);                  
+                   $('#Facility').show(200);
+                   $('#btnAddToRoom').show(200);
+                   $('#NewRoomFacDiv').show(200);
+                   $('#Room_name_div').show(200);
+               
+               });  //end $.post
+
+
+
+
+           });
+
+
+
+       });
+
+        $('#btnAddToRoom').click(function () {
+            var checkArray = [];
+            value = $("#room_name").text();         
+            var atLeastOneIsChecked = $('input.publish:checked').length > 0;
+          
+            if (atLeastOneIsChecked) {
+
+                $('input.publish').each(function () {
+
+                    var $this = $(this);
+                    if ($this.is(":checked")) {
+                        $this.attr("id")
+                        checkArray.push($this.attr("id"));
+                    }
+                });
+
+                var strArr = checkArray.join("?");
+               
+                //not sure about return from controller
+                $.post('@Url.Action("AddNewFacility", "Admin")', { id1: value, id2: strArr }, function (data) {
+                   
+                    $.post('@Url.Action("GetFacility", "Admin")', { chosenRoom: value }, function (data) {
+                          // Postback response of rooms
+                          facilities = data;
+                          var temp = "delButton";
+                          var temp1 = "Remove";
+                          var temp2 = "button";
+                          html = "";
+                          for (var i = 0; i < facilities.length; i++) {
+                              html += "<tr>";
+                              html += "<td>" + facilities[i] + "</td>";
+                              html += "<td> <input type='" + temp2 + "' class = '" + temp + "'value = '" + temp1 + "' id='" + facilities[i] + "' ></input>"; "</td>";
+                              html += "</tr>";
+
+                          }
+                          $.post('@Url.Action("GetAllFacility", "Admin")', function (data) {
+
+                       //sorting facilities
+                       var allFac = data.filter(function (val) {
+                           return facilities.indexOf(val) == -1;
+                       });
+
+                       html1 = "";
+                       for (var i = 0; i < allFac.length; i++) {
+                          
+                           html1 += "<input class='publish' type='checkbox' id ='" + allFac[i] + "'value='" + allFac[i] + "' />";
+                           html1 += " " + allFac[i];
+                           html1 += "<br>";               
+
+                        $('#NewRoomFacDiv').html(html1);
+                       }
+                   });
+
+                
+                   $('#AddFacility').show(200);
+                   $('#Facility').html(html); //add this html to the tag
+                   $('#RoomFacDiv').html("<label for='Request_Facility'>Facilities</label>").show(200);                
+                   $('#Facility').show(200);
+                   $('#btnAddToRoom').show(200);
+                   $('#NewRoomFacDiv').show(200);
+                   $('#Room_name_div').show(200);
+                 
+               });  //end $.post
+
+             });
+           }
+
+           else {
+
+               alert("Please select facility !! ");
+           }
+
+
+        });
+
+
+
+
+
+
+        </script>
+}

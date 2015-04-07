@@ -25,7 +25,7 @@
             @Html.LabelFor(model => model.BuildingCode, "Building")
         </div>
         <div class="editor-field">
-             @Html.DropDownList("BuildingCode", String.Empty)
+             @Html.DropDownList("BuildingCode", "-------- Select --------")
                 
             
             @Html.ValidationMessageFor(model => model.BuildingCode)
@@ -43,7 +43,15 @@
             @Html.LabelFor(model => model.Lab)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Lab)
+          
+                   @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem{Text = "Yes", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "No", Value = "0"});
+                      
+                        }
+
+                        @Html.DropDownListFor(model => model.Lab, listItems, "-------- Select --------")   
             @Html.ValidationMessageFor(model => model.Lab)
         </div>
 

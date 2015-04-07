@@ -126,7 +126,15 @@
             @Html.LabelFor(model => model.Status)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
+                     @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem { Text = "Pending", Value = "0" });
+                            listItems.Add(new SelectListItem{Text = "Approved", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "Rejected", Value = "2"});
+                      
+                        }
+
+                        @Html.DropDownListFor(model => model.Status, listItems, "-------- Select --------")   
             @Html.ValidationMessageFor(model => model.Status)
         </div>
 

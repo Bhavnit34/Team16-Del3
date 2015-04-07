@@ -1,0 +1,305 @@
+﻿@model DBFirstMVC.Models.RequestAndFacility
+@using System.Linq
+@{
+    ViewBag.Title = "Alloacate Rooms";
+}
+
+<h2>Request @Model.Request.RequestID</h2>
+
+
+            <h2> Facilities</h2>
+<ol>
+@foreach (var item in Model.FacilityRequests) {
+
+    <li>
+            @Html.DisplayFor(modelItem => item.Facility.FacilityName) <!-- Display the facility name -->
+        </li>
+    
+}
+</ol>
+        <h2>Rooms</h2>
+<div id="AddNewRoom">
+
+
+  @if( !Model.RequestToRooms.Any() ){
+      
+      
+      
+      for (var i=0; i<3; i++)
+      {
+       <label>Room:</label><input type ="text"><label>Capacity:</label> <input type ="text"><br>
+
+      
+      
+      
+      
+      }
+      
+  }
+      
+      
+
+
+      else {
+      
+      
+      foreach(var item in Model.RequestToRooms){
+
+   
+       @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)<br> <!-- Display the room name -->       
+            @Html.EditorFor(modelItem => item.RoomRequest.RoomName)<br>
+}
+      
+      
+      
+      }
+     
+    </div>
+         <div class="editor-field">
+       <input type="button" id="Allocate" value="Allocate" />
+
+       
+         </div>
+<table>
+    <tr>
+        <td>
+            <h2>Information </h2>
+        </td>
+    </tr>
+       <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Module.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SessionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SessionLength)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.DayID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.PeriodID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.PriorityRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.AdhocRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.SpecialRequirements)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Semester)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.RoundID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Request.Status)
+        </th>
+    </tr>
+<tr>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.UserID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Module.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SessionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SessionLength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.DayID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.SpecialRequirements)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.Status)
+        </td>
+    </tr>
+    
+
+</table>
+ <div>
+
+                        <p>Find Room</p>
+
+                        <div class="editor-label"id ="ParkDiv">
+                   
+                        </div>
+                        <div class="editor-field">
+                          <select id="Park"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <div class="editor-label" id="BuildingDiv"></div>
+                        <div class="editor-field">
+                            <select id="Building"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <div class="editor-label" id="RoomDiv"></div>
+                        <div class="editor-field">
+                            <select id="Room"></select><br /><!-- this will dynamically altered -->
+                       </div>
+
+                 
+         
+        </div>
+   
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section MyScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Building').hide();
+            $('#Room').hide();
+           // $('#btnAddToRoom').hide();
+            $.post('@Url.Action("GetPark", "Admin")', function (data) {
+                var parks = data;
+                //alert(parks);
+                html = "";
+                html += "<option value='--Select Park--'>--Select Park--</option>";
+                //create a dropdown list of buildings
+                for (var i = 0; i < parks.length; i++) {
+                    // if (buildings[i] != park)
+                    html += "<option id='" + parks[i] + "' value='" + parks[i] + "'>" + parks[i] + "</option>";
+                }
+                $('#Park').html(html);
+            });
+        });
+
+       
+
+        //Function to add the list of buildings based on park choice
+        $("#Park").on('change', function () {
+            var park = $(this).val();
+            $('#Room').hide(200);
+         //   $('#btnAddToRoom').hide();
+            $('#RoomDiv').html("");
+            $('#BuildingDiv').html("");
+            if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
+                $('#Building').hide(200);
+                return;
+            }
+
+            $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
+            // Postback response of buildings
+            var buildings = data;
+            html = "";
+            html += "<option value='--Select Building--'>--Select Building--</option>";
+            //create a dropdown list of buildings
+            for (var i = 0; i < buildings.length; i++) {
+                if (buildings[i] != park)
+                    html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
+            }
+            $('#Building').html(html); //add this html to the tag
+            $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
+            $('#Building').show(200);
+            });  //end $.post
+        }); //end function
+
+
+        //Function to add the list of rooms based on building choice
+        $("#Building").on('change', function () {
+            var building = $(this).val();
+            if (building.substr(0, 1) == "-") {
+                $('#Room').hide();
+              //  $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                return;
+            }
+            $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
+                // Postback response of rooms
+                var rooms = data;
+                html = "";
+                //create a dropdown list of rooms
+                html += "<option value='--Select Room--'>--Select Room--</option>";
+                for (var i = 0; i < rooms.length; i++) {
+                        html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                }
+                $('#Room').html(html); //add this html to the tag
+                $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                $('#Room').show(200);
+               // $('#btnAddToRoom').show(200);
+            });  //end $.post
+        }); //end function
+
+
+
+
+
+        $('#Allocate').click(function () {
+
+         
+            var checkArray = [];
+
+
+           // $("#AddNewRoom input").each(function () {
+
+           // var item = $("input[id$=item_RoomRequest_RoomName]").val(); 
+              //  checkArray.push(item);
+
+            // });
+            var howmany = $('#AddNewRoom').children("input").length;
+
+            for (i = 0; i <= howmany - 1; i++) {
+                var input = $("#AddNewRoom").children("input").eq(i).attr('VALUE');
+                if (input != "") {
+                    checkArray.push(input);
+                }
+            }
+            alert(checkArray);
+            var strArr = checkArray.join("?");
+            var reqId = '@Model.Request.RequestID';
+           // alert(reqId);
+          //  alert(strArr);
+
+            $.post('@Url.Action("UpdateAllocations", "Admin")', { id1: reqId, id2: strArr }, function (data) {
+
+                //var test = data.rep alert(data);
+                //JSON.stringify(data);
+               /// alert(JSON.stringify(data).replace('__id__', reqId));
+               // window.location.href = JSON.stringify(data).replace('__id__', reqId); 
+
+                window.location.href = '/Admin/GetRequest/' + reqId;
+
+
+
+            });
+
+
+
+
+
+
+
+
+        });
+    </script>
+
+}

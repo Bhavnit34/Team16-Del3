@@ -44,7 +44,15 @@
             @Html.DisplayFor(modelItem => item.Capacity)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Lab)
+            @*@if (item.Lab==0) {
+            @Html.DisplayText("NO");
+            }
+            else {
+                @Html.DisplayText("YES");
+                
+            }*@
+             @Html.DisplayFor(modelItem => item.Lab)
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DeptCode)

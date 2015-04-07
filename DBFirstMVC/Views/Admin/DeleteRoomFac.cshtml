@@ -1,0 +1,42 @@
+﻿@model DBFirstMVC.RoomFacility
+
+@{
+    ViewBag.Title = "Delete Room Facility";
+}
+
+<h2>Delete Room facility</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Request</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RoomFacilityID)
+    </div>
+      <div class="display-field">
+        @Html.DisplayFor(model => model.RoomFacilityID)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RoomName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RoomName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Facility.FacilityName)
+    </div>
+  <div class="display-field">
+        @Html.DisplayFor(model => model.Facility.FacilityName)
+    </div>
+  
+
+   
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "ShowRoomFacility")
+    </p>
+}
+
