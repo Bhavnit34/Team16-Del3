@@ -347,7 +347,7 @@ namespace DBFirstMVC.Controllers
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestAndFacility() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
             }
             return View();
         }
@@ -367,7 +367,7 @@ namespace DBFirstMVC.Controllers
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestAndFacility() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
             }
             return View();
         }
