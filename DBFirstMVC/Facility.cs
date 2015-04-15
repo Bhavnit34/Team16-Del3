@@ -25,5 +25,7 @@ namespace DBFirstMVC
     
         public virtual ICollection<FacilityRequest> FacilityRequests { get; set; }
         public virtual ICollection<RoomFacility> RoomFacilities { get; set; }
+
+      
     }
 }

@@ -1,0 +1,81 @@
+﻿@model DBFirstMVC.Room
+
+@{
+    ViewBag.Title = "Add new Room";
+}
+
+<h2>Add New Room</h2>
+
+@using (Html.BeginForm()) {
+           // @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoomName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RoomName)
+            @Html.ValidationMessageFor(model => model.RoomName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BuildingCode, "Building")
+        </div>
+        <div class="editor-field">
+             @Html.DropDownList("BuildingCode", "-------- Select --------")
+                
+            
+            @Html.ValidationMessageFor(model => model.BuildingCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Capacity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Capacity)
+            @Html.ValidationMessageFor(model => model.Capacity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lab)
+        </div>
+        <div class="editor-field">
+          
+                   @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem{Text = "Yes", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "No", Value = "0"});
+                      
+                        }
+
+                        @Html.DropDownListFor(model => model.Lab, listItems, "-------- Select --------")   
+            @Html.ValidationMessageFor(model => model.Lab)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DeptCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DeptCode)
+            @Html.ValidationMessageFor(model => model.DeptCode)
+        </div>
+
+       
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "EditPool")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -187,6 +187,7 @@
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -213,6 +214,8 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateNewRequest.cs" />
+    <Compile Include="Models\FacilityAndRoomFacility.cs" />
+    <Compile Include="Models\RequestAndFacility.cs" />
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
@@ -403,6 +406,22 @@
       <DependentUpon>Team16Model.edmx</DependentUpon>
       <LastGenOutput>Team16Model.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Details.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Admin\GetRequest.cshtml" />
+    <Content Include="Views\Admin\Test.cshtml" />
+    <Content Include="Views\Admin\EditPool.cshtml" />
+    <Content Include="Views\Admin\EditRoom.cshtml" />
+    <Content Include="Views\Admin\ShowFacility.cshtml" />
+    <Content Include="Views\Admin\EditFacility.cshtml" />
+    <Content Include="Views\Admin\DeleteFacility.cshtml" />
+    <Content Include="Views\Admin\CreateFacility.cshtml" />
+    <Content Include="Views\Admin\ShowRoomFacility.cshtml" />
+    <Content Include="Views\Admin\DeleteRoomFac.cshtml" />
+    <Content Include="Views\Admin\AllocateRooms.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Details.cshtml" />
     <Content Include="Views\Login\Create.cshtml" />

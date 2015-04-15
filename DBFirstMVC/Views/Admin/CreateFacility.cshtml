@@ -1,0 +1,41 @@
+﻿@model DBFirstMVC.Facility
+
+@{
+    ViewBag.Title = "Add new Facility";
+}
+
+<h2>Add New Facility</h2>
+
+@using (Html.BeginForm()) {
+           // @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FacilityName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FacilityName)
+            @Html.ValidationMessageFor(model => model.FacilityName)
+        </div>
+
+       
+       
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ShowFacility")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

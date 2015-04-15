@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DBFirstMVC.Facility>
+
+@{
+    ViewBag.Title = "Edit-Facility";
+}
+
+<h2>Edit Facility</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateFacility")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FacilityID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FacilityName)
+        </th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FacilityID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FacilityName)
+        </td>
+    
+ 
+        <td>
+            @Html.ActionLink("Delete Facility","DeleteFacility", new {id=item.FacilityID})|
+              @Html.ActionLink("Edit Facility","EditFacility", new {id=item.FacilityID})|
+ 
+        </td>
+    </tr>
+}
+
+</table>
