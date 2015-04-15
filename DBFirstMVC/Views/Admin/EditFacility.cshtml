@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Edit Facility";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
 <h2>Edit Facility</h2>
@@ -11,14 +12,18 @@
 
     <fieldset>
         <legend>Request</legend>
-           <div class="editor-label">
+        <!--
+         <div class="editor-label">
             @Html.LabelFor(model => model.FacilityID)
             @Html.HiddenFor(model => model.FacilityID)
         </div>
+            
           <div class="editor-field">
         @Html.DisplayFor(model => model.FacilityID)
         @Html.ValidationMessageFor(model => model.FacilityID)
+      
         </div>
+            -->
         <div class="editor-label">
             @Html.LabelFor(model => model.FacilityName)
         </div>

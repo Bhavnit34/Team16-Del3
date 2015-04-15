@@ -1,7 +1,8 @@
-﻿@model DBFirstMVC.Models.RequestAndFacility
+﻿@model DBFirstMVC.Models.RequestInfo
 @using System.Linq
 @{
     ViewBag.Title = "Alloacate Rooms";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
 <h2>Request @Model.Request.RequestID</h2>
