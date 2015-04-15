@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
 <h2>Requests</h2>
@@ -97,3 +98,12 @@
 }
 
 </table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section CreateNewScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            });
+     </script>
+    }

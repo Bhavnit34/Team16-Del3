@@ -188,7 +188,10 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Degree.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
@@ -213,6 +216,7 @@
     <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\FacilityAndRoomFacility.cs" />
     <Compile Include="Models\RequestAndFacility.cs" />
+    <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -418,6 +422,12 @@
     <Content Include="Views\Admin\ShowRoomFacility.cshtml" />
     <Content Include="Views\Admin\DeleteRoomFac.cshtml" />
     <Content Include="Views\Admin\AllocateRooms.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\Details.cshtml" />
+    <Content Include="Views\Login\Create.cshtml" />
+    <Content Include="Views\Login\Edit.cshtml" />
+    <Content Include="Views\Login\Delete.cshtml" />
+    <Content Include="Views\Message\TempMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,7 +1,8 @@
-﻿@model DBFirstMVC.Models.RequestAndFacility
+﻿@model DBFirstMVC.Models.RequestInfo
 
 @{
     ViewBag.Title = "Request";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
 <h2>Request @Model.Request.RequestID</h2>
@@ -33,7 +34,7 @@
     </tr>
        <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Request.UserID)
+            @Html.DisplayNameFor(model => model.Request.User.Dept.FullDept)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Request.Module.Title)
@@ -71,7 +72,7 @@
     </tr>
 <tr>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.UserID)
+            @Html.DisplayFor(modelItem => modelItem.Request.User.Dept.FullDept)
         </td>
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.Module.Title)

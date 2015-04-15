@@ -25,7 +25,8 @@ namespace DBFirstMVC
     
         public string DeptCode { get; set; }
         public string DeptName { get; set; }
-    
+        public string FullDept {get{return DeptCode + " - " + DeptName;}}
+
         public virtual ICollection<Degree> Degrees { get; set; }
         public virtual ICollection<Lecturer> Lecturers { get; set; }
         public virtual ICollection<Module> Modules { get; set; }
