@@ -1,4 +1,5 @@
 ﻿using DBFirstMVC.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -248,6 +249,7 @@ namespace DBFirstMVC.Controllers
             return Json(rm);
         }
 
+        //Function to update the Module list based off the user search string
         [HttpPost]
         public ActionResult GetModules(string searchString)
         {
@@ -267,7 +269,31 @@ namespace DBFirstMVC.Controllers
             return Json(modules);
         }
 
+        //function to return a list of rooms that contain all of the chosen facilities
+        [HttpPost]
+        public ActionResult getMatchedRooms(string facList)
+        {
+            string[] facs = facList.Split(','); //turn string concatenated facilities into an array
+           
+            //Query to return all rooms that have at least one of the given facilities
+            var room= from d in db.RoomFacilities
+                       where (facs.Any(fac => d.Facility.FacilityName.Equals(fac)))
+                       select d;
+            var len = facs.Length;
 
+            /*query to group the rows by RoomName and then take only the rooms that have appeared the same no
+            of times as the no of facilities in the array, thus taking rooms that contain all of the facilities
+             */ 
+            var q = room.GroupBy(n => n.RoomName).
+                    Select(g => new
+                    {
+                        Name = g.Key,
+                        Count = g.Count()
+                    }).Where(g => g.Count == len);
+
+
+            return Json(q);
+        }
 
 
         //

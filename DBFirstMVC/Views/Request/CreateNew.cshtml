@@ -98,13 +98,15 @@
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Facilites")
                         </div>
-                        <div>
+                        <div id="facListDiv">
                             @foreach (var item in Model.Facilities) {
                                 <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
                             }
                     
                         </div>                                  
-
+                        <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
+                        <select id="matchedRooms"></select>
+                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
                     </fieldset>
          
         </div>
@@ -155,6 +157,8 @@
             $('#Building').hide();
             $('#Room').hide();
             $('#btnAddToRoom').hide();
+            $('#matchedRooms').hide();
+            $('#btnAddMatchedRoom').hide();
 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
 
@@ -228,7 +232,7 @@
 
 
             //Check that the room doesnt already exist in the list
-            for (var i = 0; i < len; i+=2) {
+            for (var i = 0; i < len; i++) {
                 if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
                     return;
             }
@@ -283,8 +287,67 @@
 
             });
         });
+        //Function to display a list of rooms based on ticked facilities
+        $("#btnFindRooms").click(function () {
+            var fac = [];
+            var len = $('#facListDiv').children().length;
+            for (var i = 0; i < len; i += 2) {
+                if ($('#facListDiv').children().eq(i).is(":checked")) {
+                    fac.push($('#facListDiv').children().eq(i).val());
+                }
+            }
+            //alert(fac.join("\n"));
+
+            facs = JSON.stringify(fac);
+            var html = "";
+            $.post('@Url.Action("getMatchedRooms", "Request")', { facList: fac.join(',') }, function (data) {
+                var results = data;
+                for (var i = 0; i < results.length; i++) {
+                    var name = results[i].Name;
+                    var roomID = name.replace(/\./g, '');
+                    html += "<option id='matched"+roomID+"'>"+name+"</option>";
+                }
+                if (results.length == 0) {
+                    alert("no room has all of the chosen facilities");
+                    $('#matchedRooms').hide();
+                    $('#btnAddMatchedRoom').hide();
+                    return;
+                }
+                $('#matchedRooms').fadeOut(300);
+                $('#matchedRooms').promise().done(function () {
+                    $('#matchedRooms').html(html).show(300);
+                    $('#btnAddMatchedRoom').show(300);
+                });
+            },"json");
+        });
+
+        //Function to add a matched room to the room list (extremely similiar to the btnAddToRoom click function)
+        $('#btnAddMatchedRoom').click(function () {
+            var room = $('#matchedRooms').val();
+            var roomID = room.replace(/\./g, '');
+            var len = $('#listOfRooms').children().children().length;
+
+            //return if they have picked 3 rooms
+            if (len > 2)
+                return;
 
 
+            //Check that the room doesnt already exist in the list
+            for (var i = 0; i < len; i++) {
+                if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                    return;
+            }
+            
+            //Create html for the room item and add it to the list
+            var html = "<tr id='" + roomID + "'>";
+            //we need to add this hidden input so that we can pass the room value to the controller
+            html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
+            html += "<td>" + room + "</td>";
+            html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
+            html += "</tr>";
+            $('#listOfRooms').append(html);
+            $('#listOfRoomsDiv').show();
+        });
 
     </script>
 
