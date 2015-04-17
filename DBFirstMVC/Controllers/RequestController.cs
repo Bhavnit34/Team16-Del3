@@ -295,6 +295,36 @@ namespace DBFirstMVC.Controllers
             return Json(q);
         }
 
+        //function to return the no of students of a module
+        public ActionResult getModuleStudents(string modCode)
+        {
+            var students = from d in db.Modules
+                           where (d.ModCode == modCode)
+                           select d.Students;
+
+            return Json(students);
+        }
+
+        //function to return the no of students of a module
+        public ActionResult getModuleLecturers(string modCode)
+        {
+            var lecturers = from d in db.ModuleLecturers
+                            where (d.ModCode == modCode)
+                            select new { Whole = d.Lecturer.FirstName + " " + d.Lecturer.LastName };
+                           
+
+            return Json(lecturers);
+        }
+
+        //function to return the capacity of a room
+        public ActionResult getRoomSize(string roomName)
+        {
+            var size = from d in db.Rooms
+                       where (d.RoomName == roomName)
+                       select d.Capacity;
+
+            return Json(size);
+        }
 
         //
         // GET: /Request/Edit/5

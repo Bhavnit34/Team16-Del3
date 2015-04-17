@@ -24,7 +24,7 @@
                             @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules,"ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
-
+                        <div id="studentsOnModuleDiv"></div>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.SessionType, "Session Type")
                         </div>
@@ -133,6 +133,7 @@
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
+                        <a id="studentsLeft" data-left="0" data-max="0"></a>
                         <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
 
                     </fieldset>
@@ -163,90 +164,301 @@
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
 
 
-        });
+        
 
 
-        //Function to add the list of buildings based on park choice
-        $("#Park").on('change', function () {
-            var park = $(this).val();
-            $('#Room').hide(200);
-            $('#btnAddToRoom').hide();
-            $('#RoomDiv').html("");
-            $('#BuildingDiv').html("");
-            if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
-                $('#Building').hide(200);
-                return;
-            }
-
-            $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
-            // Postback response of buildings
-            var buildings = data;
-            html = "";
-            html += "<option value='--Select Building--'>--Select Building--</option>";
-            //create a dropdown list of buildings
-            for (var i = 0; i < buildings.length; i++) {
-                if (buildings[i] != park)
-                    html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
-            }
-            $('#Building').html(html); //add this html to the tag
-            $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
-            $('#Building').show(200);
-            });  //end $.post
-        }); //end function
-
-
-        //Function to add the list of rooms based on building choice
-        $("#Building").on('change', function () {
-            var building = $(this).val();
-            if (building.substr(0, 1) == "-") {
-                $('#Room').hide();
+            //Function to add the list of buildings based on park choice
+            $("#Park").on('change', function () {
+                var park = $(this).val();
+                $('#Room').hide(200);
                 $('#btnAddToRoom').hide();
                 $('#RoomDiv').html("");
-                return;
-            }
-            $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
-                // Postback response of rooms
-                var rooms = data;
-                html = "";
-                //create a dropdown list of rooms
-                for (var i = 0; i < rooms.length; i++) {
-                        html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
-                }
-                $('#Room').html(html); //add this html to the tag
-                $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
-                $('#Room').show(200);
-                $('#btnAddToRoom').show(200);
-            });  //end $.post
-        }); //end function
-
-
-        //Function to add a room to the displayed list of chosen rooms
-        $('#btnAddToRoom').click(function(){
-            var room = $('#Room').val();
-            var roomID = room.replace(/\./g,'');
-            var len = $('#listOfRooms').children().children().length;
-
-            //return if they have picked 3 rooms
-            if (len > 2)
-                return;
-
-
-            //Check that the room doesnt already exist in the list
-            for (var i = 0; i < len; i++) {
-                if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                $('#BuildingDiv').html("");
+                if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
+                    $('#Building').hide(200);
                     return;
-            }
+                }
 
-            //Create html for the room item and add it to the list
-            var html = "<tr id='" + roomID + "'>";
-            //we need to add this hidden input so that we can pass the room value to the controller
-            html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
-            html += "<td>" + room + "</td>";
-            html += "<td><img src='/Images/delete.png' id='del"+roomID+"' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
-            html += "</tr>";
-            $('#listOfRooms').append(html);
-            $('#listOfRoomsDiv').show();
-        });
+                $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
+                // Postback response of buildings
+                var buildings = data;
+                html = "";
+                html += "<option value='--Select Building--'>--Select Building--</option>";
+                //create a dropdown list of buildings
+                for (var i = 0; i < buildings.length; i++) {
+                    if (buildings[i] != park)
+                        html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
+                }
+                $('#Building').html(html); //add this html to the tag
+                $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
+                $('#Building').show(200);
+                });  //end $.post
+            }); //end function
+
+
+            //Function to add the list of rooms based on building choice
+            $("#Building").on('change', function () {
+                var building = $(this).val();
+                if (building.substr(0, 1) == "-") {
+                    $('#Room').hide();
+                    $('#btnAddToRoom').hide();
+                    $('#RoomDiv').html("");
+                    return;
+                }
+                $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
+                    // Postback response of rooms
+                    var rooms = data;
+                    html = "";
+                    //create a dropdown list of rooms
+                    for (var i = 0; i < rooms.length; i++) {
+                            html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                    }
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                });  //end $.post
+            }); //end function
+
+
+            //Function to add a room to the displayed list of chosen rooms
+            $('#btnAddToRoom').click(function(){
+                var room = $('#Room').val();
+                var roomID = room.replace(/\./g,'');
+                var len = $('#listOfRooms').children().children().length;
+
+                //return if they have picked 3 rooms
+                if (len > 2)
+                    return;
+
+
+                //Check that the room doesnt already exist in the list
+                for (var i = 0; i < len; i++) {
+                    if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                        return;
+                }
+
+
+                //Check that there are students left to allocate
+                if ($('#studentsLeft').attr('data-left') < 1) {
+                    alert("There are no more students left to allocate");
+                    return;
+                }
+
+
+                var roomSize = 0;
+                $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
+                    roomSize = data;
+                }).done(function(result){
+                    var size = roomSize;
+                    //Create html for the room item and add it to the list
+                    var html = "<tr id='" + roomID + "'>";
+                    var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
+                    //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
+                    if (studentsLeft < roomSize)
+                        size = studentsLeft;
+                    //we need to add this hidden input so that we can pass the room value to the controller
+                    html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
+                    html += "<td>" + room + "</td>";
+                    html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
+                    html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;'/></td>";
+                    html += "</tr>";
+                    $('#listOfRooms').append(html);
+                    $('#listOfRoomsDiv').show();
+
+                    //onchange function for the group size
+                    $("#students" + roomID).on('change keyup keydown', function () {
+                        var x = $("#students" + roomID).val();
+                        var len = $('#listOfRooms').children().children().children().length;
+                        var left = $('#studentsLeft').attr('data-max');
+                        for (var i = 3; i < len; i += 4)
+                            left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
+                        if (left < 0) {
+                            $("#students" + roomID).val("");
+                            $("students" + roomID).blur();
+                            return;
+                        }
+                        $('#studentsLeft').text(left + " students left");
+                        $('#studentsLeft').attr('data-left', left);
+                    });
+                    $("#students" + roomID).trigger("change");
+
+                });
+            });
+
+
+            //Function to change the session lengths available from the chosen period
+            $('#Request_PeriodID').change(function () {
+                var period = $(this).val();
+                var max = 10 - period;
+                if (period == "")
+                    max = 0;
+               $('#Request_SessionLength').html("");
+               $('#Request_SessionLength').append('<option value="">-- Select Length --</option>');
+                for (var i = 1; i <= max; i++) {
+                    if(i==1)
+                        $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hour</option>");
+                    else
+                        $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hours</option>");
+                }
+
+            });
+            //Function to filter the modules based on the search string
+            $('#btnModSearch').click(function () {
+                var str = $('#txtModSearch').val();
+                if (str.replace(/ /g, '') == "")
+                    str = "";
+                var results;
+                $.post('@Url.Action("getModules", "Request")', { searchString: str }, function (data) {
+                    results = data;
+                    $('#Request_ModCode').html('<option value="">-- Select Module --</option>');
+                    for (var i = 0; i < results.length; i++) {
+                        var modCode = results[i].Whole.substr(0, 6); //extract modcode from string
+                        $('#Request_ModCode').append('<option value="'+modCode+'">' + results[i].Whole + '</option>');
+                    }
+
+                });
+            });
+            //Function to display a list of rooms based on ticked facilities
+            $("#btnFindRooms").click(function () {
+                var fac = [];
+                var len = $('#facListDiv').children().length;
+                for (var i = 0; i < len; i += 2) {
+                    if ($('#facListDiv').children().eq(i).is(":checked")) {
+                        fac.push($('#facListDiv').children().eq(i).val());
+                    }
+                }
+                //alert(fac.join("\n"));
+
+                facs = JSON.stringify(fac);
+                var html = "";
+                $.post('@Url.Action("getMatchedRooms", "Request")', { facList: fac.join(',') }, function (data) {
+                    var results = data;
+                    for (var i = 0; i < results.length; i++) {
+                        var name = results[i].Name;
+                        var roomID = name.replace(/\./g, '');
+                        html += "<option id='matched"+roomID+"'>"+name+"</option>";
+                    }
+                    if (results.length == 0) {
+                        alert("no room has all of the chosen facilities");
+                        $('#matchedRooms').hide();
+                        $('#btnAddMatchedRoom').hide();
+                        return;
+                    }
+                    $('#matchedRooms').fadeOut(300);
+                    $('#matchedRooms').promise().done(function () {
+                        $('#matchedRooms').html(html).show(300);
+                        $('#btnAddMatchedRoom').show(300);
+                    });
+                },"json");
+            });
+
+            //Function to add a matched room to the room list (extremely similiar to the btnAddToRoom click function)
+            $('#btnAddMatchedRoom').click(function () {
+                var room = $('#matchedRooms').val();
+                var roomID = room.replace(/\./g, '');
+                var len = $('#listOfRooms').children().children().length;
+
+                //return if they have picked 3 rooms
+                if (len > 2)
+                    return;
+
+
+                //Check that the room doesnt already exist in the list
+                for (var i = 0; i < len; i++) {
+                    if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                        return;
+                }
+
+                //Check that there are students left to allocate
+                if ($('#studentsLeft').attr('data-left') < 1) {
+                    alert("There are no more students left to allocate");
+                    return;
+                }
+
+            
+                var roomSize = 0;
+                $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
+                    roomSize = data;
+                    }).done(function(result){
+                        var size = roomSize;
+                        //Create html for the room item and add it to the list
+                        var html = "<tr id='" + roomID + "'>";
+                        var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
+                        //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
+                        if (studentsLeft < roomSize)
+                            size = studentsLeft;
+
+                        //we need to add this hidden input so that we can pass the room value to the controller
+                        html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
+                        html += "<td>" + room + "</td>";
+                        html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
+                        html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;'/></td>";
+                        html += "</tr>";
+                        $('#listOfRooms').append(html);
+                        $('#listOfRoomsDiv').show();
+
+
+                        //onchange function for the group size
+                        $("#students" + roomID).on('change keyup keydown', function () {
+                            var x = $("#students" + roomID).val();
+                            var len = $('#listOfRooms').children().children().children().length;
+                            var left = $('#studentsLeft').attr('data-max');
+                            for (var i = 3; i < len; i += 4)
+                                left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
+                            if (left < 0) {
+                                $("#students" + roomID).val("");
+                                $("students" + roomID).blur();
+                                return;
+                            }
+                            $('#studentsLeft').text(left + " students left");
+                            $('#studentsLeft').attr('data-left', left);
+                        });
+                        $("#students" + roomID).trigger("change");
+                    });
+
+
+            });
+
+
+            //Function to change the label of module students and module info displayed depending on chosen module
+            $("#Request_ModCode").change(function (e) {
+                var module = $(this).val().substr(0, 6);
+            
+                //get the students from the module
+                $.post('@Url.Action("getModuleStudents", "Request")', { modCode: module }, function (data) {
+                    var lecturer = "";
+                    var students = 0;
+                    var html = "";
+                    students = data;
+                    $('#studentsLeft').text(students + " students left");
+                    $('#studentsLeft').attr('data-max', students);
+                    $('#studentsLeft').attr('data-left', students);
+                    html += students + " students on this module";
+
+                    //get the lecturer from the module, must be inside the first post so we can use the same variables
+                    $.post('@Url.Action("getModuleLecturers", "Request")', { modCode: module }, function (data) {
+                        var results = data;
+                        if (results.length > 0)
+                            html += " taught by ";
+                        for (var i = 0; i < results.length; i++) {
+                            if (i == results.length - 1)
+                                lecturer += results[i].Whole;
+                            else
+                                lecturer += results[i].Whole + " and ";
+                        }
+                        html += lecturer;
+                        $('#studentsOnModuleDiv').html(html); //write the information to the display
+                        $("#listOfRooms").find("input:last").trigger("change");//change the students left label on the room choice
+                    });
+
+                });
+            });
+
+
+
+
+        }); //document ready
 
 
         //Function to delete the room chosen
@@ -254,101 +466,6 @@
             id = id.substr(3, id.length); //change 'delJB021' to 'JB021'
             $('#' + id).remove(); //remove the html <tr> element
         }
-
-        //Function to change the session lengths available from the chosen period
-        $('#Request_PeriodID').change(function () {
-            var period = $(this).val();
-            var max = 10 - period;
-            if (period == "")
-                max = 0;
-           $('#Request_SessionLength').html("");
-           $('#Request_SessionLength').append('<option value="">-- Select Length --</option>');
-            for (var i = 1; i <= max; i++) {
-                if(i==1)
-                    $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hour</option>");
-                else
-                    $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hours</option>");
-            }
-
-        });
-        //Function to filter the modules based on the search string
-        $('#btnModSearch').click(function () {
-            var str = $('#txtModSearch').val();
-            if (str.replace(/ /g, '') == "")
-                str = "";
-            var results;
-            $.post('@Url.Action("getModules", "Request")', { searchString: str }, function (data) {
-                results = data;
-                $('#Request_ModCode').html('<option value="">-- Select Module --</option>');
-                for (var i = 0; i < results.length; i++) {
-                    var modCode = results[i].Whole.substr(0, 6); //extract modcode from string
-                    $('#Request_ModCode').append('<option value="'+modCode+'">' + results[i].Whole + '</option>');
-                }
-
-            });
-        });
-        //Function to display a list of rooms based on ticked facilities
-        $("#btnFindRooms").click(function () {
-            var fac = [];
-            var len = $('#facListDiv').children().length;
-            for (var i = 0; i < len; i += 2) {
-                if ($('#facListDiv').children().eq(i).is(":checked")) {
-                    fac.push($('#facListDiv').children().eq(i).val());
-                }
-            }
-            //alert(fac.join("\n"));
-
-            facs = JSON.stringify(fac);
-            var html = "";
-            $.post('@Url.Action("getMatchedRooms", "Request")', { facList: fac.join(',') }, function (data) {
-                var results = data;
-                for (var i = 0; i < results.length; i++) {
-                    var name = results[i].Name;
-                    var roomID = name.replace(/\./g, '');
-                    html += "<option id='matched"+roomID+"'>"+name+"</option>";
-                }
-                if (results.length == 0) {
-                    alert("no room has all of the chosen facilities");
-                    $('#matchedRooms').hide();
-                    $('#btnAddMatchedRoom').hide();
-                    return;
-                }
-                $('#matchedRooms').fadeOut(300);
-                $('#matchedRooms').promise().done(function () {
-                    $('#matchedRooms').html(html).show(300);
-                    $('#btnAddMatchedRoom').show(300);
-                });
-            },"json");
-        });
-
-        //Function to add a matched room to the room list (extremely similiar to the btnAddToRoom click function)
-        $('#btnAddMatchedRoom').click(function () {
-            var room = $('#matchedRooms').val();
-            var roomID = room.replace(/\./g, '');
-            var len = $('#listOfRooms').children().children().length;
-
-            //return if they have picked 3 rooms
-            if (len > 2)
-                return;
-
-
-            //Check that the room doesnt already exist in the list
-            for (var i = 0; i < len; i++) {
-                if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
-                    return;
-            }
-            
-            //Create html for the room item and add it to the list
-            var html = "<tr id='" + roomID + "'>";
-            //we need to add this hidden input so that we can pass the room value to the controller
-            html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
-            html += "<td>" + room + "</td>";
-            html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
-            html += "</tr>";
-            $('#listOfRooms').append(html);
-            $('#listOfRoomsDiv').show();
-        });
-
     </script>
 
 }
