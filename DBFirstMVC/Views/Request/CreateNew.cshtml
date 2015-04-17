@@ -269,12 +269,16 @@
                     //onchange function for the group size
                     $("#students" + roomID).on('change keyup keydown', function () {
                         var x = $("#students" + roomID).val();
+                        if (x.length == 0)
+                            $("#students" + roomID).val(1);
+
+
                         var len = $('#listOfRooms').children().children().children().length;
                         var left = $('#studentsLeft').attr('data-max');
                         for (var i = 3; i < len; i += 4)
                             left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
-                        if (left < 0) {
-                            $("#students" + roomID).val("");
+                        if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
+                            $("#students" + roomID).val("1");
                             $("students" + roomID).blur();
                             return;
                         }
@@ -399,15 +403,19 @@
                         $('#listOfRoomsDiv').show();
 
 
+
                         //onchange function for the group size
                         $("#students" + roomID).on('change keyup keydown', function () {
                             var x = $("#students" + roomID).val();
+                            if (x.length == 0)
+                                $("#students" + roomID).val(1);
+
                             var len = $('#listOfRooms').children().children().children().length;
                             var left = $('#studentsLeft').attr('data-max');
                             for (var i = 3; i < len; i += 4)
                                 left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
-                            if (left < 0) {
-                                $("#students" + roomID).val("");
+                            if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
+                                $("#students" + roomID).val("1");
                                 $("students" + roomID).blur();
                                 return;
                             }
