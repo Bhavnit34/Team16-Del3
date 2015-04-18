@@ -141,7 +141,8 @@
          
         </div>
         <p>
-            <input type="submit" value="Create" />
+            <input type="button" id="btnCheck" value="Create" />
+            <input type="submit" value="Create" id="btnCreate" />
         </p>
 }
 
@@ -160,6 +161,7 @@
             $('#btnAddToRoom').hide();
             $('#matchedRooms').hide();
             $('#btnAddMatchedRoom').hide();
+            $('#btnCreate').hide();
 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
 
@@ -261,7 +263,10 @@
                     html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
                     html += "<td>" + room + "</td>";
                     html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
-                    html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;'/></td>";
+                    html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
+                    html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/></td>";
+                    html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
+                    html += "<td>Priority?</td>";
                     html += "</tr>";
                     $('#listOfRooms').append(html);
                     $('#listOfRoomsDiv').show();
@@ -275,7 +280,7 @@
 
                         var len = $('#listOfRooms').children().children().children().length;
                         var left = $('#studentsLeft').attr('data-max');
-                        for (var i = 3; i < len; i += 4)
+                        for (var i = 3; i < len; i += 7)
                             left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
                         if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
                             $("#students" + roomID).val("1");
@@ -397,7 +402,10 @@
                         html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
                         html += "<td>" + room + "</td>";
                         html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
-                        html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;'/></td>";
+                        html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
+                        html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true' /></td>";
+                        html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
+                        html += "<td>Priority?</td>";
                         html += "</tr>";
                         $('#listOfRooms').append(html);
                         $('#listOfRoomsDiv').show();
@@ -412,7 +420,7 @@
 
                             var len = $('#listOfRooms').children().children().children().length;
                             var left = $('#studentsLeft').attr('data-max');
-                            for (var i = 3; i < len; i += 4)
+                            for (var i = 3; i < len; i += 7)
                                 left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
                             if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
                                 $("#students" + roomID).val("1");
@@ -462,6 +470,14 @@
 
                 });
             });
+
+            //Function to check user inputs before sending the request to the controller, 
+            $('#btnCheck').click(function () {
+                $('#btnCreate').trigger('click');
+            });
+
+
+
 
 
 

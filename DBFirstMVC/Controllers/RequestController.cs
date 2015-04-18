@@ -139,8 +139,8 @@ namespace DBFirstMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, bool cbPriorityRequest = false, string Park = "")
-        {
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, bool cbPriorityRequest = false, string Park = "")
+        {   
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -194,16 +194,36 @@ namespace DBFirstMVC.Controllers
                 if (validRooms)
                 {
                     RequestToRoom requestToRoom = new RequestToRoom();
-                    
+
+                    //pRooms will be false if unchecked, and true + false if checked, so we must try to take out only the correct bool values
+                    List<bool> pRoomsNew = new List<bool>();
+                    for (var i = 0; i < pRooms.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            pRoomsNew.Add(pRooms[0]);
+                            continue;
+                        }
+
+                        if ((i > 0) && (pRooms[i - 1] == false))
+                            pRoomsNew.Add(pRooms[i]);
+
+                        if ((i > 0) && (pRooms[i - 1] == true))
+                            continue;
+
+                    }
+                    //here pRoomsNew is now the correct array of bool values
 
                     for (int i = 0; i < chosenRooms.Length; i++)
                     {
                         //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
                         RoomRequest roomRequest = new RoomRequest();
                         string room = chosenRooms[i];
+                        short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
+
                         roomRequest.RoomRequestID = 0;
-                        roomRequest.GroupSize = 0;
-                        roomRequest.PriorityRoom = 0;
+                        roomRequest.GroupSize = size;
+                        roomRequest.PriorityRoom = Convert.ToByte(pRoomsNew[i]);
                         roomRequest.RoomName = room;
 
                         //create RoomRequest row and add to table
