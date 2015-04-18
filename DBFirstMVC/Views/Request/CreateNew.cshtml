@@ -262,11 +262,10 @@
                     //we need to add this hidden input so that we can pass the room value to the controller
                     html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
                     html += "<td>" + room + "</td>";
-                    html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
                     html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
-                    html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/></td>";
+                    html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
                     html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
-                    html += "<td>Priority?</td>";
+                    html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
                     html += "</tr>";
                     $('#listOfRooms').append(html);
                     $('#listOfRoomsDiv').show();
@@ -280,14 +279,14 @@
 
                         var len = $('#listOfRooms').children().children().children().length;
                         var left = $('#studentsLeft').attr('data-max');
-                        for (var i = 3; i < len; i += 7)
+                        for (var i = 2; i < len; i += 6)
                             left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
                         if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
                             $("#students" + roomID).val("1");
                             $("students" + roomID).blur();
                             return;
                         }
-                        $('#studentsLeft').text(left + " students left");
+                        $('#studentsLeft').text(left + " student(s) left");
                         $('#studentsLeft').attr('data-left', left);
                     });
                     $("#students" + roomID).trigger("change");
@@ -401,11 +400,10 @@
                         //we need to add this hidden input so that we can pass the room value to the controller
                         html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
                         html += "<td>" + room + "</td>";
-                        html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15'/></td>";
                         html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
-                        html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true' /></td>";
+                        html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
                         html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
-                        html += "<td>Priority?</td>";
+                        html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
                         html += "</tr>";
                         $('#listOfRooms').append(html);
                         $('#listOfRoomsDiv').show();
@@ -420,14 +418,14 @@
 
                             var len = $('#listOfRooms').children().children().children().length;
                             var left = $('#studentsLeft').attr('data-max');
-                            for (var i = 3; i < len; i += 7)
+                            for (var i = 2; i < len; i += 6)
                                 left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
                             if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
                                 $("#students" + roomID).val("1");
                                 $("students" + roomID).blur();
                                 return;
                             }
-                            $('#studentsLeft').text(left + " students left");
+                            $('#studentsLeft').text(left + " student(s) left");
                             $('#studentsLeft').attr('data-left', left);
                         });
                         $("#students" + roomID).trigger("change");
@@ -447,7 +445,7 @@
                     var students = 0;
                     var html = "";
                     students = data;
-                    $('#studentsLeft').text(students + " students left");
+                    $('#studentsLeft').text(students + " student(s) left");
                     $('#studentsLeft').attr('data-max', students);
                     $('#studentsLeft').attr('data-left', students);
                     html += students + " students on this module";
@@ -473,7 +471,15 @@
 
             //Function to check user inputs before sending the request to the controller, 
             $('#btnCheck').click(function () {
-                $('#btnCreate').trigger('click');
+                var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+
+                if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
+                    if (confirm("You still have students left to allocate into rooms. Continue anyway?"))
+                        $('#btnCreate').trigger('click');
+                }
+                else {
+                    $('#btnCreate').trigger('click');
+                }
             });
 
 

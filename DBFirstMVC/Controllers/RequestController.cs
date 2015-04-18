@@ -100,7 +100,6 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateNew()
         {
 
-            //ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
             ViewBag.CurrentUser = row.FullDept;
@@ -131,7 +130,7 @@ namespace DBFirstMVC.Controllers
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
-            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); //Facility1 as the table name is Facility so the column name must be Facility1
+            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); 
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
