@@ -72,34 +72,36 @@
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
-                        <table>
-                            <tr>
-							    <td>
-								    <label>Pick weeks</label>								
-							    </td>
-							    <td colspan='2'>
-								    <ol id="popupWeeks">
-									    <li class="ui-widget-content">1</li>
-									    <li class="ui-widget-content">2</li>
-									    <li class="ui-widget-content">3</li>
-									    <li class="ui-widget-content">4</li>
-									    <li class="ui-widget-content">5</li>
-									    <li class="ui-widget-content">6</li>
-									    <li class="ui-widget-content">7</li>
-									    <li class="ui-widget-content">8</li>
-									    <li class="ui-widget-content">9</li>
-									    <li class="ui-widget-content">10</li>
-									    <li class="ui-widget-content">11</li>
-									    <li class="ui-widget-content">12</li>
-									    <li class="ui-widget-content">13</li>
-									    <li class="ui-widget-content">14</li>
-									    <li class="ui-widget-content">15</li>
-								    </ol>
-							    </td>
-						    </tr>
+                        <div>
+                            <table>
+                                <tr>
+							        <td>
+								        <label>Pick weeks</label>								
+							        </td>
+							        <td colspan='2'>
+								        <ol id="popupWeeks">
+									        <li class="ui-state-default myCircle">1</li>
+									        <li class="ui-state-default myCircle">2</li>
+									        <li class="ui-state-default myCircle">3</li>
+									        <li class="ui-state-default myCircle">4</li>
+									        <li class="ui-state-default myCircle">5</li>
+									        <li class="ui-state-default myCircle">6</li>
+									        <li class="ui-state-default myCircle">7</li>
+									        <li class="ui-state-default myCircle">8</li>
+									        <li class="ui-state-default myCircle">9</li>
+									        <li class="ui-state-default myCircle">10</li>
+									        <li class="ui-state-default myCircle">11</li>
+									        <li class="ui-state-default myCircle">12</li>
+									        <li class="ui-state-default myCircle">13</li>
+									        <li class="ui-state-default myCircle">14</li>
+									        <li class="ui-state-default myCircle">15</li>
+								        </ol>
+							        </td>
+						        </tr>
 
-                        </table>
-
+                            </table>
+                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="" />
+                        </div>
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
@@ -124,7 +126,8 @@
  
         <div class="generalRequest">
                     <fieldset>
-                        <legend>Request</legend>
+                        <legend>Request</legend>case 1: week.Week1 = 1;
+                        continue;
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Facilites")
@@ -540,7 +543,6 @@
             //Function to check user inputs before sending the request to the controller, 
             $('#btnCheck').click(function () {
                 var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
-                $(this).dialog();
 
                 if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
                     if (confirm("You still have students left to allocate into rooms. Continue anyway?"))

@@ -1,10 +1,11 @@
+var selectedItems = [];		// Holds all selectable elements which are already selected
+var numSelecting = 0;		// Keep count of how many elements we have selected during selecting event
+var selectAll = false;
+var removeAll = false;
 $(document).ready(function ()		// Execute all of this on load 
 {
     // Add week selector	
-    var selectedItems = [];		// Holds all selectable elements which are already selected
-    var numSelecting = 0;		// Keep count of how many elements we have selected during selecting event
-    var selectAll = false;
-    var removeAll = false;
+
 
     $("#popupWeeks").bind("mousedown", function (e) {
         e.metaKey = true;		// Simulates holding down control to select non-adjacent elements
@@ -35,7 +36,7 @@ $(document).ready(function ()		// Execute all of this on load
 	        if (removeAll)	// If element is already selected, then remove it from the array and remove it's class
 	        {
 	            selectedItems.splice(selectedItems.indexOf(clickedText), 1);
-	            ui.selecting.className = "ui-state-default";
+	            ui.selecting.className = "ui-state-default myCircle";
 	        }
 
 	        // Move on to the next element
@@ -67,11 +68,15 @@ $(document).ready(function ()		// Execute all of this on load
         if (selectedItems.indexOf(clickedText) == -1) {
             $(this).addClass('ui-selected');
             selectedItems.push(clickedText);
+            $('#selectedWeeks').val(selectedItems.join(","));
         }
         else 	// If element is already selected, then remove it from the array and remove selected class
         {
             $(this).removeClass('ui-selected');
+            $(this).addClass('ui-selectee');
+            $(this).addClass('myCircle');
             selectedItems.splice(selectedItems.indexOf(clickedText), 1);
+            $('#selectedWeeks').val(selectedItems.join(","));
         }
     });
 });

@@ -138,7 +138,7 @@ namespace DBFirstMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, bool cbPriorityRequest = false, string Park = "")
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
         {   
             bool validFacilities = true;
             bool validRooms = true;
@@ -153,6 +153,101 @@ namespace DBFirstMVC.Controllers
             myRequest.Request.UserID = user.UserID;
             myRequest.Request.Semester = 1;
             myRequest.Request.AdhocRequest = 0;
+            
+            //take in the string array of weeks and add it to the week table (if it doesnt already exist)
+            List<string> weeks = new List<string>();
+            if(selectedWeeks.Contains(','))
+                weeks = selectedWeeks.Split(',').ToList<string>();
+            else
+                weeks.Add(selectedWeeks);
+            Week week = new Week();
+
+            for (var i = 0; i < weeks.Count; i++)
+            {
+                byte chosenWeek = Convert.ToByte(weeks[i]);
+                switch (chosenWeek)
+                {
+                    case 1: week.Week1 = 1;
+                        continue;
+                    case 2: week.Week2 = 1;
+                        continue;
+                    case 3: week.Week3 = 1;
+                        continue;
+                    case 4: week.Week4 = 1;
+                        continue;
+                    case 5: week.Week5 = 1;
+                        continue;
+                    case 6: week.Week6 = 1;
+                        continue;
+                    case 7: week.Week7 = 1;
+                        continue;
+                    case 8: week.Week8 = 1;
+                        continue;
+                    case 9: week.Week9 = 1;
+                        continue;
+                    case 10: week.Week10 = 1;
+                        continue;
+                    case 11: week.Week11 = 1;
+                        continue;
+                    case 12: week.Week12 = 1;
+                        continue;
+                    case 13: week.Week13 = 1;
+                        continue;
+                    case 14: week.Week14 = 1;
+                        continue;
+                    case 15: week.Week15 = 1;
+                        continue;
+                }
+                    
+            }
+            //long winded but only way to make all null weeks into a 0
+            if (week.Week1 == null)
+                week.Week1 = 0;
+            if (week.Week2 == null)
+                week.Week2 = 0;
+            if (week.Week3 == null)
+                week.Week3 = 0;
+            if (week.Week4 == null)
+                week.Week4 = 0;
+            if (week.Week5 == null)
+                week.Week5 = 0;
+            if (week.Week6 == null)
+                week.Week6 = 0;
+            if (week.Week7 == null)
+                week.Week7 = 0;
+            if (week.Week8 == null)
+                week.Week8 = 0;
+            if (week.Week9 == null)
+                week.Week9 = 0;
+            if (week.Week10 == null)
+                week.Week10 = 0;
+            if (week.Week11 == null)
+                week.Week11 = 0;
+            if (week.Week12 == null)
+                week.Week12 = 0;
+            if (week.Week13 == null)
+                week.Week13 = 0;
+            if (week.Week14 == null)
+                week.Week14 = 0;
+            if (week.Week15 == null)
+                week.Week15 = 0;
+
+            var q = db.Weeks.Where(w => (w.Week1 == week.Week1) && (w.Week2 == week.Week2) && (w.Week3 == week.Week3) && (w.Week4 == week.Week4) && (w.Week5 == week.Week5) && (w.Week6 == week.Week6) && (w.Week7 == week.Week7) && (w.Week8 == week.Week8) && (w.Week9 == week.Week9) && (w.Week10 == week.Week10) && (w.Week11 == week.Week11) && (w.Week12 == week.Week12) && (w.Week13) == (week.Week13) && (w.Week14 == week.Week14) && (w.Week15 == week.Week15)).FirstOrDefault();
+            var newWeek = true;
+            if (q != null)
+            {
+                week.WeekID = q.WeekID;
+                newWeek = false;
+            }
+            if (newWeek)
+            {
+                db.Weeks.Add(week);
+                db.SaveChanges();
+            }
+            int weekID = week.WeekID;
+            myRequest.Request.WeekID = weekID;
+           
+       
             
             //check any facilities have been chosen
             if(facList == null)
@@ -238,8 +333,7 @@ namespace DBFirstMVC.Controllers
                     }
                 }
             
-               
-               
+
                return RedirectToAction("Index"); //redirect to the list of requests
         }
 

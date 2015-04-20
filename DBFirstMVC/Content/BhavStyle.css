@@ -131,14 +131,15 @@
 }
 
 #popupWeeks .ui-selected { 
-	background: #F39814; color: white; 
+	background: rgba(51, 0, 102, 1); 
+    color: white; 
 }
 
 #popupWeeks { 
 	list-style-type: none;
 	margin: 0; 
 	padding: 0; 
-	width: 100%; 
+	width: 55%; 
 }
 
 #popupWeeks li { 
@@ -151,6 +152,15 @@
 	border: 1px solid black;
 }
 
+.myCircle {
+    width:25px;
+    height:25px;
+    border-radius:50px;
+    font-size:20px;
+    color: rgba(51, 0, 102, 1); 
+    line-height:25px;
+    text-align:center;
+}
 
 #popupPendingDiv{
 	border-radius: 7px;
