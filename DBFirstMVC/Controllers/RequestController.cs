@@ -100,7 +100,6 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateNew()
         {
 
-            //ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "FullModule"); //Add list of modules to the view. It will referred to as ModCode
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
             ViewBag.CurrentUser = row.FullDept;
@@ -131,7 +130,7 @@ namespace DBFirstMVC.Controllers
             var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
 
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
-            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); //Facility1 as the table name is Facility so the column name must be Facility1
+            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); 
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
         }
@@ -139,8 +138,8 @@ namespace DBFirstMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, bool cbPriorityRequest = false, string Park = "")
-        {
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, bool cbPriorityRequest = false, string Park = "")
+        {   
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -194,16 +193,36 @@ namespace DBFirstMVC.Controllers
                 if (validRooms)
                 {
                     RequestToRoom requestToRoom = new RequestToRoom();
-                    
+
+                    //pRooms will be false if unchecked, and true + false if checked, so we must try to take out only the correct bool values
+                    List<bool> pRoomsNew = new List<bool>();
+                    for (var i = 0; i < pRooms.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            pRoomsNew.Add(pRooms[0]);
+                            continue;
+                        }
+
+                        if ((i > 0) && (pRooms[i - 1] == false))
+                            pRoomsNew.Add(pRooms[i]);
+
+                        if ((i > 0) && (pRooms[i - 1] == true))
+                            continue;
+
+                    }
+                    //here pRoomsNew is now the correct array of bool values
 
                     for (int i = 0; i < chosenRooms.Length; i++)
                     {
                         //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
                         RoomRequest roomRequest = new RoomRequest();
                         string room = chosenRooms[i];
+                        short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
+
                         roomRequest.RoomRequestID = 0;
-                        roomRequest.GroupSize = 0;
-                        roomRequest.PriorityRoom = 0;
+                        roomRequest.GroupSize = size;
+                        roomRequest.PriorityRoom = Convert.ToByte(pRoomsNew[i]);
                         roomRequest.RoomName = room;
 
                         //create RoomRequest row and add to table
@@ -295,6 +314,36 @@ namespace DBFirstMVC.Controllers
             return Json(q);
         }
 
+        //function to return the no of students of a module
+        public ActionResult getModuleStudents(string modCode)
+        {
+            var students = from d in db.Modules
+                           where (d.ModCode == modCode)
+                           select d.Students;
+
+            return Json(students);
+        }
+
+        //function to return the no of students of a module
+        public ActionResult getModuleLecturers(string modCode)
+        {
+            var lecturers = from d in db.ModuleLecturers
+                            where (d.ModCode == modCode)
+                            select new { Whole = d.Lecturer.FirstName + " " + d.Lecturer.LastName };
+                           
+
+            return Json(lecturers);
+        }
+
+        //function to return the capacity of a room
+        public ActionResult getRoomSize(string roomName)
+        {
+            var size = from d in db.Rooms
+                       where (d.RoomName == roomName)
+                       select d.Capacity;
+
+            return Json(size);
+        }
 
         //
         // GET: /Request/Edit/5

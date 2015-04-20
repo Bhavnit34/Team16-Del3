@@ -547,7 +547,7 @@ th {
     font-size: 1.2em;
     text-align: left;
     border: none 0px;
-    padding-left: 0;
+    padding-right: 9px;
 }
 
     th a {

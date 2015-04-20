@@ -4,7 +4,7 @@
     ViewBag.Title = "Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
-
+ @Html.ActionLink("Back", "Index")
 <h2>Request @Model.Request.RequestID</h2>
 
 
@@ -22,7 +22,8 @@
 <ol>
 @foreach(var item in Model.RequestToRooms){
 
-       <li>@Html.DisplayFor(modelItem => item.RoomRequest.RoomName) <!-- Display the room name --> </li>         
+       <li> @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)  (@Html.DisplayFor(modelItem => item.RoomRequest.GroupSize) students) @Html.DisplayFor(modelItem => item.RoomRequest.PriorityRoom)</li><!-- Display the room name -->
+  
 
 }
     </ol>
@@ -34,40 +35,40 @@
     </tr>
        <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Request.User.Dept.FullDept)
+            @Html.LabelFor(model => model.Request.User.Dept.FullDept,"Dept")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Module.Title)
+            @Html.LabelFor(model => model.Request.Module.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SessionType)
+            @Html.LabelFor(model => model.Request.SessionType, "Type")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SessionLength)
+            @Html.LabelFor(model => model.Request.SessionLength, "Length")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.DayID)
+            @Html.LabelFor(model => model.Request.DayID, "Day")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.PeriodID)
+            @Html.LabelFor(model => model.Request.PeriodID, "Period")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.PriorityRequest)
+            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.AdhocRequest)
+            @Html.LabelFor(model => model.Request.AdhocRequest, "Ad-hoc")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SpecialRequirements)
+            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Semester)
+            @Html.LabelFor(model => model.Request.Semester)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.RoundID)
+            @Html.LabelFor(model => model.Request.RoundID, "Round")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Status)
+            @Html.LabelFor(model => model.Request.Status)
         </th>
     </tr>
 <tr>
