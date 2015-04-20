@@ -4,6 +4,9 @@
     ViewBag.Title = "Create a Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+<script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
+<link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
 <h2>Create a Request</h2>
  @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
@@ -69,6 +72,34 @@
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
+                        <table>
+                            <tr>
+							    <td>
+								    <label>Pick weeks</label>								
+							    </td>
+							    <td colspan='2'>
+								    <ol id="popupWeeks">
+									    <li class="ui-widget-content">1</li>
+									    <li class="ui-widget-content">2</li>
+									    <li class="ui-widget-content">3</li>
+									    <li class="ui-widget-content">4</li>
+									    <li class="ui-widget-content">5</li>
+									    <li class="ui-widget-content">6</li>
+									    <li class="ui-widget-content">7</li>
+									    <li class="ui-widget-content">8</li>
+									    <li class="ui-widget-content">9</li>
+									    <li class="ui-widget-content">10</li>
+									    <li class="ui-widget-content">11</li>
+									    <li class="ui-widget-content">12</li>
+									    <li class="ui-widget-content">13</li>
+									    <li class="ui-widget-content">14</li>
+									    <li class="ui-widget-content">15</li>
+								    </ol>
+							    </td>
+						    </tr>
+
+                        </table>
+
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
@@ -462,7 +493,6 @@
 
             });
 
-
             //Function to change the label of module students and module info displayed depending on chosen module
             $("#Request_ModCode").change(function (e) {
                 var module = $(this).val().substr(0, 6);
@@ -510,6 +540,7 @@
             //Function to check user inputs before sending the request to the controller, 
             $('#btnCheck').click(function () {
                 var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                $(this).dialog();
 
                 if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
                     if (confirm("You still have students left to allocate into rooms. Continue anyway?"))
@@ -520,10 +551,7 @@
                 }
 
             });
-
-
-
-
+            
 
 
 

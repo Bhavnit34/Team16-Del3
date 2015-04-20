@@ -563,7 +563,6 @@ C:\Users\Lubdmila\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spa
 C:\Users\Lubdmila\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\Lubdmila\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 C:\Users\Lubdmila\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
-D:\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 D:\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 D:\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
 D:\Team16-Del3\DBFirstMVC\bin\DBFirstMVC.dll
