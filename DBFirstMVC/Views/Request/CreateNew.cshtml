@@ -162,7 +162,6 @@
             $('#matchedRooms').hide();
             $('#btnAddMatchedRoom').hide();
             $('#btnCreate').hide();
-
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
 
 
@@ -273,10 +272,6 @@
                     //onchange function for the group size
                     $("#students" + roomID).on('change keyup keydown', function () {
                         var x = $("#students" + roomID).val();
-                        if (x.length == 0)
-                            $("#students" + roomID).val(1);
-
-
                         var len = $('#listOfRooms').children().children().children().length;
                         var left = $('#studentsLeft').attr('data-max');
                         for (var i = 2; i < len; i += 6)
@@ -289,6 +284,24 @@
                         $('#studentsLeft').text(left + " student(s) left");
                         $('#studentsLeft').attr('data-left', left);
                     });
+
+                    //onchange function for the priority room (there can only be 1)
+                    $('#priority' + roomID).on("change", function () {
+
+                        //allow the user to deselect the priority room
+                        if ($('#priority' + roomID).attr("checked") != "checked") {
+                            $(this).prop("checked", false);
+                            return;
+                        }
+                     
+                        var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                        for (var i = 3; i < len; i+=6) {
+                            if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).attr('checked') == 'checked')
+                                $('#listOfRooms').children().children().children().eq(i).children().eq(0).prop("checked", false);
+                        }
+                        $('#priority' + roomID).prop("checked", true);
+                    });
+
                     $("#students" + roomID).trigger("change");
 
                 });
@@ -413,9 +426,6 @@
                         //onchange function for the group size
                         $("#students" + roomID).on('change keyup keydown', function () {
                             var x = $("#students" + roomID).val();
-                            if (x.length == 0)
-                                $("#students" + roomID).val(1);
-
                             var len = $('#listOfRooms').children().children().children().length;
                             var left = $('#studentsLeft').attr('data-max');
                             for (var i = 2; i < len; i += 6)
@@ -428,6 +438,24 @@
                             $('#studentsLeft').text(left + " student(s) left");
                             $('#studentsLeft').attr('data-left', left);
                         });
+
+                        //onchange function for the priority room (there can only be 1)
+                        $('#priority' + roomID).on("change", function () {
+
+                            //allow the user to deselect the priority room
+                            if ($('#priority' + roomID).attr("checked") != "checked") {
+                                $(this).prop("checked", false);
+                                return;
+                            }
+                     
+                            var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                            for (var i = 3; i < len; i+=6) {
+                                if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).attr('checked') == 'checked')
+                                    $('#listOfRooms').children().children().children().eq(i).children().eq(0).prop("checked", false);
+                            }
+                            $('#priority' + roomID).prop("checked", true);
+                        });
+
                         $("#students" + roomID).trigger("change");
                     });
 
@@ -457,9 +485,9 @@
                             html += " taught by ";
                         for (var i = 0; i < results.length; i++) {
                             if (i == results.length - 1)
-                                lecturer += results[i].Whole;
+                                lecturer += "<u>"+results[i].Whole+"</u>";
                             else
-                                lecturer += results[i].Whole + " and ";
+                                lecturer += "<u>"+results[i].Whole + "</u> and ";
                         }
                         html += lecturer;
                         $('#studentsOnModuleDiv').html(html); //write the information to the display
@@ -467,6 +495,16 @@
                     });
 
                 });
+            });
+
+            //function to ensure the user hasnt entered a room with no group size
+            $('body').click(function () {
+                var len = $('#listOfRooms').children().children().children().length;
+                for (var i = 2 ; i < len; i+=6) {
+                    if( $('#listOfRooms').children().children().children().eq(i).children().eq(0).val() == "")
+                        $('#listOfRooms').children().children().children().eq(i).children().eq(0).val(0)
+                        
+                }
             });
 
             //Function to check user inputs before sending the request to the controller, 
@@ -480,6 +518,7 @@
                 else {
                     $('#btnCreate').trigger('click');
                 }
+
             });
 
 
@@ -494,7 +533,15 @@
         //Function to delete the room chosen
         function deleteRoom(id) {
             id = id.substr(3, id.length); //change 'delJB021' to 'JB021'
+            var size = $('#'+id).children().eq(2).children().val();
+            if (size == "")
+                size = 0;
+            var left = $('#studentsLeft').attr('data-left');
+            var newLeft = parseInt(left) + parseInt(size);
+            $('#studentsLeft').attr('data-left', newLeft); //change label showing students left
+            $('#studentsLeft').text(newLeft + " student(s) left");
             $('#' + id).remove(); //remove the html <tr> element
+
         }
     </script>
 
