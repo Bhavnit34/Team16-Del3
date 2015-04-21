@@ -496,6 +496,42 @@ namespace DBFirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //Delete any associated room requests
+            var ReqToRooms = (from d in db.RequestToRooms
+                                  where d.RequestID == id
+                                  select d).ToList();
+
+            for (var i = 0; i < ReqToRooms.Count; i++)
+            {
+                //take each roomRequestID
+                var rID = ReqToRooms[i].RoomRequestID;
+                //find the row in the RequestToRoom table and delete it
+                RequestToRoom row = db.RequestToRooms.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RequestToRooms.Remove(row);
+                db.SaveChanges();
+                //find the row in the RooomRequest table and delete it
+                RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RoomRequests.Remove(RoomRow);
+                db.SaveChanges();
+            } 
+
+            //Delete any associated facility requests
+            var FacilityRequests = (from d in db.FacilityRequests
+                                    where d.RequestID.Equals(id)
+                                    select d).ToList();
+
+            for (var i = 0; i < FacilityRequests.Count; i++)
+            {
+                //find id of the row with the given requestID
+                var fID = FacilityRequests[i].FacilityRequestID;
+                FacilityRequest fac = db.FacilityRequests.Find(fID);
+                //delete the row
+                db.FacilityRequests.Remove(fac);
+                db.SaveChanges();
+            }
+
+
+            //Remove the Request row
             Request request = db.Requests.Find(id);
             db.Requests.Remove(request);
             db.SaveChanges();
