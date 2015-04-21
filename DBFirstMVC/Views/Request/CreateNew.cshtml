@@ -4,6 +4,9 @@
     ViewBag.Title = "Create a Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+<script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
+<link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
 <h2>Create a Request</h2>
  @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
@@ -69,6 +72,42 @@
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
+                        <div>
+                            <table>
+                                <tr>
+							        <td>
+								        <label>Pick weeks</label>								
+							        </td>
+							        <td colspan='4'>
+								        <ol id="popupWeeks">
+									        <li class="ui-state-default myCircle">1</li>
+									        <li class="ui-state-default myCircle">2</li>
+									        <li class="ui-state-default myCircle">3</li>
+									        <li class="ui-state-default myCircle">4</li>
+									        <li class="ui-state-default myCircle">5</li>
+									        <li class="ui-state-default myCircle">6</li>
+									        <li class="ui-state-default myCircle">7</li>
+									        <li class="ui-state-default myCircle">8</li>
+									        <li class="ui-state-default myCircle">9</li>
+									        <li class="ui-state-default myCircle">10</li>
+									        <li class="ui-state-default myCircle">11</li>
+									        <li class="ui-state-default myCircle">12</li>
+									        <li class="ui-state-default myCircle">13</li>
+									        <li class="ui-state-default myCircle">14</li>
+									        <li class="ui-state-default myCircle">15</li>
+								        </ol>
+							        </td>
+						        </tr>
+                                <tr>
+                                    <td><input type="button" id="btnAllWeeks" value="All Weeks" /></td>
+                                    <td><input type="button" id="btnEvenWeeks" value="Even Weeks" /></td>
+                                    <td><input type="button" id="btnOddWeeks" value="Odd Weeks" /></td>
+                                    <td><input type="button" id="btnDefaultWeeks" value="Default Weeks" /></td>
+                                    <td><input type="button" id="btnClearAllWeeks" value="Clear All" /></td>
+                                </tr>
+                            </table>
+                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="" /><!-- this will be passed to the controller -->
+                        </div>
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
@@ -94,6 +133,7 @@
         <div class="generalRequest">
                     <fieldset>
                         <legend>Request</legend>
+                      
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Facilites")
@@ -161,7 +201,7 @@
             $('#btnAddToRoom').hide();
             $('#matchedRooms').hide();
             $('#btnAddMatchedRoom').hide();
-            $('#btnCreate').hide();
+            $('#btnCreate').hide(); 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
 
 
@@ -462,7 +502,6 @@
 
             });
 
-
             //Function to change the label of module students and module info displayed depending on chosen module
             $("#Request_ModCode").change(function (e) {
                 var module = $(this).val().substr(0, 6);
@@ -507,10 +546,75 @@
                 }
             });
 
+            //Function to handle the user choice of preset week choices
+            $('#btnAllWeeks, #btnDefaultWeeks, #btnEvenWeeks, #btnOddWeeks').click(function () {
+                var id = $(this).attr('id');
+                if (id == "btnAllWeeks") {
+                    for (var i = 0; i < 15; i++) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnDefaultWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 0; i < 13; i++) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnEvenWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 1; i < 15; i += 2) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = [2, 4, 6, 8, 10, 12, 14];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnOddWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 0; i < 15; i += 2) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = [1, 3, 5, 7, 9, 11, 13, 15];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+            });
+
+            //function to clear all of the selected weeks
+            $('#btnClearAllWeeks').click(function () {
+                for (var i = 0; i < 15; i++) {
+                    $('#popupWeeks').children().eq(i).removeClass("ui-selected");
+                    $('#popupWeeks').children().eq(i).addClass("ui-selectee");
+                    selectedItems = [];
+                    $('#selectedWeeks').val("");
+                }
+            });
+
+
             //Function to check user inputs before sending the request to the controller, 
             $('#btnCheck').click(function () {
-                var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                //Check at least 1 week has been chosen
+                var selectedCount = 0;
+                for (var i = 0; i < 15; i++) {
+                    if ($('#popupWeeks').children().eq(i).hasClass("ui-selected"))
+                        selectedCount++;
+                }
+                if (selectedCount == 0) {
+                    alert("Please choose at least one week");
+                    return;
+                }
 
+                //check there are no students left to allocate if the user has chosen room(s)
+                var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
                 if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
                     if (confirm("You still have students left to allocate into rooms. Continue anyway?"))
                         $('#btnCreate').trigger('click');
@@ -520,14 +624,11 @@
                 }
 
             });
+            
 
 
-
-
-
-
-
-        }); //document ready
+            $('#btnDefaultWeeks').trigger('click'); //executed here as the function was made earlier
+        }); //end document ready
 
 
         //Function to delete the room chosen
