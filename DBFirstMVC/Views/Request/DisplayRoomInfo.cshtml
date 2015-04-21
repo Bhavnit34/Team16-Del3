@@ -1,0 +1,58 @@
+﻿@model DBFirstMVC.Room
+
+@{
+    ViewBag.Title = "Display Room Info";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>@ViewBag.RoomName</h2>
+
+<fieldset>
+    <legend>Room</legend>
+    @Html.ActionLink("Back", "CreateNew")
+    @Html.ActionLink("Back to previous page",null, null, null, new { href = Request.UrlReferrer})
+    <table>
+        <tr>
+            <th>  @Html.LabelFor(model => model.BuildingCode,"Building Code")</th>
+            <th> @Html.LabelFor(model => model.Capacity)</th>
+            <th>@Html.LabelFor(model => model.Lab)</th>
+             @{if(Model.DeptCode != null){<th> @Html.LabelFor(model => model.DeptCode, "Dept")</th>} }
+        </tr>
+        <tr>
+            <td class="display-label">
+               
+                @Html.DisplayFor(model => model.BuildingCode)
+            </td>
+
+            <td class="display-label">
+                
+                @Html.DisplayFor(model => model.Capacity)
+            </td>
+
+            <td class="display-label">
+                 
+                @{
+                    if(Model.Lab == 1){
+                        @Html.CheckBox("Lab",true, new{@disabled = "disabled"})
+                }
+                    else{
+                        @Html.CheckBox("Lab",false, new{@disabled = "disabled"})
+                }
+        
+                }
+            </td>
+
+            @{
+                if(Model.DeptCode != null){
+                    <td class="display-label">
+                        @Html.DisplayFor(model => model.DeptCode)
+                    </td>
+                }
+            }
+        </tr>
+   </table>
+    <div style="float:right; margin-top:-5%">
+        <img src="@Url.Content(Model.URL)" width="400" height="300" />
+    </div>
+
+</fieldset>

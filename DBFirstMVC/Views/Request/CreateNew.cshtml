@@ -182,7 +182,7 @@
         </div>
         <p>
             <input type="button" id="btnCheck" value="Create" />
-            <input type="submit" value="Create" id="btnCreate" />
+            <input type="submit" value="Create" id="btnCreate"  name='Command' />
         </p>
 }
 
@@ -193,6 +193,7 @@
 }
 @section CreateNewScript{
     <script type="text/javascript">
+        var fac = [];
         $(document).ready(function () {
            
             //$('#siteTitle').append('<a style="color:gray; font-style:italic; font-size:0.6em;">  '+'@ViewBag.CurrentUser'+'</a>');
@@ -203,9 +204,9 @@
             $('#btnAddMatchedRoom').hide();
             $('#btnCreate').hide(); 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
-
-
+            updateFac();
         
+
 
 
             //Function to add the list of buildings based on park choice
@@ -263,9 +264,13 @@
 
 
             //Function to add a room to the displayed list of chosen rooms
-            $('#btnAddToRoom').click(function(){
+            $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){
+                var id = $(this).attr('id');
                 var room = $('#Room').val();
-                var roomID = room.replace(/\./g,'');
+                if (id == 'btnAddMatchedRoom')
+                    room = $('#matchedRooms').val();
+
+                var roomID = room.replace(/\./g, '');
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms
@@ -304,6 +309,7 @@
                     html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
                     html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
                     html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
+                    html += "<td><input type='button' id='info" + roomID + "' value='Info' name='Command' /></td>";
                     html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
                     html += "</tr>";
                     $('#listOfRooms').append(html);
@@ -314,7 +320,7 @@
                         var x = $("#students" + roomID).val();
                         var len = $('#listOfRooms').children().children().children().length;
                         var left = $('#studentsLeft').attr('data-max');
-                        for (var i = 2; i < len; i += 6)
+                        for (var i = 2; i < len; i += 7)
                             left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
                         if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
                             $("#students" + roomID).val("1");
@@ -329,18 +335,64 @@
                     $('#priority' + roomID).on("change", function () {
 
                         //allow the user to deselect the priority room
-                        if ($('#priority' + roomID).attr("checked") != "checked") {
+                        if ($('#priority' + roomID).prop('checked') == false) {
                             $(this).prop("checked", false);
                             return;
                         }
-                     
+                        
                         var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
-                        for (var i = 3; i < len; i+=6) {
-                            if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).attr('checked') == 'checked')
+                        for (var i = 3; i < len; i+=7) {
+                            if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).prop('checked'))
                                 $('#listOfRooms').children().children().children().eq(i).children().eq(0).prop("checked", false);
                         }
-                        $('#priority' + roomID).prop("checked", true);
+                       $('#priority' + roomID).prop("checked", true);
                     });
+
+
+
+                    //onclick for info button
+                    $('#info' + roomID).on('click', function () {
+                        //create an array of rooms to send to the controller
+                        var rms = [];
+                        var len = $('#listOfRooms').children().children().children().length;
+                        for( var i = 0; i < len; i+=7){
+                           rms.push($('#listOfRooms').children().children().children().eq(i).val());
+                        }
+                        
+                        //The variables named after the model attributes are done so purposely so the controller can recognise the model
+                        var values =
+                            {
+                                "ModCode": $('#Request_ModCode').val(),
+                                "SessionType": $('#Request_SessionType').val(),
+                                "DayID": $('#Request_DayID').val(),
+                                "PriorityRequest": $('#cbPriorityRequest').prop('checked') ? 1 : 0,
+                                "SpecialRequirements": $('#Request_SpecialRequirements').val(),
+                                "SessionLength": $('#Request_SessionLength').val(),
+                                "PeriodID": $('#Request_PeriodID').val(),
+                                "Fac": fac.join(','),
+                                "SelectedWeeks": selectedItems.join(','),
+                                "SelectedRoom": room,
+                                "Rooms": rms.join(',')
+                            };
+                        //RoomName: room, Day: $('#Request_DayID').val(), Period: $('#Request_PeriodID').val(), Length: $('#Request_SessionLength').val()
+                        $.post('@Url.Action("SaveState", "Request")',values, function (data) {
+
+                        }).success(function (returnData, returnStatus) {
+                            var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
+                            window.location.href = url.replace("text", "?id=" + room);
+                        });
+
+
+
+                    });
+
+
+
+
+
+
+
+
 
                     $("#students" + roomID).trigger("change");
 
@@ -380,9 +432,15 @@
 
                 });
             });
+
+            $('#facListDiv :input').click(function () {
+                updateFac();
+            });
+
+
             //Function to display a list of rooms based on ticked facilities
             $("#btnFindRooms").click(function () {
-                var fac = [];
+                fac = [];
                 var len = $('#facListDiv').children().length;
                 for (var i = 0; i < len; i += 2) {
                     if ($('#facListDiv').children().eq(i).is(":checked")) {
@@ -414,93 +472,7 @@
                 },"json");
             });
 
-            //Function to add a matched room to the room list (extremely similiar to the btnAddToRoom click function)
-            $('#btnAddMatchedRoom').click(function () {
-                var room = $('#matchedRooms').val();
-                var roomID = room.replace(/\./g, '');
-                var len = $('#listOfRooms').children().children().length;
-
-                //return if they have picked 3 rooms
-                if (len > 2)
-                    return;
-
-
-                //Check that the room doesnt already exist in the list
-                for (var i = 0; i < len; i++) {
-                    if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
-                        return;
-                }
-
-                //Check that there are students left to allocate
-                if ($('#studentsLeft').attr('data-left') < 1) {
-                    alert("There are no more students left to allocate");
-                    return;
-                }
-
-            
-                var roomSize = 0;
-                $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
-                    roomSize = data;
-                    }).done(function(result){
-                        var size = roomSize;
-                        //Create html for the room item and add it to the list
-                        var html = "<tr id='" + roomID + "'>";
-                        var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
-                        //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
-                        if (studentsLeft < roomSize)
-                            size = studentsLeft;
-
-                        //we need to add this hidden input so that we can pass the room value to the controller
-                        html += "<input type='hidden' id='" + roomID + "' name='chosenRooms' value='" + room + "' />";
-                        html += "<td>" + room + "</td>";
-                        html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
-                        html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
-                        html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
-                        html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
-                        html += "</tr>";
-                        $('#listOfRooms').append(html);
-                        $('#listOfRoomsDiv').show();
-
-
-
-                        //onchange function for the group size
-                        $("#students" + roomID).on('change keyup keydown', function () {
-                            var x = $("#students" + roomID).val();
-                            var len = $('#listOfRooms').children().children().children().length;
-                            var left = $('#studentsLeft').attr('data-max');
-                            for (var i = 2; i < len; i += 6)
-                                left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
-                            if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
-                                $("#students" + roomID).val("1");
-                                $("students" + roomID).blur();
-                                return;
-                            }
-                            $('#studentsLeft').text(left + " student(s) left");
-                            $('#studentsLeft').attr('data-left', left);
-                        });
-
-                        //onchange function for the priority room (there can only be 1)
-                        $('#priority' + roomID).on("change", function () {
-
-                            //allow the user to deselect the priority room
-                            if ($('#priority' + roomID).attr("checked") != "checked") {
-                                $(this).prop("checked", false);
-                                return;
-                            }
-                     
-                            var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
-                            for (var i = 3; i < len; i+=6) {
-                                if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).attr('checked') == 'checked')
-                                    $('#listOfRooms').children().children().children().eq(i).children().eq(0).prop("checked", false);
-                            }
-                            $('#priority' + roomID).prop("checked", true);
-                        });
-
-                        $("#students" + roomID).trigger("change");
-                    });
-
-
-            });
+           
 
             //Function to change the label of module students and module info displayed depending on chosen module
             $("#Request_ModCode").change(function (e) {
@@ -626,8 +598,10 @@
             });
             
 
-
-            $('#btnDefaultWeeks').trigger('click'); //executed here as the function was made earlier
+            //executed here as the functions were made earlier
+            if ($('#Request_ModCode').val() != "")
+                $('#Request_ModCode').trigger('change');
+            $('#btnDefaultWeeks').trigger('click'); 
         }); //end document ready
 
 
@@ -643,6 +617,16 @@
             $('#studentsLeft').text(newLeft + " student(s) left");
             $('#' + id).remove(); //remove the html <tr> element
 
+        }
+
+        function updateFac() {
+            fac = [];
+            var len = $('#facListDiv').children().length;
+            for (var i = 0; i < len; i += 2) {
+                if ($('#facListDiv').children().eq(i).is(":checked")) {
+                    fac.push($('#facListDiv').children().eq(i).val());
+                }
+            }
         }
     </script>
 

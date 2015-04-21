@@ -40,6 +40,19 @@ namespace DBFirstMVC.Controllers
             return View(request);
         }
 
+        public ActionResult DisplayRoomInfo(string id = "0", string rooms = "")
+        {
+            ViewBag.CurrentUser = getCurrentUser();
+            Room room = db.Rooms.Find(id);
+
+            return View(room);
+        }
+
+        public ActionResult BackToCreate()
+        {
+            return View();
+        }
+
         public ActionResult GetRequest(int id = 0)
         {
             ViewBag.CurrentUser = getCurrentUser();
@@ -135,13 +148,24 @@ namespace DBFirstMVC.Controllers
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
             ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); 
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
-            return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
+
+            Request r = new Request();
+            if (Session["State"] != null)
+            {
+                RequestState state = (RequestState)HttpContext.Session["State"];
+                r = state.Request;
+            }
+
+
+
+
+            return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities, Request = r});
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
         {   
             bool validFacilities = true;
             bool validRooms = true;
@@ -156,7 +180,7 @@ namespace DBFirstMVC.Controllers
             myRequest.Request.UserID = user.UserID;
             myRequest.Request.Semester = 1;
             myRequest.Request.AdhocRequest = 0;
-            
+               
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
             if(selectedWeeks.Contains(','))
@@ -440,6 +464,20 @@ namespace DBFirstMVC.Controllers
                        select d.Capacity;
 
             return Json(size);
+        }
+
+
+        //Function to save the information on the request page into a session, to be reloaded when neccessary
+        [HttpPost]
+        public void SaveState(Request r, string Fac, string selectedWeeks, string SelectedRoom, string Rooms)
+        {
+            RequestState state = new RequestState();
+            state.Request = r;
+            state.Facilities = Fac.Split(',').ToList<string>();
+            state.Weeks = selectedWeeks.Split(',').ToList<string>();
+            state.Rooms = Rooms.Split(',').ToList<string>();
+            Session["State"] = state; //save session
+            DisplayRoomInfo(SelectedRoom);
         }
 
         //
