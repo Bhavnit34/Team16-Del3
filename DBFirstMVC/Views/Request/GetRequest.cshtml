@@ -26,7 +26,16 @@
 <ol>
 @foreach(var item in Model.RequestToRooms){
 
-       <li> @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)  (@Html.DisplayFor(modelItem => item.RoomRequest.GroupSize) students) @Html.DisplayFor(modelItem => item.RoomRequest.PriorityRoom)</li><!-- Display the room name -->
+       <li> @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)  (@Html.DisplayFor(modelItem => item.RoomRequest.GroupSize) students)   
+           @{
+                if (item.RoomRequest.PriorityRoom == 1)
+                {
+                    <span><u>   Priority</u></span>
+                }
+                   
+           }
+
+       </li><!-- Display the room name -->
   
 
 }
@@ -76,7 +85,7 @@
     </tr>
        <tr>
         <th>
-            @Html.LabelFor(model => model.Request.User.Dept.FullDept,"Dept")
+            @Html.LabelFor(model => model.Request.User.Dept.FullDept, "Dept")
         </th>
         <th>
             @Html.LabelFor(model => model.Request.Module.Title)
