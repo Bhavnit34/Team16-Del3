@@ -9,8 +9,13 @@
 
 <fieldset>
     <legend>Room</legend>
-    @Html.ActionLink("Back", "CreateNew")
-    @Html.ActionLink("Back to previous page",null, null, null, new { href = Request.UrlReferrer})
+    @{
+        if(ViewBag.Caller != null){
+            @Html.ActionLink("Back","CreateNew") 
+        }
+    }
+    
+    <!--@Html.ActionLink("Back to previous page",null, null, null, new { href = Request.UrlReferrer})-->
     <table>
         <tr>
             <th>  @Html.LabelFor(model => model.BuildingCode,"Building Code")</th>

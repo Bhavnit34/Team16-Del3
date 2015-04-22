@@ -40,8 +40,13 @@ namespace DBFirstMVC.Controllers
             return View(request);
         }
 
-        public ActionResult DisplayRoomInfo(string id = "0", string rooms = "")
+        public ActionResult DisplayRoomInfo(string id = "0", string caller = "")
         {
+            if (caller == "CreateNew")
+            {
+                ViewBag.Caller = caller;
+            }
+            
             ViewBag.CurrentUser = getCurrentUser();
             Room room = db.Rooms.Find(id);
 
@@ -162,6 +167,12 @@ namespace DBFirstMVC.Controllers
                 ViewBag.sizeList = z;
 
                 ViewBag.PriorityRoomName = state.PriorityRoomName; //add the priority room choice
+                string wk = "";
+                for (var i = 0; i < state.Weeks.Count; i++) {
+                    wk += "," + state.Weeks[i]; 
+                }
+                wk = wk.Substring(1, wk.Length-1); //remove leading comma
+                ViewBag.SelectedWeeks = wk;
 
             }
 
@@ -488,7 +499,7 @@ namespace DBFirstMVC.Controllers
             state.Sizes = Sizes.Split(',').ToList<string>();
             state.PriorityRoomName = PriorityRoomName;
             Session["State"] = state; //save session
-            DisplayRoomInfo(SelectedRoom);
+            DisplayRoomInfo(SelectedRoom, "CreateNew");
         }
 
         //

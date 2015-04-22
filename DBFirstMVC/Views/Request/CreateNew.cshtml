@@ -106,7 +106,8 @@
                                     <td><input type="button" id="btnClearAllWeeks" value="Clear All" /></td>
                                 </tr>
                             </table>
-                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="" /><!-- this will be passed to the controller -->
+                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="@ViewBag.SelectedWeeks" /><!-- this will be passed to the controller -->
+                            <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
                         </div>
 
                         <div class="editor-label">
@@ -114,7 +115,16 @@
                         </div>
                         <div class="editor-field">
                             <!--<input type="checkbox" id="cbPriorityRequest" /> -->
-                            @Html.CheckBox("cbPriorityRequest")
+                            @{
+                                if(Model.Request.PriorityRequest == 1){
+                                    @Html.CheckBox("cbPriorityRequest",true)
+                                }
+                                if(Model.Request.PriorityRequest == 0){
+                                    @Html.CheckBox("cbPriorityRequest",false)
+                                }
+
+                              
+                            }
                             @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
                         </div>
 
@@ -408,12 +418,11 @@
                                 "Sizes": sizes.join(','),
                                 "PriorityRoomName": PriorityRoom
                             };
-                        //RoomName: room, Day: $('#Request_DayID').val(), Period: $('#Request_PeriodID').val(), Length: $('#Request_SessionLength').val()
                         $.post('@Url.Action("SaveState", "Request")',values, function (data) {
 
                         }).success(function (returnData, returnStatus) {
                             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
-                            window.location.href = url.replace("text", "?id=" + room);
+                            window.location.href = url.replace("text", "?id=" + room + "&caller=CreateNew");
                         });
 
 
@@ -638,8 +647,8 @@
                     updateFacAndRoomsList();
                 });
             }
-            $('#btnDefaultWeeks').trigger('click');
-            
+            if ($('#selectedWeeks').val() == "")
+                $("#btnDefaultWeeks").trigger('click');
 
 
 
@@ -689,25 +698,30 @@
             var roomStr = $('#hiddenroomList').val();
             if (roomStr != "") {
                 room = roomStr.split(',');
-                $('#Room').show();
+                $('#Room').show(); //temporarily show the elements so that we can use them
                 $('#btnAddToRoom').show();
-                for (var i = 0; i < room.length ; i++) {
-                    $('#Room')
+                for (var i = 0; i < room.length ; i++) { //loop through each room
+                    $('#Room') //we must add it to the dropdownlist before we can select it
                      .append($("<option></option>")
                      .attr("value", room[i])
                      .text(room[i]));
                     $('#Room').val(room[i]);
-                    $('#btnAddToRoom').trigger('click');
+                    $('#btnAddToRoom').trigger('click'); //trigger the addToRoom click event
                 }
-            }
-
-
-                
-
-
-                $('#Room').hide();
+                $('#Room').hide(); //re-hide the elements
                 $('#btnAddToRoom').hide();
             }
+
+            //update weeks selected
+            var weeks = $('#selectedWeeks').val().split(',');
+            for (var i = 0; i < weeks.length; i++) {
+                var w = parseInt(weeks[i]);
+                $('#popupWeeks').children().eq(w-1).removeClass("ui-selectee");
+                $('#popupWeeks').children().eq(w-1).addClass("ui-selected");
+                selectedItems = weeks;
+            }
+
+        }
 
         
     </script>
