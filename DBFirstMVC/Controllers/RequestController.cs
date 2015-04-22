@@ -154,6 +154,15 @@ namespace DBFirstMVC.Controllers
             {
                 RequestState state = (RequestState)HttpContext.Session["State"];
                 r = state.Request;
+                string x = string.Join(",", state.Facilities.ToArray()); //add in facilities
+                ViewBag.facList = x;
+                string y =  string.Join(",", state.Rooms.ToArray()); //add in rooms
+                ViewBag.roomList = y;
+                string z = string.Join(",", state.Sizes.ToArray()); //add in sizes
+                ViewBag.sizeList = z;
+
+                ViewBag.PriorityRoomName = state.PriorityRoomName; //add the priority room choice
+
             }
 
 
@@ -469,13 +478,15 @@ namespace DBFirstMVC.Controllers
 
         //Function to save the information on the request page into a session, to be reloaded when neccessary
         [HttpPost]
-        public void SaveState(Request r, string Fac, string selectedWeeks, string SelectedRoom, string Rooms)
+        public void SaveState(Request r, string Fac, string selectedWeeks, string SelectedRoom, string Rooms, string Sizes, string PriorityRoomName)
         {
             RequestState state = new RequestState();
             state.Request = r;
             state.Facilities = Fac.Split(',').ToList<string>();
             state.Weeks = selectedWeeks.Split(',').ToList<string>();
             state.Rooms = Rooms.Split(',').ToList<string>();
+            state.Sizes = Sizes.Split(',').ToList<string>();
+            state.PriorityRoomName = PriorityRoomName;
             Session["State"] = state; //save session
             DisplayRoomInfo(SelectedRoom);
         }

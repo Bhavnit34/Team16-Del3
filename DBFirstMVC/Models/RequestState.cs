@@ -12,5 +12,7 @@ namespace DBFirstMVC.Models
         public List<string> Facilities { get; set; }
         public List<string> Weeks { get; set; }
         public List<string> Rooms { get; set; }
+        public List<String> Sizes { get; set; }
+        public string PriorityRoomName { get; set; }
     }
 }
