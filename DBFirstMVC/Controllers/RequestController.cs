@@ -42,20 +42,18 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult DisplayRoomInfo(string id = "0", string caller = "")
         {
-            if (caller == "CreateNew")
-            {
-                ViewBag.Caller = caller;
-            }
-            
+
+            ViewBag.Caller = caller;
             ViewBag.CurrentUser = getCurrentUser();
             Room room = db.Rooms.Find(id);
+            var q = db.RoomFacilities.Where(a => a.RoomName.Equals(id));
 
-            return View(room);
+            return View(new RoomInfo() { Room = room, RoomFacility = q });
         }
 
-        public ActionResult BackToCreate()
+        public void ShowRoomInfo(string room)
         {
-            return View();
+            DisplayRoomInfo(room, "GetRequest");
         }
 
         public ActionResult GetRequest(int id = 0)

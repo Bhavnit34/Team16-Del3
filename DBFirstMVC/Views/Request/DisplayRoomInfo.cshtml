@@ -1,4 +1,4 @@
-﻿@model DBFirstMVC.Room
+﻿@model DBFirstMVC.Models.RoomInfo
 
 @{
     ViewBag.Title = "Display Room Info";
@@ -9,36 +9,41 @@
 
 <fieldset>
     <legend>Room</legend>
-    <h2 style="float:right;">@Html.DisplayFor(model => model.RoomName)</h2>
+    <h2 style="float:right;">@Html.DisplayFor(model => model.Room.RoomName)</h2>
     @{
-        if(ViewBag.Caller != null){
+        if(ViewBag.Caller == "CreateNew"){
             @Html.ActionLink("Back","CreateNew") 
+        }
+        if(ViewBag.Caller == "GetRequest"){
+            @Html.ActionLink("Back",null, null, null, new { href = Request.UrlReferrer})
         }
     }
     
     <!--@Html.ActionLink("Back to previous page",null, null, null, new { href = Request.UrlReferrer})-->
     <table>
         <tr>
-            <th>  @Html.LabelFor(model => model.BuildingCode,"Building Code")</th>
-            <th> @Html.LabelFor(model => model.Capacity)</th>
-            <th>@Html.LabelFor(model => model.Lab)</th>
-             @{if(Model.DeptCode != null){<th> @Html.LabelFor(model => model.DeptCode, "Dept")</th>} }
+            <th>  @Html.LabelFor(model => model.Room.BuildingCode,"Building Code")</th>
+            <th> @Html.LabelFor(model => model.Room.Capacity)</th>
+            <th>@Html.LabelFor(model => model.Room.Lab)</th>
+             @{if (Model.Room.DeptCode != null)
+               {<th> @Html.LabelFor(model => model.Room.DeptCode, "Dept")</th>} }
         </tr>
         <tr>
             <td class="display-label">
                
-                @Html.DisplayFor(model => model.BuildingCode)
+                @Html.DisplayFor(model => model.Room.BuildingCode)
             </td>
 
             <td class="display-label">
                 
-                @Html.DisplayFor(model => model.Capacity)
+                @Html.DisplayFor(model => model.Room.Capacity)
             </td>
 
             <td class="display-label">
                  
                 @{
-                    if(Model.Lab == 1){
+                    if (Model.Room.Lab == 1)
+                    {
                         @Html.CheckBox("Lab",true, new{@disabled = "disabled"})
                 }
                     else{
@@ -49,16 +54,30 @@
             </td>
 
             @{
-                if(Model.DeptCode != null){
+                if (Model.Room.DeptCode != null)
+                {
                     <td class="display-label">
-                        @Html.DisplayFor(model => model.DeptCode)
+                        @Html.DisplayFor(model => model.Room.DeptCode)
                     </td>
                 }
             }
         </tr>
    </table>
-    <div style="float:right; margin-top:-3%">
-        <img src="@Url.Content(Model.URL)" width="400" height="300" />
+    <div style="float:right;">
+        <img src="@Url.Content(Model.Room.URL)" width="400" height="300" />
     </div>
+    <div id="facList">
+        <h2> Facilities</h2>
+        <ol>
+        @foreach (var item in Model.RoomFacility) {
+
+            <li>
+                @Html.DisplayFor(modelItem => item.Facility.FacilityName) <!-- Display the facility name -->
+            </li>
+    
+        }
+        </ol>
+    </div>
+    
 
 </fieldset>

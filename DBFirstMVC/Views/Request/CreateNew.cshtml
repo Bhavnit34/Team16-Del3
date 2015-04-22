@@ -119,7 +119,7 @@
                                 if(Model.Request.PriorityRequest == 1){
                                     @Html.CheckBox("cbPriorityRequest",true)
                                 }
-                                if(Model.Request.PriorityRequest == 0){
+                                if(Model.Request.PriorityRequest != 1){
                                     @Html.CheckBox("cbPriorityRequest",false)
                                 }
 
