@@ -9,6 +9,7 @@
 
 <fieldset>
     <legend>Room</legend>
+    <h2 style="float:right;">@Html.DisplayFor(model => model.RoomName)</h2>
     @{
         if(ViewBag.Caller != null){
             @Html.ActionLink("Back","CreateNew") 
@@ -56,7 +57,7 @@
             }
         </tr>
    </table>
-    <div style="float:right; margin-top:-5%">
+    <div style="float:right; margin-top:-3%">
         <img src="@Url.Content(Model.URL)" width="400" height="300" />
     </div>
 
