@@ -7,46 +7,43 @@
 
 <h2>Requests</h2>
 
-<p>
-    @Html.ActionLink("Create New", "CreateNew")
-</p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserID)
+            @Html.Label("User")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Module.Title)
+            @Html.Label("Title")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SessionType)
+            @Html.Label("Type")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SessionLength)
+            @Html.Label("Length")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DayID)
+            @Html.Label("Day")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PeriodID)
+            @Html.Label("Period")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PriorityRequest)
+            @Html.Label("Priority")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AdhocRequest)
+            @Html.Label("Ad-hoc")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SpecialRequirements)
+            @Html.Label("Special Requirements")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Semester)
+            @Html.Label("Semester")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RoundID)
+            @Html.Label("Round")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.Label("Status")
         </th>
     </tr>
 
@@ -71,10 +68,28 @@
             @Html.DisplayFor(modelItem => item.PeriodID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PriorityRequest)
+             @{
+                    if(item.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
+           <!-- @Html.DisplayFor(modelItem => item.PriorityRequest) -->
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.AdhocRequest)
+            @{
+                if(item.AdhocRequest == 1){
+                    @Html.CheckBox("AdHoc",true, new{@disabled = "disabled"})
+                }
+                else{
+                    @Html.CheckBox("AdHoc",false, new{@disabled = "disabled"})
+                }
+        
+            }
+            <!--@Html.DisplayFor(modelItem => item.AdhocRequest)-->
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SpecialRequirements)

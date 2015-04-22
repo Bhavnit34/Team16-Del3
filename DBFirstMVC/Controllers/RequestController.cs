@@ -40,6 +40,22 @@ namespace DBFirstMVC.Controllers
             return View(request);
         }
 
+        public ActionResult DisplayRoomInfo(string id = "0", string caller = "")
+        {
+
+            ViewBag.Caller = caller;
+            ViewBag.CurrentUser = getCurrentUser();
+            Room room = db.Rooms.Find(id);
+            var q = db.RoomFacilities.Where(a => a.RoomName.Equals(id));
+
+            return View(new RoomInfo() { Room = room, RoomFacility = q });
+        }
+
+        public void ShowRoomInfo(string room)
+        {
+            DisplayRoomInfo(room, "GetRequest");
+        }
+
         public ActionResult GetRequest(int id = 0)
         {
             ViewBag.CurrentUser = getCurrentUser();
@@ -135,13 +151,39 @@ namespace DBFirstMVC.Controllers
             var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
             ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName"); 
             ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
-            return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities});
+
+            Request r = new Request();
+            if (Session["State"] != null)
+            {
+                RequestState state = (RequestState)HttpContext.Session["State"];
+                r = state.Request;
+                string x = string.Join(",", state.Facilities.ToArray()); //add in facilities
+                ViewBag.facList = x;
+                string y =  string.Join(",", state.Rooms.ToArray()); //add in rooms
+                ViewBag.roomList = y;
+                string z = string.Join(",", state.Sizes.ToArray()); //add in sizes
+                ViewBag.sizeList = z;
+
+                ViewBag.PriorityRoomName = state.PriorityRoomName; //add the priority room choice
+                string wk = "";
+                for (var i = 0; i < state.Weeks.Count; i++) {
+                    wk += "," + state.Weeks[i]; 
+                }
+                wk = wk.Substring(1, wk.Length-1); //remove leading comma
+                ViewBag.SelectedWeeks = wk;
+
+            }
+
+
+
+
+            return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities, Request = r});
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRequest(CreateNewRequest myRequest, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
+        public ActionResult CreateRequest(CreateNewRequest myRequest, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
         {   
             bool validFacilities = true;
             bool validRooms = true;
@@ -156,7 +198,7 @@ namespace DBFirstMVC.Controllers
             myRequest.Request.UserID = user.UserID;
             myRequest.Request.Semester = 1;
             myRequest.Request.AdhocRequest = 0;
-            
+               
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
             if(selectedWeeks.Contains(','))
@@ -442,6 +484,22 @@ namespace DBFirstMVC.Controllers
             return Json(size);
         }
 
+
+        //Function to save the information on the request page into a session, to be reloaded when neccessary
+        [HttpPost]
+        public void SaveState(Request r, string Fac, string selectedWeeks, string SelectedRoom, string Rooms, string Sizes, string PriorityRoomName)
+        {
+            RequestState state = new RequestState();
+            state.Request = r;
+            state.Facilities = Fac.Split(',').ToList<string>();
+            state.Weeks = selectedWeeks.Split(',').ToList<string>();
+            state.Rooms = Rooms.Split(',').ToList<string>();
+            state.Sizes = Sizes.Split(',').ToList<string>();
+            state.PriorityRoomName = PriorityRoomName;
+            Session["State"] = state; //save session
+            DisplayRoomInfo(SelectedRoom, "CreateNew");
+        }
+
         //
         // GET: /Request/Edit/5
 
@@ -496,6 +554,42 @@ namespace DBFirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //Delete any associated room requests
+            var ReqToRooms = (from d in db.RequestToRooms
+                                  where d.RequestID == id
+                                  select d).ToList();
+
+            for (var i = 0; i < ReqToRooms.Count; i++)
+            {
+                //take each roomRequestID
+                var rID = ReqToRooms[i].RoomRequestID;
+                //find the row in the RequestToRoom table and delete it
+                RequestToRoom row = db.RequestToRooms.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RequestToRooms.Remove(row);
+                db.SaveChanges();
+                //find the row in the RooomRequest table and delete it
+                RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RoomRequests.Remove(RoomRow);
+                db.SaveChanges();
+            } 
+
+            //Delete any associated facility requests
+            var FacilityRequests = (from d in db.FacilityRequests
+                                    where d.RequestID.Equals(id)
+                                    select d).ToList();
+
+            for (var i = 0; i < FacilityRequests.Count; i++)
+            {
+                //find id of the row with the given requestID
+                var fID = FacilityRequests[i].FacilityRequestID;
+                FacilityRequest fac = db.FacilityRequests.Find(fID);
+                //delete the row
+                db.FacilityRequests.Remove(fac);
+                db.SaveChanges();
+            }
+
+
+            //Remove the Request row
             Request request = db.Requests.Find(id);
             db.Requests.Remove(request);
             db.SaveChanges();

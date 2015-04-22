@@ -216,6 +216,8 @@
     <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\FacilityAndRoomFacility.cs" />
     <Compile Include="Models\RequestInfo.cs" />
+    <Compile Include="Models\RequestState.cs" />
+    <Compile Include="Models\RoomInfo.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -432,6 +434,7 @@
     <Content Include="Views\Login\Edit.cshtml" />
     <Content Include="Views\Login\Delete.cshtml" />
     <Content Include="Views\Message\TempMessage.cshtml" />
+    <Content Include="Views\Request\DisplayRoomInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

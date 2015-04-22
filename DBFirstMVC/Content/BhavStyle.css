@@ -4,6 +4,11 @@
 	clear: both;
 }
 
+select {
+      font-size:1.2em; 
+      font-family:'Lucida Grande',Times New Roman;
+}
+
 .mainHeader  img {
 	width:30%;
 	height:auto;

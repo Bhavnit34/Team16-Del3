@@ -60,6 +60,7 @@ namespace DBFirstMVC.Controllers
         public ActionResult Logout()
         {
             Session.Remove("User"); //Remove user's session status and log out
+            Session.Remove("State");
             return RedirectToAction("Index");
         }
 
