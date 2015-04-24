@@ -43,5 +43,7 @@ namespace DBFirstMVC
         public DbSet<User> Users { get; set; }
         public DbSet<Week> Weeks { get; set; }
         public DbSet<sysdiagram> sysdiagrams { get; set; }
+        public DbSet<AllocatedRoom> AllocatedRooms { get; set; }
+        public DbSet<RoundAndSemester> RoundAndSemesters { get; set; }
     }
 }

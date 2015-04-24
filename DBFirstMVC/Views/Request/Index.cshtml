@@ -6,6 +6,8 @@
 }
 
 <h2>Requests</h2>
+@Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
+<a id="scrollToBottom">Bottom of Page</a>
 
 <table>
     <tr>
@@ -119,6 +121,9 @@
 @section CreateNewScript{
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#scrollToBottom').click(function () {
+                window.scrollTo(0, document.body.scrollHeight);
             });
+         });
      </script>
     }

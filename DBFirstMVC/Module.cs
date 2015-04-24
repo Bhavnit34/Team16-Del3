@@ -21,7 +21,7 @@ namespace DBFirstMVC
             this.ModuleLecturers = new HashSet<ModuleLecturer>();
             this.Requests = new HashSet<Request>();
         }
-        [Required]
+    
         public string ModCode { get; set; }
         public string Title { get; set; }
         public string Part { get; set; }

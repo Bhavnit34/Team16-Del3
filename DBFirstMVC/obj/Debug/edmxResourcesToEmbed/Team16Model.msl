@@ -197,5 +197,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AllocatedRooms">
+      <EntityTypeMapping TypeName="team16Model.AllocatedRoom">
+        <MappingFragment StoreEntitySet="AllocatedRoom">
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="AllocatedRoomID" ColumnName="AllocatedRoomID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoundAndSemesters">
+      <EntityTypeMapping TypeName="team16Model.RoundAndSemester">
+        <MappingFragment StoreEntitySet="RoundAndSemester">
+          <ScalarProperty Name="CurrentSemester" ColumnName="CurrentSemester" />
+          <ScalarProperty Name="CurrentRoundID" ColumnName="CurrentRoundID" />
+          <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

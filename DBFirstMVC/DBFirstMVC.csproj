@@ -178,6 +178,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllocatedRoom.cs">
+      <DependentUpon>Team16Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -244,6 +247,9 @@
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
     <Compile Include="RoomRequest.cs">
+      <DependentUpon>Team16Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoundAndSemester.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagram.cs">
@@ -390,7 +396,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Request\Index.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
-    <Content Include="Views\Request\Create.cshtml" />
     <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Request\Delete.cshtml" />
     <Content Include="Views\Request\GetRequest.cshtml" />
