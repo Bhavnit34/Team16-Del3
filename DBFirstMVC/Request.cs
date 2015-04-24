@@ -19,8 +19,9 @@ namespace DBFirstMVC
         {
             this.FacilityRequests = new HashSet<FacilityRequest>();
             this.RequestToRooms = new HashSet<RequestToRoom>();
+            this.AllocatedRooms = new HashSet<AllocatedRoom>();
         }
-    
+
         public int RequestID { get; set; }
         public Nullable<short> UserID { get; set; }
         [Required]
@@ -46,5 +47,6 @@ namespace DBFirstMVC
         public virtual Week Week { get; set; }
         public virtual ICollection<RequestToRoom> RequestToRooms { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<AllocatedRoom> AllocatedRooms { get; set; }
     }
 }

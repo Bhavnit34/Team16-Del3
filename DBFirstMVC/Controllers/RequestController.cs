@@ -21,7 +21,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.CurrentUser = getCurrentUser();
+            
             var requests = db.Requests.Include(r => r.Module);
             return View(requests.ToList());
         }
@@ -31,7 +31,6 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -44,7 +43,6 @@ namespace DBFirstMVC.Controllers
         {
 
             ViewBag.Caller = caller;
-            ViewBag.CurrentUser = getCurrentUser();
             Room room = db.Rooms.Find(id);
             var q = db.RoomFacilities.Where(a => a.RoomName.Equals(id));
 
@@ -58,7 +56,6 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult GetRequest(int id = 0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Request r = db.Requests.Find(id); //input id from chosen request
             if (r == null)
                 return RedirectToAction("Index"); //back to home page if request doesnt exist
@@ -78,50 +75,15 @@ namespace DBFirstMVC.Controllers
         }
 
 
-
-        //
-        // GET: /Request/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title");
-            return View();
-        }
-
-        //
-        // POST: /Request/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Request request, bool cbPriorityRequest)
-        {
-            if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
-                request.PriorityRequest = 1;
-            else
-                request.PriorityRequest = 0;
-
-            request.RoundID = 1;
-            request.UserID = 1;
-            request.Semester = 1;
-            request.AdhocRequest = 0;
-
-            if (ModelState.IsValid)
-            {
-                db.Requests.Add(request);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title", request.ModCode);
-            return View(request);
-        }
-
         public ActionResult CreateNew()
         {
 
+            //get current round and semester
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            ViewBag.CurrentRound = RandS.CurrentRoundID;
+            ViewBag.CurrentSemester = RandS.CurrentSemester;
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
-            ViewBag.CurrentUser = row.FullDept;
 
             if (row.DeptCode == "CA")
                 ViewBag.Modules = db.Modules; //this will be used as the list of modules
@@ -192,12 +154,19 @@ namespace DBFirstMVC.Controllers
             else
                 myRequest.Request.PriorityRequest = 0;
 
-            //set auto defined variables, these should be calculated later
-            myRequest.Request.RoundID = 1;
+            //set user of the request
             User user = (User)Session["User"];
             myRequest.Request.UserID = user.UserID;
-            myRequest.Request.Semester = 1;
+
+            //This needs to be calculated when we do ad hoc requests
             myRequest.Request.AdhocRequest = 0;
+
+            //set round and semester based off table
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            myRequest.Request.RoundID = RandS.CurrentRoundID;
+            myRequest.Request.Semester = RandS.CurrentSemester;
+
+            myRequest.Request.Status = "0";
                
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
@@ -505,7 +474,6 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -515,6 +483,63 @@ namespace DBFirstMVC.Controllers
             return View(request);
         }
 
+
+       //Function to increment the round and simulate results of requests randomly
+        public ActionResult NextRound()
+        {
+            //Find the current round from the table
+            var CurrentRound = (from d in db.RoundAndSemesters
+                                select d.CurrentRoundID).FirstOrDefault();
+
+            // get requests that are on the current round
+            var reqs = from d in db.Requests 
+                       where d.RoundID == CurrentRound
+                       select d; 
+
+            //loop through each request and give it a status
+            Random x = new Random(); //randomizer
+            object syncLock = new object(); //a synclock will help produce a different random number
+            foreach (Request r in reqs)
+            {
+                int status = 0;
+                if (Convert.ToInt16(r.Status) < 1)
+                {
+                    lock (syncLock) //This stops the same random number from being generated
+                    {
+                        status = x.Next(1,3); //random no between 1 and 2
+                        r.Status = status.ToString();
+                    }
+                    
+                }
+
+            }
+
+            db.SaveChanges(); //save the rows
+            //increment the roundID and save to the table
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            RandS.CurrentRoundID++;
+            db.SaveChanges();
+            TempData["Message"] = "The round has been incremented, please check your requests below";
+            return RedirectToAction("Index");
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         //
         // POST: /Request/Edit/5
 
@@ -522,7 +547,6 @@ namespace DBFirstMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Request request)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             if (ModelState.IsValid)
             {
                 db.Entry(request).State = EntityState.Modified;
@@ -538,7 +562,6 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -594,13 +617,6 @@ namespace DBFirstMVC.Controllers
             db.Requests.Remove(request);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        private string getCurrentUser()
-        {
-            User userSession = (User)HttpContext.Session["User"];
-            var row = db.Depts.Find(userSession.Username);
-            return(row.FullDept);
         }
 
         protected override void Dispose(bool disposing)

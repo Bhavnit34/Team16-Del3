@@ -18,7 +18,11 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index()
         {
-            //var users = db.Users.Include(u => u.Dept);
+            //get current round and semester
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            ViewBag.CurrentRound = RandS.CurrentRoundID;
+            ViewBag.CurrentSemester = RandS.CurrentSemester;
+
             ViewBag.Usernames = new SelectList(db.Depts,"Username");
             ViewBag.Users = db.Depts;
             return View();

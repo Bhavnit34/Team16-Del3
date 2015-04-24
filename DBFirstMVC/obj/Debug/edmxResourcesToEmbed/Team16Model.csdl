@@ -103,6 +103,16 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Request" EntitySet="Requests" />
     </AssociationSet>
+    <EntitySet Name="AllocatedRooms" EntityType="team16Model.AllocatedRoom" />
+    <AssociationSet Name="FK_AllocatedRoom_RequestID" Association="team16Model.FK_AllocatedRoom_RequestID">
+      <End Role="Request" EntitySet="Requests" />
+      <End Role="AllocatedRoom" EntitySet="AllocatedRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AllocatedRoom_RoomName" Association="team16Model.FK_AllocatedRoom_RoomName">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="AllocatedRoom" EntitySet="AllocatedRooms" />
+    </AssociationSet>
+    <EntitySet Name="RoundAndSemesters" EntityType="team16Model.RoundAndSemester" />
   </EntityContainer>
   <EntityType Name="Building">
     <Key>
@@ -235,6 +245,7 @@
     <NavigationProperty Name="Week" Relationship="team16Model.FK_Request_WeekID" FromRole="Request" ToRole="Week" />
     <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="Request" ToRole="RequestToRoom" />
     <NavigationProperty Name="User" Relationship="team16Model.FK_Request_UserID" FromRole="Request" ToRole="User" />
+    <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="Request" ToRole="AllocatedRoom" />
   </EntityType>
   <EntityType Name="RequestToRoom">
     <Key>
@@ -260,6 +271,7 @@
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_Room_DeptCode" FromRole="Room" ToRole="Dept" />
     <NavigationProperty Name="RoomFacilities" Relationship="team16Model.FK_RoomFacility_Room" FromRole="Room" ToRole="RoomFacility" />
     <NavigationProperty Name="RoomRequests" Relationship="team16Model.FK_RoomRequest_RoomName" FromRole="Room" ToRole="RoomRequest" />
+    <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="Room" ToRole="AllocatedRoom" />
   </EntityType>
   <EntityType Name="RoomFacility">
     <Key>
@@ -576,4 +588,47 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="AllocatedRoom">
+    <Key>
+      <PropertyRef Name="AllocatedRoomID" />
+    </Key>
+    <Property Type="Int32" Name="AllocatedRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RequestID" />
+    <Property Type="String" Name="RoomName" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Request" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="AllocatedRoom" ToRole="Request" />
+    <NavigationProperty Name="Room" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="AllocatedRoom" ToRole="Room" />
+  </EntityType>
+  <Association Name="FK_AllocatedRoom_RequestID">
+    <End Type="team16Model.Request" Role="Request" Multiplicity="0..1" />
+    <End Type="team16Model.AllocatedRoom" Role="AllocatedRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Request">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="AllocatedRoom">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AllocatedRoom_RoomName">
+    <End Type="team16Model.Room" Role="Room" Multiplicity="0..1" />
+    <End Type="team16Model.AllocatedRoom" Role="AllocatedRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomName" />
+      </Principal>
+      <Dependent Role="AllocatedRoom">
+        <PropertyRef Name="RoomName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="RoundAndSemester">
+    <Key>
+      <PropertyRef Name="RoundAndSemesterID" />
+    </Key>
+    <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
+    <Property Type="Byte" Name="CurrentRoundID" />
+    <Property Type="Byte" Name="CurrentSemester" />
+  </EntityType>
 </Schema>

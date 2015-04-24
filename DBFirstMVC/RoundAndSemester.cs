@@ -12,18 +12,10 @@ namespace DBFirstMVC
     using System;
     using System.Collections.Generic;
     
-    public partial class Facility
+    public partial class RoundAndSemester
     {
-        public Facility()
-        {
-            this.FacilityRequests = new HashSet<FacilityRequest>();
-            this.RoomFacilities = new HashSet<RoomFacility>();
-        }
-    
-        public int FacilityID { get; set; }
-        public string FacilityName { get; set; }
-    
-        public virtual ICollection<FacilityRequest> FacilityRequests { get; set; }
-        public virtual ICollection<RoomFacility> RoomFacilities { get; set; }
+        public int RoundAndSemesterID { get; set; }
+        public Nullable<byte> CurrentRoundID { get; set; }
+        public Nullable<byte> CurrentSemester { get; set; }
     }
 }
