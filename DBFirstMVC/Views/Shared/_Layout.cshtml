@@ -22,6 +22,10 @@
                         <a style="color:gray; font-style:italic; font-size:0.6em">@ViewBag.CurrentUserTitle</a>
                     </p>
                 </div>
+                <div>
+                    <span style="float: right; text-decoration: none;">Current Round: @ViewBag.CurrentRound</span><br />
+                    <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span>
+                </div>
                 <div class="float-right">
                     <section id="login">
                         @Html.Partial("_LoginPartial")

@@ -18,7 +18,12 @@ namespace DBFirstMVC.Controllers
         //show all the requests
         public ActionResult Index()
         {
-            ViewBag.CurrentUser = getCurrentUser();
+
+            //get current round and semester
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            ViewBag.CurrentRound = RandS.CurrentRoundID;
+
+            ViewBag.CurrentSemester = RandS.CurrentSemester;
             var requests = db.Requests.Include(r => r.Module);
             var list = requests.OrderBy(z => z.Status).ToList();
             return View(list);
@@ -28,7 +33,11 @@ namespace DBFirstMVC.Controllers
         //show the list of all rooms oreder in alpabetical order Building Name 
         public ActionResult EditPool()
         {
-            ViewBag.CurrentUser = getCurrentUser();
+            //get current round and semester
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            ViewBag.CurrentRound = RandS.CurrentRoundID;
+            ViewBag.CurrentSemester = RandS.CurrentSemester;
+
             var rooms= db.Rooms.Include(r=>r.Building);
             var list=rooms.OrderBy(z=>z.Building.BuildingName).ToList();
             
@@ -38,7 +47,6 @@ namespace DBFirstMVC.Controllers
         //show the list of all facilities
         public ActionResult ShowFacility()
         {
-            ViewBag.CurrentUser = getCurrentUser();
             var facilities = db.Facilities;
             return View(facilities.ToList());
         }
@@ -234,7 +242,6 @@ namespace DBFirstMVC.Controllers
         //show selected facility
         public ActionResult EditFacility(int id = 0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Facility facility = db.Facilities.Find(id);
             if (facility == null)
             {
@@ -248,7 +255,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult EditFacility(Facility facility)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             if (ModelState.IsValid)
             {
                 db.Entry(facility).State = EntityState.Modified;
@@ -262,7 +268,6 @@ namespace DBFirstMVC.Controllers
         //show facility
         public ActionResult DeleteFacility(int id=0)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             Facility facility = db.Facilities.Find(id);
             if (facility == null)
             {
@@ -292,7 +297,6 @@ namespace DBFirstMVC.Controllers
         //create new facility
         public ActionResult CreateFacility()
         {
-            ViewBag.CurrentUser = getCurrentUser();
             return View();
         }
 
@@ -300,7 +304,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult CreateFacility(Facility facility)
         {
-            ViewBag.CurrentUser = getCurrentUser();
             if (ModelState.IsValid)
             {
                 db.Facilities.Add(facility);
@@ -316,7 +319,6 @@ namespace DBFirstMVC.Controllers
         //create new room
         public ActionResult Create()
         {
-            ViewBag.CurrentUser = getCurrentUser();
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName");
             
             return View();
@@ -326,7 +328,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult Create(Room room)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             if (ModelState.IsValid)
             {
                 db.Rooms.Add(room);
@@ -341,7 +342,6 @@ namespace DBFirstMVC.Controllers
           //get request deatails 
         public ActionResult GetRequest(int id = 0)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             Request r = db.Requests.Find(id); //input id from chosen request
             if (r == null)
                 return RedirectToAction("Index"); //back to home page if request doesnt exist
@@ -362,7 +362,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult AllocateRooms(int id = 0)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+
             Request r = db.Requests.Find(id); //input id from chosen request
             if (r == null)
                 return RedirectToAction("Index"); //back to home page if request does not exist
@@ -381,7 +381,6 @@ namespace DBFirstMVC.Controllers
         //change request status view
         public ActionResult Edit(int id = 0)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             Request request = db.Requests.Find(id);
             if (request == null)
             {
@@ -396,7 +395,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult Edit(Request request)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             if (ModelState.IsValid)
             {
                 db.Entry(request).State = EntityState.Modified;
@@ -411,7 +409,6 @@ namespace DBFirstMVC.Controllers
         //change room view
         public ActionResult EditRoom(string id1)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             Room room = db.Rooms.Find(id1);
             if (room == null)
             {
@@ -426,7 +423,6 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult EditRoom(Room room)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             if (ModelState.IsValid)
             {
                 db.Entry(room).State = EntityState.Modified;
@@ -442,7 +438,6 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Delete(string id1)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             Room room = db.Rooms.Find(id1);
             if (room== null)
             {
@@ -457,7 +452,6 @@ namespace DBFirstMVC.Controllers
        [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(string id1)
         {
-            ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
             Room room = db.Rooms.Find(id1);
             db.Rooms.Remove(room);
             db.SaveChanges();
