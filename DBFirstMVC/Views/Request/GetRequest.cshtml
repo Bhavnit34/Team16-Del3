@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
- @Html.ActionLink("Back", "Index")
-<h2 style="float:right;"><u>Request @Model.Request.RequestID</u></h2>
+ @Html.ActionLink("Back", "Index") |  @Html.ActionLink("Edit", "Edit", new { id=Model.Request.RequestID }) |  @Html.ActionLink("Delete", "Delete", new { id=Model.Request.RequestID })
+
+<h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
 
 
             <h2> Facilities</h2>
@@ -35,7 +36,6 @@
                    
            }
            
-          <!-- <input type="button" id="btnInfo_@(item.RoomRequest.RoomName)" value="Info" />-->
        </li><!-- Display the room name -->
   
 
@@ -89,7 +89,7 @@
             @Html.LabelFor(model => model.Request.User.Dept.FullDept, "Dept")
         </th>
         <th>
-            @Html.LabelFor(model => model.Request.Module.Title)
+            @Html.LabelFor(model => model.Request.Module.Title, "Module")
         </th>
         <th>
             @Html.LabelFor(model => model.Request.SessionType, "Type")
@@ -127,6 +127,7 @@
             @Html.DisplayFor(modelItem => modelItem.Request.User.Dept.FullDept)
         </td>
         <td>
+            <b>@Html.DisplayFor(modelItem => modelItem.Request.ModCode)</b><br />
             @Html.DisplayFor(modelItem => modelItem.Request.Module.Title)
         </td>
         <td>
@@ -142,10 +143,28 @@
             @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)
+            <!--@Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)-->
+            @{
+                    if(Model.Request.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)
+            <!--@Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)-->
+                        @{
+                    if(Model.Request.AdhocRequest == 1){
+                        @Html.CheckBox("Adhoc",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Adhoc",false, new{@disabled = "disabled"})
+                    }
+        
+              }
         </td>
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.SpecialRequirements)

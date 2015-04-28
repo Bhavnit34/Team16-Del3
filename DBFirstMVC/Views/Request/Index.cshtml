@@ -12,10 +12,7 @@
 <table>
     <tr>
         <th>
-            @Html.Label("User")
-        </th>
-        <th>
-            @Html.Label("Title")
+            @Html.Label("Module")
         </th>
         <th>
             @Html.Label("Type")
@@ -52,9 +49,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.User.Username)
-        </td>
-        <td>
+            <b>@Html.DisplayFor(modelItem => item.ModCode)</b><br />
             @Html.DisplayFor(modelItem => item.Module.Title)
         </td>
         <td>

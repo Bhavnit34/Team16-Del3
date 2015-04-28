@@ -21,9 +21,14 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index()
         {
-            
-            var requests = db.Requests.Include(r => r.Module);
-            return View(requests.ToList());
+            User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
+
+            var UserRequests = from d in db.Requests
+                               where d.UserID == userSession.UserID
+                               select d;
+                               
+            //var requests = UserRequests.Include(r => r.Module);
+            return View(UserRequests.ToList());
         }
 
         //
