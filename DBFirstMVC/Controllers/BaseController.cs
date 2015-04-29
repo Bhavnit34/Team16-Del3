@@ -18,9 +18,11 @@ namespace DBFirstMVC.Controllers
             {
                 ViewBag.CurrentUser = getCurrentUser(); // get user logged in
                 //get current round and semester
-                //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-                //ViewBag.CurrentRound = RandS.CurrentRoundID;
-                //ViewBag.CurrentSemester = RandS.CurrentSemester;
+                RoundAndSemester RandS = (from d in db.RoundAndSemesters
+                                          where d.CurrentRound == true
+                                          select d).FirstOrDefault();
+                ViewBag.CurrentRound = RandS.RoundID;
+                ViewBag.CurrentSemester = RandS.Semester;
 
                 base.OnActionExecuting(filterContext); //Continue as normal
             }

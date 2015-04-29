@@ -246,6 +246,7 @@
     <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="Request" ToRole="RequestToRoom" />
     <NavigationProperty Name="User" Relationship="team16Model.FK_Request_UserID" FromRole="Request" ToRole="User" />
     <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="Request" ToRole="AllocatedRoom" />
+    <Property Type="String" Name="Year" MaxLength="7" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="RequestToRoom">
     <Key>
@@ -628,7 +629,10 @@
       <PropertyRef Name="RoundAndSemesterID" />
     </Key>
     <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-    <Property Type="Byte" Name="CurrentRoundID" />
-    <Property Type="Byte" Name="CurrentSemester" />
+    <Property Type="Byte" Name="RoundID" />
+    <Property Type="Byte" Name="Semester" />
+    <Property Type="DateTime" Name="StartDate" Precision="0" />
+    <Property Type="DateTime" Name="EndDate" Precision="0" />
+    <Property Type="Boolean" Name="CurrentRound" />
   </EntityType>
 </Schema>

@@ -41,6 +41,7 @@ namespace DBFirstMVC
         public Nullable<int> WeekID { get; set; }
         public Nullable<byte> RoundID { get; set; }
         public string Status { get; set; }
+        public string Year { get; set; }
     
         public virtual ICollection<FacilityRequest> FacilityRequests { get; set; }
         public virtual Module Module { get; set; }

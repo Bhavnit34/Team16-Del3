@@ -98,6 +98,7 @@
     <EntitySetMapping Name="Requests">
       <EntityTypeMapping TypeName="team16Model.Request">
         <MappingFragment StoreEntitySet="Request">
+          <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="ModCode" ColumnName="ModCode" />
@@ -210,8 +211,11 @@
     <EntitySetMapping Name="RoundAndSemesters">
       <EntityTypeMapping TypeName="team16Model.RoundAndSemester">
         <MappingFragment StoreEntitySet="RoundAndSemester">
-          <ScalarProperty Name="CurrentSemester" ColumnName="CurrentSemester" />
-          <ScalarProperty Name="CurrentRoundID" ColumnName="CurrentRoundID" />
+          <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="RoundID" ColumnName="RoundID" />
           <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
         </MappingFragment>
       </EntityTypeMapping>

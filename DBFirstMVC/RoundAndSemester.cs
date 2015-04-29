@@ -15,7 +15,10 @@ namespace DBFirstMVC
     public partial class RoundAndSemester
     {
         public int RoundAndSemesterID { get; set; }
-        public Nullable<byte> CurrentRoundID { get; set; }
-        public Nullable<byte> CurrentSemester { get; set; }
+        public Nullable<byte> RoundID { get; set; }
+        public Nullable<byte> Semester { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public Nullable<bool> CurrentRound { get; set; }
     }
 }

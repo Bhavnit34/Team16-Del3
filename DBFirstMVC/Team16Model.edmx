@@ -239,6 +239,7 @@
           <Property Name="Semester" Type="tinyint" />
           <Property Name="WeekID" Type="int" />
           <Property Name="RoundID" Type="tinyint" />
+          <Property Name="Year" Type="varchar" MaxLength="7" />
           <Property Name="Status" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="RequestToRoom">
@@ -282,8 +283,11 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Name="RoundAndSemesterID" Type="int" Nullable="false" />
-          <Property Name="CurrentRoundID" Type="tinyint" />
-          <Property Name="CurrentSemester" Type="tinyint" />
+          <Property Name="RoundID" Type="tinyint" />
+          <Property Name="Semester" Type="tinyint" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="CurrentRound" Type="bit" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -840,6 +844,7 @@
           <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="Request" ToRole="RequestToRoom" />
           <NavigationProperty Name="User" Relationship="team16Model.FK_Request_UserID" FromRole="Request" ToRole="User" />
           <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="Request" ToRole="AllocatedRoom" />
+          <Property Type="String" Name="Year" MaxLength="7" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RequestToRoom">
           <Key>
@@ -1222,8 +1227,11 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-          <Property Type="Byte" Name="CurrentRoundID" />
-          <Property Type="Byte" Name="CurrentSemester" />
+          <Property Type="Byte" Name="RoundID" />
+          <Property Type="Byte" Name="Semester" />
+          <Property Type="DateTime" Name="StartDate" Precision="0" />
+          <Property Type="DateTime" Name="EndDate" Precision="0" />
+          <Property Type="Boolean" Name="CurrentRound" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1328,6 +1336,7 @@
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="team16Model.Request">
               <MappingFragment StoreEntitySet="Request">
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ModCode" ColumnName="ModCode" />
@@ -1440,8 +1449,11 @@
           <EntitySetMapping Name="RoundAndSemesters">
             <EntityTypeMapping TypeName="team16Model.RoundAndSemester">
               <MappingFragment StoreEntitySet="RoundAndSemester">
-                <ScalarProperty Name="CurrentSemester" ColumnName="CurrentSemester" />
-                <ScalarProperty Name="CurrentRoundID" ColumnName="CurrentRoundID" />
+                <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
               </MappingFragment>
             </EntityTypeMapping>
