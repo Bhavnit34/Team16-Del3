@@ -12,9 +12,10 @@
  @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
-        <div class="generalRequest">
-       
-
+      
+     <div id="container">
+  
+       <div id="left">
                     <fieldset>
                         <legend>Request</legend>
                         <div class="editor-label">
@@ -140,7 +141,7 @@
    
         </div>
  
-        <div class="generalRequest">
+          <div id="right">
                     <fieldset>
                         <legend>Request</legend>
                       
@@ -161,8 +162,9 @@
                     </fieldset>
          
         </div>
-        <div class="generalRequest">
 
+
+         <div id="center">
 
                     <fieldset>
                         <legend>Request</legend>
@@ -193,11 +195,13 @@
          
          
         </div>
+         </div>
         <p>
             <input type="button" id="btnCheck" value="Create" />
             <input type="submit" value="Create" id="btnCreate"  name='Command' />
         </p>
 }
+         
 
 
 

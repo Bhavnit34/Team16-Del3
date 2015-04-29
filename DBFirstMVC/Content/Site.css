@@ -5,7 +5,7 @@
 
 body {
     background-color: #fff;
-    border-top: solid 10px #000;
+    border-top: solid 10px #fff;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -21,7 +21,7 @@ a {
     text-decoration: underline;
 }
 
-    a:link, a:visited,
+   a:link, a:visited,
     a:active, a:hover {
         color: #333;
     }
@@ -91,7 +91,7 @@ h5, h6 {
     }
 
 
-/* main layout
+/* main layout of website
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
@@ -99,22 +99,49 @@ h5, h6 {
 }
 
 #body {
-    background-color: #efeeef;
+    background-color: #d3dce0;
     clear: both;
     padding-bottom: 35px;
 }
 
-    .main-content {
-        background: url("../Images/accent.png") no-repeat;
-        padding-left: 10px;
-        padding-top: 30px;
-    }
+.editor-label {
+font-family: Arial, sans-serif;
+} 
+
+   .main-content //* Container design */ {
+    padding-right: 2em;
+    padding-top: 30px;
+}
+
 
     .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
-    }
+}
 
-/*for the general request area div. This div is in Views/Request/Create.cshtml */
+    #container {
+    background-color: #415f66;
+    border-style: double;
+    border-color: rgba(51, 0, 102, 1);
+    color: #fff;
+    text-align: center;
+    width:100%;
+
+}
+#left {
+    float: left;
+    width: 100px;
+}
+
+#center {
+    display: inline-block;
+    margin-left:30em;
+    width: 100px;
+}
+
+#right {
+    float: right;
+    width: 100px;
+}
+/* OLD for the general request area div. This div is in Views/Request/Create.cshtml */
 .generalRequest {
     border-style: double;
     border-color: rgba(51, 0, 102, 1);
@@ -276,17 +303,38 @@ ol.round {
             background: url("../Images/orderedList0.png") no-repeat;
         }
 
-        ol.round li.one {
-            background: url("../Images/orderedList1.png") no-repeat;
+         ol.round li.one {
+            border:solid;
+            border-radius: 10px; /* These elements help shape the Home screen buttons    */
+	        -moz-border-radius: 10px;
+	        -webkit-border-radius:10px;
+            background-color:#c8c8c8;
+	        display:inline-block;
+            width:15%;
         }
 
         ol.round li.two {
-            background: url("../Images/orderedList2.png") no-repeat;
+            border:solid;
+            border-radius: 10px; /* These elements help shape the Home screen buttons   */
+	        -moz-border-radius: 10px;
+	        -webkit-border-radius:10px;
+            background-color:#c8c8c8;
+	        width:15%;
+	        display:inline-block;
+            margin-left:10em;
         }
 
         ol.round li.three {
-            background: url("../Images/orderedList3.png") no-repeat;
+            border:solid;
+            border-radius: 10px; /* These elements help shape the Home screen buttons    */
+	        -moz-border-radius: 10px;
+	        -webkit-border-radius:10px;
+            background-color:#c8c8c8;
+	        width:15%;
+	        display:inline-block;
+            margin-left:11em;
         }
+
 
         ol.round li.four {
             background: url("../Images/orderedList4.png") no-repeat;
@@ -575,9 +623,9 @@ th {
         position: absolute;
         right: 0em;
         top: 0;
+ }
         font-size: 0.75em;
-    }
-
+   
     th.asc a:after {
         content: '▲';
     }
