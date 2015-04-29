@@ -84,9 +84,9 @@ namespace DBFirstMVC.Controllers
         {
 
             //get current round and semester
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            ViewBag.CurrentRound = RandS.CurrentRoundID;
-            ViewBag.CurrentSemester = RandS.CurrentSemester;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //ViewBag.CurrentRound = RandS.CurrentRoundID;
+            //ViewBag.CurrentSemester = RandS.CurrentSemester;
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
 
@@ -167,9 +167,9 @@ namespace DBFirstMVC.Controllers
             myRequest.Request.AdhocRequest = 0;
 
             //set round and semester based off table
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            myRequest.Request.RoundID = RandS.CurrentRoundID;
-            myRequest.Request.Semester = RandS.CurrentSemester;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //myRequest.Request.RoundID = RandS.CurrentRoundID;
+            //myRequest.Request.Semester = RandS.CurrentSemester;
 
             myRequest.Request.Status = "0";
                
@@ -493,18 +493,18 @@ namespace DBFirstMVC.Controllers
         public ActionResult NextRound()
         {
             //Find the current round from the table
-            var CurrentRound = (from d in db.RoundAndSemesters
-                                select d.CurrentRoundID).FirstOrDefault();
+            //var CurrentRound = (from d in db.RoundAndSemesters
+                                //select d.CurrentRoundID).FirstOrDefault();
 
             // get requests that are on the current round
-            var reqs = from d in db.Requests 
-                       where d.RoundID == CurrentRound
-                       select d; 
+           // var reqs = from d in db.Requests 
+                       //where d.RoundID == CurrentRound
+                       //select d; 
 
             //loop through each request and give it a status
             Random x = new Random(); //randomizer
             object syncLock = new object(); //a synclock will help produce a different random number
-            foreach (Request r in reqs)
+            /*foreach (Request r in reqs)
             {
                 int status = 0;
                 if (Convert.ToInt16(r.Status) < 1)
@@ -518,11 +518,11 @@ namespace DBFirstMVC.Controllers
                 }
 
             }
-
+            */
             db.SaveChanges(); //save the rows
             //increment the roundID and save to the table
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            RandS.CurrentRoundID++;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //RandS.CurrentRoundID++;
             db.SaveChanges();
             TempData["Message"] = "The round has been incremented, please check your requests below";
             return RedirectToAction("Index");

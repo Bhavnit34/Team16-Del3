@@ -234,6 +234,7 @@
     <Property Name="Semester" Type="tinyint" />
     <Property Name="WeekID" Type="int" />
     <Property Name="RoundID" Type="tinyint" />
+    <Property Name="Year" Type="varchar" MaxLength="7" />
     <Property Name="Status" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="RequestToRoom">
@@ -277,8 +278,11 @@
       <PropertyRef Name="RoundAndSemesterID" />
     </Key>
     <Property Name="RoundAndSemesterID" Type="int" Nullable="false" />
-    <Property Name="CurrentRoundID" Type="tinyint" />
-    <Property Name="CurrentSemester" Type="tinyint" />
+    <Property Name="RoundID" Type="tinyint" />
+    <Property Name="Semester" Type="tinyint" />
+    <Property Name="StartDate" Type="date" />
+    <Property Name="EndDate" Type="date" />
+    <Property Name="CurrentRound" Type="bit" />
   </EntityType>
   <EntityType Name="User">
     <Key>
