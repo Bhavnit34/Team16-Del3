@@ -20,10 +20,10 @@ namespace DBFirstMVC.Controllers
         {
 
             //get current round and semester
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            ViewBag.CurrentRound = RandS.CurrentRoundID;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //ViewBag.CurrentRound = RandS.CurrentRoundID;
 
-            ViewBag.CurrentSemester = RandS.CurrentSemester;
+            //ViewBag.CurrentSemester = RandS.CurrentSemester;
             var requests = db.Requests.Include(r => r.Module);
             var list = requests.OrderBy(z => z.Status).ToList();
             return View(list);
@@ -34,9 +34,9 @@ namespace DBFirstMVC.Controllers
         public ActionResult EditPool()
         {
             //get current round and semester
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            ViewBag.CurrentRound = RandS.CurrentRoundID;
-            ViewBag.CurrentSemester = RandS.CurrentSemester;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //ViewBag.CurrentRound = RandS.CurrentRoundID;
+            //ViewBag.CurrentSemester = RandS.CurrentSemester;
 
             var rooms= db.Rooms.Include(r=>r.Building);
             var list=rooms.OrderBy(z=>z.Building.BuildingName).ToList();

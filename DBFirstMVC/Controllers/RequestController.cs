@@ -84,9 +84,9 @@ namespace DBFirstMVC.Controllers
         {
 
             //get current round and semester
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            ViewBag.CurrentRound = RandS.CurrentRoundID;
-            ViewBag.CurrentSemester = RandS.CurrentSemester;
+            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
+            //ViewBag.CurrentRound = RandS.CurrentRoundID;
+           // ViewBag.CurrentSemester = RandS.CurrentSemester;
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
 
