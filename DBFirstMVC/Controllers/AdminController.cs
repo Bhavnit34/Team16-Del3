@@ -18,12 +18,6 @@ namespace DBFirstMVC.Controllers
         //show all the requests
         public ActionResult Index()
         {
-
-            //get current round and semester
-            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            //ViewBag.CurrentRound = RandS.CurrentRoundID;
-
-            //ViewBag.CurrentSemester = RandS.CurrentSemester;
             var requests = db.Requests.Include(r => r.Module);
             var list = requests.OrderBy(z => z.Status).ToList();
             return View(list);
@@ -33,11 +27,6 @@ namespace DBFirstMVC.Controllers
         //show the list of all rooms oreder in alpabetical order Building Name 
         public ActionResult EditPool()
         {
-            //get current round and semester
-            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            //ViewBag.CurrentRound = RandS.CurrentRoundID;
-            //ViewBag.CurrentSemester = RandS.CurrentSemester;
-
             var rooms= db.Rooms.Include(r=>r.Building);
             var list=rooms.OrderBy(z=>z.Building.BuildingName).ToList();
             
