@@ -1,11 +1,6 @@
 ﻿@model DBFirstMVC.Facility
 
 @{
-
-Layout = "~/Views/Shared/adminView.cshtml";
-
-}
-@{
     ViewBag.Title = "Edit Facility";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
@@ -17,12 +12,12 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
     <fieldset>
         <legend>Request</legend>
-
+        <!--
          <div class="editor-label">
-            
+            @Html.LabelFor(model => model.FacilityID)
             @Html.HiddenFor(model => model.FacilityID)
         </div>
-         <!--   
+            
           <div class="editor-field">
         @Html.DisplayFor(model => model.FacilityID)
         @Html.ValidationMessageFor(model => model.FacilityID)
