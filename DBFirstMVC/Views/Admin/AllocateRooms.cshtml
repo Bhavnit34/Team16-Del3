@@ -19,6 +19,15 @@
 }
 </ol>
         <h2>Rooms</h2>
+
+
+
+
+
+      <h3>Group Size: @ViewBag.GroupSize</h3><br>
+  
+
+
 <div id="AddNewRoom">
 
 
@@ -46,13 +55,18 @@
       
       foreach(var item in Model.RequestToRooms){
 
-   
+   <label>Room:</label>
        @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)<br> <!-- Display the room name -->       
-            @Html.EditorFor(modelItem => item.RoomRequest.RoomName)<br>
-}
+       @Html.EditorFor(modelItem => item.RoomRequest.RoomName)<br>
+      <label>Capacity:</label>
+      @Html.DisplayFor(modelItem => item.RoomRequest.GroupSize)<br> <!-- Display group size  -->       
+       @Html.EditorFor(modelItem => item.RoomRequest.GroupSize)<br>
       
-      
-      
+    
+      }
+
+
+
       }
      
     </div>
@@ -104,6 +118,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Request.Status)
         </th>
+    
     </tr>
 <tr>
         <td>
@@ -179,7 +194,7 @@
         $(document).ready(function () {
             $('#Building').hide();
             $('#Room').hide();
-           // $('#btnAddToRoom').hide();
+            // $('#btnAddToRoom').hide();
             $.post('@Url.Action("GetPark", "Admin")', function (data) {
                 var parks = data;
                 //alert(parks);
@@ -194,13 +209,13 @@
             });
         });
 
-       
+
 
         //Function to add the list of buildings based on park choice
         $("#Park").on('change', function () {
             var park = $(this).val();
             $('#Room').hide(200);
-         //   $('#btnAddToRoom').hide();
+            //   $('#btnAddToRoom').hide();
             $('#RoomDiv').html("");
             $('#BuildingDiv').html("");
             if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
@@ -209,18 +224,18 @@
             }
 
             $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
-            // Postback response of buildings
-            var buildings = data;
-            html = "";
-            html += "<option value='--Select Building--'>--Select Building--</option>";
-            //create a dropdown list of buildings
-            for (var i = 0; i < buildings.length; i++) {
-                if (buildings[i] != park)
-                    html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
-            }
-            $('#Building').html(html); //add this html to the tag
-            $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
-            $('#Building').show(200);
+                // Postback response of buildings
+                var buildings = data;
+                html = "";
+                html += "<option value='--Select Building--'>--Select Building--</option>";
+                //create a dropdown list of buildings
+                for (var i = 0; i < buildings.length; i++) {
+                    if (buildings[i] != park)
+                        html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
+                }
+                $('#Building').html(html); //add this html to the tag
+                $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
+                $('#Building').show(200);
             });  //end $.post
         }); //end function
 
@@ -230,7 +245,7 @@
             var building = $(this).val();
             if (building.substr(0, 1) == "-") {
                 $('#Room').hide();
-              //  $('#btnAddToRoom').hide();
+                //  $('#btnAddToRoom').hide();
                 $('#RoomDiv').html("");
                 return;
             }
@@ -241,12 +256,12 @@
                 //create a dropdown list of rooms
                 html += "<option value='--Select Room--'>--Select Room--</option>";
                 for (var i = 0; i < rooms.length; i++) {
-                        html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                    html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
                 }
                 $('#Room').html(html); //add this html to the tag
                 $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
                 $('#Room').show(200);
-               // $('#btnAddToRoom').show(200);
+                // $('#btnAddToRoom').show(200);
             });  //end $.post
         }); //end function
 
@@ -256,46 +271,70 @@
 
         $('#Allocate').click(function () {
 
-         
+
             var checkArray = [];
 
 
-           // $("#AddNewRoom input").each(function () {
+            // $("#AddNewRoom input").each(function () {
 
-           // var item = $("input[id$=item_RoomRequest_RoomName]").val(); 
-              //  checkArray.push(item);
+            // var item = $("input[id$=item_RoomRequest_RoomName]").val(); 
+            //  checkArray.push(item);
+
 
             // });
-            var howmany = $('#AddNewRoom').children("input").length;
-
-            for (i = 0; i <= howmany - 1; i++) {
-                var input = $("#AddNewRoom").children("input").eq(i).attr('VALUE');
-                if (input != "") {
-                    checkArray.push(input);
-                }
-            }
-            alert(checkArray);
-            var strArr = checkArray.join("?");
-            var reqId = '@Model.Request.RequestID';
-           // alert(reqId);
-          //  alert(strArr);
-
-            $.post('@Url.Action("UpdateAllocations", "Admin")', { id1: reqId, id2: strArr }, function (data) {
-
-                //var test = data.rep alert(data);
-                //JSON.stringify(data);
-               /// alert(JSON.stringify(data).replace('__id__', reqId));
-               // window.location.href = JSON.stringify(data).replace('__id__', reqId); 
-
-                window.location.href = '/Admin/GetRequest/' + reqId;
 
 
 
+            //  var howmany = $('#AddNewRoom').children("input").length;
+            //   alert(howmany);
+            //  for (i = 0; i <= howmany - 1; i++) {
+            //     var input = $("#AddNewRoom").children("input").eq(i).attr('VALUE');
+            //   if (input != "") {
+            //     alert(input);
+            //     checkArray.push(input);
+            //  }
+            // }
+
+
+
+
+            $("#AddNewRoom :text").each(function () {//getting values from text boxes
+                if ($(this).val() != "")
+                    checkArray.push($(this).val());
             });
 
+            //check capacity for numbers as well as they add up to group size 
 
 
 
+
+            alert(checkArray);
+            var strArr = checkArray.join("?");
+            $.post('@Url.Action("CheckRooms", "Admin")', { id: strArr }, function (data) {
+                //****************check rooms 
+
+                var reqId = '@Model.Request.RequestID';
+                // alert(reqId);
+                //alert(strArr);
+                // here u put one post which takes an array with rooms an chceck them if they are valid if not return array with wrong rooms and display them 
+                // if they exist then procced to to post
+
+                $.post('@Url.Action("UpdateAllocations", "Admin")', { id1: reqId, id2: strArr }, function (data) { //update allocations 
+
+                    //var test = data.rep alert(data);
+                    //JSON.stringify(data);
+                    /// alert(JSON.stringify(data).replace('__id__', reqId));
+                    // window.location.href = JSON.stringify(data).replace('__id__', reqId); 
+
+                    window.location.href = '/Admin/GetRequest/' + reqId;// redirect 
+
+
+
+                });//end UpdateAllocations
+
+
+
+            });//end CheckRooms
 
 
 
