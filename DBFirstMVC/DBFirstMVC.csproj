@@ -443,6 +443,7 @@
     <Content Include="Views\Login\Delete.cshtml" />
     <Content Include="Views\Message\TempMessage.cshtml" />
     <Content Include="Views\Request\DisplayRoomInfo.cshtml" />
+    <Content Include="Views\Shared\adminView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
