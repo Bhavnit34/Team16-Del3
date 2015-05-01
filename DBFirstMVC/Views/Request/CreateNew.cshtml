@@ -186,6 +186,7 @@
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
+                        <input type="button" id="btnCheckAvail" value="Check Availability" />
                         <a id="studentsLeft" data-left="0" data-max="0"></a>
                         <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
                         <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
@@ -280,6 +281,24 @@
                 });  //end $.post
             }); //end function
 
+
+            //function to check which rooms are available at the given day, time and weeks
+            $('#btnCheckAvail').click(function () {
+                var roomList = [];
+                var len = $('#Room').children().length;
+                for (var i = 0; i < len; i++) {
+                    roomList.push($('#Room').children().eq(i).val());
+                }
+                var dayID = $('#Request_DayID').val();
+                var periodID = $('#Request_PeriodID').val();
+                var seshLength = $('#Request_SessionLength').val();
+                //send the rooms and the request data to check if the room is available
+                $.post('@Url.Action("CheckAvailability", "Request")', { rooms: roomList.join(','), selectedWeeks: selectedItems.join(','), day: dayID, period:periodID, length:seshLength  }, function (data) {
+
+                });
+
+
+            });
 
             //Function to add a room to the displayed list of chosen rooms
             $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){

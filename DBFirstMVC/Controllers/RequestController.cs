@@ -542,6 +542,25 @@ namespace DBFirstMVC.Controllers
             DisplayRoomInfo(SelectedRoom, "CreateNew");
         }
 
+        public ActionResult CheckAvailability(string rooms, string selectedWeeks, string day, string period, string length)
+        {
+            //turn inputted string arrays into lists
+            List<string> roomList = rooms.Split(',').ToList<string>();
+            List<string> chosenWeeks = selectedWeeks.Split(',').ToList<string>();
+            List<string> availRooms = new List<string>(); //array of free rooms to return
+
+
+
+
+              
+
+            return Json(availRooms);
+        }
+
+
+
+
+
         //
         // GET: /Request/Edit/5
 
