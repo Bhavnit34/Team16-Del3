@@ -1,6 +1,12 @@
 ﻿@model DBFirstMVC.Room
 
 @{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
+
+@{
     ViewBag.Title = "Edit room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
@@ -19,12 +25,13 @@
         @Html.EditorFor(model => model.RoomName)
         @Html.ValidationMessageFor(model => model.RoomName)
         </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.BuildingCode)
+         <div class="editor-label">
+            @Html.LabelFor(model => model.BuildingCode, "Building")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.BuildingCode)
-          
+             @Html.DropDownList("BuildingCode")
+                
+            
             @Html.ValidationMessageFor(model => model.BuildingCode)
         </div>
 
@@ -50,16 +57,15 @@
                       
                         }
 
-                        @Html.DropDownListFor(model => model.Lab, listItems, "-------- Select --------")           
+            @Html.DropDownListFor(model => model.Lab, listItems, "-------- Select --------")           
             @Html.ValidationMessageFor(model => model.Lab)
         </div>
            @Html.HiddenFor(model => model.URL)
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DeptCode)
+      <div class="editor-label">
+            @Html.LabelFor(model => model.DeptCode, "Department Name")
         </div>
         <div class="editor-field">
-              @Html.EditorFor(model => model.DeptCode)
-        
+            @Html.DropDownList("DeptCode", "-------- Select --------")
             @Html.ValidationMessageFor(model => model.DeptCode)
         </div>
 
