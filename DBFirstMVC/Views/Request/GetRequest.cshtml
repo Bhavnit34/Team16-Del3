@@ -189,9 +189,11 @@
 @section GetRequestScript{
     <script type="text/javascript"> 
         $(document).ready(function () {
+            
             //loop through the weeks passed in and check if any have been selected, change the class of the circle if so
             for (var i = 0; i < 15; i++) {
                 if ($('#hiddenWeeks').children().eq(i).val() == "1") {
+                    alert("hello");
                     $('#popupWeeks').children().eq(i).addClass("ui-selected");
                 }
 

@@ -1,68 +1,54 @@
 ﻿@model IEnumerable<DBFirstMVC.Request>
-
-@{
-
-Layout = "~/Views/Shared/adminView.cshtml";
-
-}
-
 @{
 
 Layout = "~/Views/Shared/adminView.cshtml";
 
 }
 @{
-    ViewBag.Title = "Admin - Index";
+    ViewBag.Title = "Index";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
-<h2>Central Admin All Requests</h2>
-
+<h2>Requests</h2>
+@Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
+<a id="scrollToBottom">Bottom of Page</a>
 
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserID)
+            @Html.ActionLink("User", "Index", new { sortOrder = ViewBag.UserSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Module.Title)
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SessionType)
+            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SessionLength)
+            @Html.ActionLink("Length", "Index", new { sortOrder = ViewBag.LengthSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DayID)
+            @Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PeriodID)
+            @Html.Label("Period")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PriorityRequest)
+            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.PrioritySortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AdhocRequest)
+            @Html.ActionLink("Adhoc", "Index", new { sortOrder = ViewBag.AdhocSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SpecialRequirements)
+            @Html.ActionLink("Semester", "Index", new { sortOrder = ViewBag.SemesterSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Semester)
+            @Html.ActionLink("Round", "Index", new { sortOrder = ViewBag.RoundSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Week.WeekID)
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm })
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoundID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
     </tr>
-
 @foreach (var item in Model) {
     var statusClass="";
 
@@ -85,12 +71,12 @@ Layout = "~/Views/Shared/adminView.cshtml";
         statusClass = "pending";
 
     }
-
     <tr class ="@statusClass">
         <td>
-            @Html.DisplayFor(modelItem => item.UserID)
+            @Html.DisplayFor(modelItem => item.User.Username)
         </td>
         <td>
+            <b>@Html.DisplayFor(modelItem => item.ModCode)</b><br />
             @Html.DisplayFor(modelItem => item.Module.Title)
         </td>
         <td>
@@ -106,19 +92,31 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => item.PeriodID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PriorityRequest)
+             @{
+                    if(item.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
+           <!-- @Html.DisplayFor(modelItem => item.PriorityRequest) -->
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.AdhocRequest)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SpecialRequirements)
+            @{
+                if(item.AdhocRequest == 1){
+                    @Html.CheckBox("AdHoc",true, new{@disabled = "disabled"})
+                }
+                else{
+                    @Html.CheckBox("AdHoc",false, new{@disabled = "disabled"})
+                }
+        
+            }
+            <!--@Html.DisplayFor(modelItem => item.AdhocRequest)-->
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Semester)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Week.WeekID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RoundID)
@@ -127,9 +125,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-          
           @Html.ActionLink("Get Request", "GetRequest", new { id=item.RequestID})
-           
         </td>
     </tr>
 }
@@ -147,3 +143,15 @@ Layout = "~/Views/Shared/adminView.cshtml";
         background-color:grey;
     }
 </style>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section CreateNewScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#scrollToBottom').click(function () {
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        });
+     </script>
+    }

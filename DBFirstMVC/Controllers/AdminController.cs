@@ -16,7 +16,7 @@ namespace DBFirstMVC.Controllers
         //
         // GET: /Admin/
         //show all the requests
-        public ActionResult Index()
+        public ActionResult Index1()
         {
 
             //get current round and semester
@@ -28,8 +28,99 @@ namespace DBFirstMVC.Controllers
             var list = requests.OrderBy(z => z.Status).ToList();
             return View(list);
         }
+        public ActionResult Index(string sortOrder)
+        {
+            User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
+
+            //These alternate sort parameter for switch statement
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.UserSortParm = sortOrder == "user" ? "user_desc" : "user";
+            ViewBag.LengthSortParm = sortOrder == "length" ? "length_desc" : "length";
+            ViewBag.DaySortParm = sortOrder == "day" ? "day_desc" : "day";
+            ViewBag.SemesterSortParm = sortOrder == "semester" ? "semester_desc" : "semester";
+            ViewBag.StatusSortParm = sortOrder == "status" ? "status_desc" : "status";
+            ViewBag.RoundSortParm = sortOrder == "round" ? "round_desc" : "round";
+            ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
+            ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
+            ViewBag.AdhocSortParm = sortOrder == "adhoc" ? "adhoc_desc" : "adhoc";
+
+            var requests= from r in db.Requests
+                          // where r.UserID == userSession.UserID
+                           select r;
+
+            //requests = db.Requests.Include(r => r.Module);
+
+            //handles which sort method to use
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    requests = requests.OrderByDescending(r => r.Module.Title);
+                    break;
+                case "user":
+                    requests = requests.OrderBy(r => r.User.Username);
+                    break;
+                case "user_desc":
+                    requests = requests.OrderByDescending(r => r.User.Username);
+                    break;
+                case "length":
+                    requests = requests.OrderBy(r => r.SessionLength);
+                    break;
+                case "length_desc":
+                    requests = requests.OrderByDescending(r => r.SessionLength);
+                    break;
+                case "day":
+                    requests = requests.OrderBy(r => r.DayID);
+                    break;
+                case "day_desc":
+                    requests = requests.OrderByDescending(r => r.DayID);
+                    break;
+                case "semester":
+                    requests = requests.OrderBy(r => r.Semester);
+                    break;
+                case "semester_desc":
+                    requests = requests.OrderByDescending(r => r.Semester);
+                    break;
+                case "status":
+                    requests = requests.OrderBy(r => r.Status);
+                    break;
+                case "status_desc":
+                    requests = requests.OrderByDescending(r => r.Status);
+                    break;
+                case "round":
+                    requests = requests.OrderBy(r => r.RoundID);
+                    break;
+                case "round_desc":
+                    requests = requests.OrderByDescending(r => r.RoundID);
+                    break;
+                case "type":
+                    requests = requests.OrderBy(r => r.SessionType);
+                    break;
+                case "type_desc":
+                    requests = requests.OrderByDescending(r => r.SessionType);
+                    break;
+                case "adhoc":
+                    requests = requests.OrderBy(r => r.AdhocRequest);
+                    break;
+                case "adhoc_desc":
+                    requests = requests.OrderByDescending(r => r.AdhocRequest);
+                    break;
+                case "priority":
+                    requests = requests.OrderBy(r => r.PriorityRequest);
+                    break;
+                case "priority_desc":
+                    requests = requests.OrderByDescending(r => r.PriorityRequest);
+                    break;
+                default:
+                    requests = requests.OrderBy(r => r.Module.Title);
+                    break;
+            }
 
 
+            var list = requests.OrderBy(z => z.Status).ToList();
+            return View(list);
+        }
+
+        
         //show the list of all rooms oreder in alpabetical order Building Name 
         public ActionResult EditPool()
         {
@@ -378,15 +469,19 @@ namespace DBFirstMVC.Controllers
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var wk = (from d in db.Weeks
+                      where d.WeekID == r.WeekID
+                      select d).FirstOrDefault();//added
             if (v != null)
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq,Week = wk }); //return view with the data filled model
             }
             return View();
         }
-
+        
+       
 
         //change request status 
 
