@@ -13,7 +13,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
- @Html.ActionLink("Back", "Index") |  @Html.ActionLink("Delete", "Delete", new { id=Model.Request.RequestID })
+ @Html.ActionLink("Back", "Index") |  @Html.ActionLink("Delete", "DeleteReq", new { id=Model.Request.RequestID })
 
 <h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
 
