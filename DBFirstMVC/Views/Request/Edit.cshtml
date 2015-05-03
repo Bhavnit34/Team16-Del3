@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
-<h2>Edit a request</h2>
+<h2>Edit Request @ViewBag.ID</h2>
  @using (Html.BeginForm("Edit","Request",FormMethod.Post)) {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
@@ -18,6 +18,7 @@
        <div id="left">
                     <fieldset>
                         <legend>Request</legend>
+                        <input type="hidden" id="hiddenID" name="requestID" value="@ViewBag.ID" />
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Module")
                             Search below or choose from list:
@@ -232,7 +233,7 @@
                 var lengthDisplay = $('#hiddenLength').val() + " hours";
                 if (lengthDisplay == "1 hours")
                     length = "1 hour";
-                $('#Request_SessionLength').append("<option value="+len+">" + length + "</option>");//we must add it to the dropdownlist before we can select it
+                $('#Request_SessionLength').append("<option value="+len+">" + lengthDisplay + "</option>");//we must add it to the dropdownlist before we can select it
                 $('#Request_SessionLength').val(len);
             }
 
