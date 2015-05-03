@@ -140,7 +140,18 @@ namespace DBFirstMVC.Controllers
         {
             Request r = db.Requests.Find(id); //input id from chosen request
             if (r == null)
+            {
+                TempData["Message"] = "Request " + id.ToString() + " doesn't exist";
                 return RedirectToAction("Index"); //back to home page if request doesnt exist
+            }
+            User userSession = (User)HttpContext.Session["User"];
+            if (r.UserID != userSession.UserID)
+            {
+                TempData["Message"] = "Request " + id.ToString() + " isn't for your department";
+                return RedirectToAction("Index"); //back to home page if request doesnt exist
+            }
+            
+
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
@@ -651,6 +662,11 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(int id = 0)
         {
             Request request = db.Requests.Find(id);
+            if(Convert.ToInt64(request.Status)> 0){
+                TempData["Message"] = "You cannot edit this request, it already has been processed";
+                return RedirectToAction("GetRequest", new { id = request.RequestID });
+            }
+                
             RequestState state = new RequestState(); //This will be the model for the session
             if (request == null)
             {
