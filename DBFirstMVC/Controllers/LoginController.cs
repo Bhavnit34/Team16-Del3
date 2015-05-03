@@ -53,6 +53,9 @@ namespace DBFirstMVC.Controllers
                     model.UserID = id.FirstOrDefault();
                     Session["User"] = model;
                     Session.Timeout = 10;
+
+                    if (model.Username == "CA")
+                        return RedirectToAction("Index", "Admin");
                     //Advance to request page
                     return RedirectToAction("CreateNew", "Request");
                 }
@@ -67,7 +70,7 @@ namespace DBFirstMVC.Controllers
         {
             Session.Remove("User"); //Remove user's session status and log out
             Session.Remove("State");
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
 
 
