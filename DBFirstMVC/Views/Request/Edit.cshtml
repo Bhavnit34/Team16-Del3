@@ -1,127 +1,763 @@
-﻿@model DBFirstMVC.Request
+﻿@model DBFirstMVC.Models.CreateNewRequest
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+<script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
+<link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
-<h2>Edit</h2>
+<h2>Edit a request</h2>
+ @using (Html.BeginForm("Edit","Request",FormMethod.Post)) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+      
+     <div id="container">
+  
+       <div id="left">
+                    <fieldset>
+                        <legend>Request</legend>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.ModCode, "Module")
+                            Search below or choose from list:
+                        </div>
+                        <div class="editor-field">
+                            <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
+                            <input type="button" id="btnModSearch" value="Filter" />
+                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules,"ModCode", "FullModule"), "-- Select Module --")
+                            @Html.ValidationMessageFor(model => model.Request.ModCode)
+                        </div>
+                        <div id="studentsOnModuleDiv"></div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
+                        </div>
+                        <div class="editor-field">     
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
+    
+                            @Html.ValidationMessageFor(model => model.Request.SessionType)
+                        </div>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+                         <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.DayID, "Day")
+                        </div>
+                        <div class="editor-field">
+                        @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem{Text = "Monday", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "Tuesday", Value = "2"});
+                            listItems.Add(new SelectListItem{Text = "Wednesday", Value = "3"});
+                            listItems.Add(new SelectListItem{Text = "Thursday", Value = "4"});
+                            listItems.Add(new SelectListItem{Text = "Friday", Value = "5"});   
+                        }
 
-    <fieldset>
-        <legend>Request</legend>
+                        @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
 
-        @Html.HiddenFor(model => model.RequestID)
+                            @Html.ValidationMessageFor(model => model.Request.DayID)
+                        </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.UserID)
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.PeriodID, "Period")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
+                            @Html.ValidationMessageFor(model => model.Request.PeriodID)
+                        </div>
+
+                         <div class="editor-label">
+                           @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
+                        </div>
+                        <div class="editor-field">
+                            <input id="hiddenLength" type="hidden" value="@ViewBag.Length" />
+                            @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
+                            @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
+                            @Html.ValidationMessageFor(model => model.Request.SessionLength)
+                        </div>
+                        <div>
+                            <table>
+                                <tr>
+							        <td>
+								        <label>Pick weeks</label>								
+							        </td>
+							        <td colspan='4'>
+								        <ol id="popupWeeks">
+									        <li class="ui-state-default myCircle">1</li>
+									        <li class="ui-state-default myCircle">2</li>
+									        <li class="ui-state-default myCircle">3</li>
+									        <li class="ui-state-default myCircle">4</li>
+									        <li class="ui-state-default myCircle">5</li>
+									        <li class="ui-state-default myCircle">6</li>
+									        <li class="ui-state-default myCircle">7</li>
+									        <li class="ui-state-default myCircle">8</li>
+									        <li class="ui-state-default myCircle">9</li>
+									        <li class="ui-state-default myCircle">10</li>
+									        <li class="ui-state-default myCircle">11</li>
+									        <li class="ui-state-default myCircle">12</li>
+									        <li class="ui-state-default myCircle">13</li>
+									        <li class="ui-state-default myCircle">14</li>
+									        <li class="ui-state-default myCircle">15</li>
+								        </ol>
+							        </td>
+						        </tr>
+                                <tr>
+                                    <td><input type="button" id="btnAllWeeks" value="All Weeks" /></td>
+                                    <td><input type="button" id="btnEvenWeeks" value="Even Weeks" /></td>
+                                    <td><input type="button" id="btnOddWeeks" value="Odd Weeks" /></td>
+                                    <td><input type="button" id="btnDefaultWeeks" value="Default Weeks" /></td>
+                                    <td><input type="button" id="btnClearAllWeeks" value="Clear All" /></td>
+                                </tr>
+                            </table>
+                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="@ViewBag.SelectedWeeks" /><!-- this will be passed to the controller -->
+                            <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
+                        </div>
+                        <div class="editor-field">
+                            <!--<input type="checkbox" id="cbPriorityRequest" /> -->
+                            @{
+                                if(Model.Request.PriorityRequest == 1){
+                                    @Html.CheckBox("cbPriorityRequest",true)
+                                }
+                                if(Model.Request.PriorityRequest != 1){
+                                    @Html.CheckBox("cbPriorityRequest",false)
+                                }
+
+                              
+                            }
+                            @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Request.SpecialRequirements)
+                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
+                        </div>
+                    </fieldset>
+                
+   
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.UserID)
-            @Html.ValidationMessageFor(model => model.UserID)
+ 
+          <div id="right">
+                    <fieldset>
+                        <legend>Request</legend>
+                      
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.ModCode, "Facilites")
+                        </div>
+                        <div id="facListDiv">
+                            @foreach (var item in Model.Facilities) {
+                                <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
+                            }
+                    
+                        </div>                                  
+                        <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
+                        <select id="matchedRooms"></select>
+                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
+                        <input type="hidden" id="hiddenfacList" value="@ViewBag.facList" />
+                    </fieldset>
+         
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ModCode, "Module")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("ModCode", String.Empty)
-            @Html.ValidationMessageFor(model => model.ModCode)
-        </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SessionType)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SessionType)
-            @Html.ValidationMessageFor(model => model.SessionType)
-        </div>
+         <div id="center">
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SessionLength)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SessionLength)
-            @Html.ValidationMessageFor(model => model.SessionLength)
-        </div>
+                    <fieldset>
+                        <legend>Request</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DayID)
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Parks, "Park")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("Park","--Select Park--")
+                            @Html.ValidationMessageFor(model => model.Parks)
+                    
+                        </div>
+                        <div class="editor-label" id="BuildingDiv"></div>
+                        <div class="editor-field">
+                            <select id="Building"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <div class="editor-label" id="RoomDiv"></div>
+                        <div class="editor-field">
+                            <select id="Room"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <input type="button" id="btnAddToRoom" value="Add To List" />
+                        <input type="button" id="btnCheckAvail" value="Check Availability" />
+                        <a id="studentsLeft" data-left="0" data-max="0"></a>
+                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                        <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
+                        <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
+                        <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
+                    </fieldset>
+         
+         
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DayID)
-            @Html.ValidationMessageFor(model => model.DayID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PeriodID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PeriodID)
-            @Html.ValidationMessageFor(model => model.PeriodID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PriorityRequest)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PriorityRequest)
-            @Html.ValidationMessageFor(model => model.PriorityRequest)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AdhocRequest)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.AdhocRequest)
-            @Html.ValidationMessageFor(model => model.AdhocRequest)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SpecialRequirements)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SpecialRequirements)
-            @Html.ValidationMessageFor(model => model.SpecialRequirements)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Semester)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Semester)
-            @Html.ValidationMessageFor(model => model.Semester)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.RoundID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.RoundID)
-            @Html.ValidationMessageFor(model => model.RoundID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
-        </div>
-
+         </div>
         <p>
-            <input type="submit" value="Save" />
+            <input type="button" id="btnCheck" value="Edit" />
+            <input type="submit" value="Edit" id="btnEdit"  name='Command' />
         </p>
-    </fieldset>
 }
+         
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+@section CreateNewScript{
+    <script type="text/javascript">
+        var fac = [];
+        var rms = [];
+        $(document).ready(function () {
+           
+            //$('#siteTitle').append('<a style="color:gray; font-style:italic; font-size:0.6em;">  '+'@ViewBag.CurrentUser'+'</a>');
+            $('#Building').hide();
+            $('#Room').hide();
+            $('#btnAddToRoom').hide();
+            $('#matchedRooms').hide();
+            $('#btnAddMatchedRoom').hide();
+            $('#btnEdit').hide(); 
+            $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
+            updateFac();
+            
+            //set the length field if the page is loaded from the state
+            if ($('#hiddenLength').val() != "") {
+                var len = $('#hiddenLength').val();
+                var lengthDisplay = $('#hiddenLength').val() + " hours";
+                if (lengthDisplay == "1 hours")
+                    length = "1 hour";
+                $('#Request_SessionLength').append("<option value="+len+">" + length + "</option>");//we must add it to the dropdownlist before we can select it
+                $('#Request_SessionLength').val(len);
+            }
+
+
+            //Function to add the list of buildings based on park choice
+            $("#Park").on('change', function () {
+                var park = $(this).val();
+                $('#Room').hide(200);
+                $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                $('#BuildingDiv').html("");
+                if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
+                    $('#Building').hide(200);
+                    return;
+                }
+
+                $.post('@Url.Action("GetBuildings", "Request")', { chosenPark: park }, function (data) {
+                // Postback response of buildings
+                var buildings = data;
+                html = "";
+                html += "<option value='--Select Building--'>--Select Building--</option>";
+                //create a dropdown list of buildings
+                for (var i = 0; i < buildings.length; i++) {
+                    if (buildings[i] != park)
+                        html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
+                }
+                $('#Building').html(html); //add this html to the tag
+                $('#BuildingDiv').html("<label for='Request_Building'>Building</label>").show(200);
+                $('#Building').show(200);
+                });  //end $.post
+            }); //end function
+
+
+            //Function to add the list of rooms based on building choice
+            $("#Building").on('change', function () {
+                var building = $(this).val();
+                if (building.substr(0, 1) == "-") {
+                    $('#Room').hide();
+                    $('#btnAddToRoom').hide();
+                    $('#RoomDiv').html("");
+                    return;
+                }
+                $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
+                    // Postback response of rooms
+                    var rooms = data;
+                    html = "";
+                    //create a dropdown list of rooms
+                    for (var i = 0; i < rooms.length; i++) {
+                            html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                    }
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                });  //end $.post
+            }); //end function
+
+
+            //function to check which rooms are available at the given day, time and weeks
+            $('#btnCheckAvail').click(function () {
+                var roomList = [];
+                var len = $('#Room').children().length;
+                for (var i = 0; i < len; i++) {
+                    roomList.push($('#Room').children().eq(i).val());
+                }
+                var dayID = $('#Request_DayID').val();
+                var periodID = $('#Request_PeriodID').val();
+                var seshLength = $('#Request_SessionLength').val();
+                //send the rooms and the request data to check if the room is available
+                $.post('@Url.Action("CheckAvailability", "Request")', { rooms: roomList.join(','), selectedWeeks: selectedItems.join(','), day: dayID, period:periodID, length:seshLength  }, function (data) {
+
+                });
+
+
+            });
+
+            //Function to add a room to the displayed list of chosen rooms
+            $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){
+                var id = $(this).attr('id');
+                var room = $('#Room').val();
+                if (id == 'btnAddMatchedRoom')
+                    room = $('#matchedRooms').val();
+
+                var roomID = room.replace(/\./g, '');
+                var len = $('#listOfRooms').children().children().length;
+
+                //return if they have picked 3 rooms
+                if (len > 2)
+                    return;
+
+
+                //Check that the room doesnt already exist in the list
+                for (var i = 0; i < len; i++) {
+                    if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                        return;
+                }
+
+
+                //Check that there are students left to allocate
+                if ($('#studentsLeft').attr('data-left') < 1) {
+                    alert("There are no more students left to allocate");
+                    return;
+                }
+                
+
+                var roomSize = 0;
+                $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
+                    roomSize = data;
+                }).done(function(result){
+                    var size = roomSize;
+                    //Create html for the room item and add it to the list
+                    var html = "<tr id='" + roomID + "'>";
+                    var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
+                    //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
+                    if (studentsLeft < roomSize)
+                        size = studentsLeft;
+                    //we need to add this hidden input so that we can pass the room value to the controller
+                    html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
+                    html += "<td>" + room + "</td>";
+                    html += "<td><input id='students" + roomID + "' type='number' min='1' max='" + roomSize + "' value='" + size + "' style='width:50px;' name='groupSizes'/></td>";
+                    html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
+                    html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
+                    html += "<td><input type='button' id='info" + roomID + "' value='Info' name='Command' /></td>";
+                    html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
+                    html += "</tr>";
+                    $('#listOfRooms').append(html);
+                    $('#listOfRoomsDiv').show();
+
+                    //set the student size and priority room if loading from a state
+                    if ($('#hiddenroomList').val() != "") {
+                        var rm = $('#hiddenroomList').val().split(','); //get array of rooms
+                        var index = rm.indexOf(room); //find index of chosen room
+                        var s = $('#hiddensizeList').val().split(',');
+                        if (index > -1) {
+                            $("#students" + roomID).val(s[index]); //match room index to size list, as their indexs match
+                        }
+
+                        if (room == $('#hiddenPriorityRoomName').val())
+                            $('#priority' + roomID).prop('checked', true); //tick the priority box
+
+                    }
+
+                    //onchange function for the group size
+                    $("#students" + roomID).on('change keyup keydown', function () {
+                        var x = $("#students" + roomID).val();
+                        var len = $('#listOfRooms').children().children().children().length;
+                        var left = $('#studentsLeft').attr('data-max');
+                        for (var i = 2; i < len; i += 7)
+                            left -= $('#listOfRooms').children().children().children().eq(i).children().eq(0).val();
+                        if (left < 0 || x > parseInt($("#students" + roomID).attr('max'))) {
+                            $("#students" + roomID).val("1");
+                            $("students" + roomID).blur();
+                            return;
+                        }
+                        $('#studentsLeft').text(left + " student(s) left");
+                        $('#studentsLeft').attr('data-left', left);
+                    });
+
+                    //onchange function for the priority room (there can only be 1)
+                    $('#priority' + roomID).on("change", function () {
+
+                        //allow the user to deselect the priority room
+                        if ($('#priority' + roomID).prop('checked') == false) {
+                            $(this).prop("checked", false);
+                            return;
+                        }
+                        
+                        var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                        for (var i = 3; i < len; i+=7) {
+                            if ($('#listOfRooms').children().children().children().eq(i).children().eq(0).prop('checked'))
+                                $('#listOfRooms').children().children().children().eq(i).children().eq(0).prop("checked", false);
+                        }
+                       $('#priority' + roomID).prop("checked", true);
+                    });
+
+
+
+                    //onclick for info button
+                    $('#info' + roomID).on('click', function () {
+                        //create an array of rooms to send to the controller
+                        rms = [];
+                        var sizes = [];
+                        var len = $('#listOfRooms').children().children().children().length;
+                        for( var i = 0; i < len; i+=7){
+                            rms.push($('#listOfRooms').children().children().children().eq(i).val());
+                                
+                        }
+                        //create an array of sizes which match the index of the rooms
+                        for(var i = 2; i < len; i+=7){
+                            sizes.push($('#listOfRooms').children().children().children().eq(i).children().val());
+                        }
+                        //check and allocate a priority room if needed
+                        var PriorityRoom = "";
+                        for (var i = 3; i < len; i+=7) {
+                            if ($('#listOfRooms').children().children().children().eq(i).children().prop('checked') == true) {
+                                PriorityRoom = $('#listOfRooms').children().children().children().eq(i - 3).val();
+                                break;
+                            }
+
+                        }
+                        //The variables named after the model attributes are done so purposely so the controller can recognise the model
+                        var values =
+                            {
+                                "ModCode": $('#Request_ModCode').val(),
+                                "SessionType": $('#Request_SessionType').val(),
+                                "DayID": $('#Request_DayID').val(),
+                                "PriorityRequest": $('#cbPriorityRequest').prop('checked') ? 1 : 0,
+                                "SpecialRequirements": $('#Request_SpecialRequirements').val(),
+                                "SessionLength": $('#Request_SessionLength').val(),
+                                "PeriodID": $('#Request_PeriodID').val(),
+                                "Fac": fac.join(','),
+                                "SelectedWeeks": selectedItems.join(','),
+                                "SelectedRoom": room,
+                                "Rooms": rms.join(','),
+                                "Sizes": sizes.join(','),
+                                "PriorityRoomName": PriorityRoom
+                            };
+                        $.post('@Url.Action("SaveState", "Request")',values, function (data) {
+
+                        }).success(function (returnData, returnStatus) {
+                            var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
+                            window.location.href = url.replace("text", "?id=" + room + "&caller=Edit");
+                        });
+
+
+
+                    });
+
+
+
+
+
+
+
+
+
+                    $("#students" + roomID).trigger("change");
+
+                });
+            });
+
+
+            //Function to change the session lengths available from the chosen period
+            $('#Request_PeriodID').change(function () {
+                var period = $(this).val();
+                var max = 10 - period;
+                if (period == "")
+                    max = 0;
+               $('#Request_SessionLength').html("");
+               $('#Request_SessionLength').append('<option value="">-- Select Length --</option>');
+                for (var i = 1; i <= max; i++) {
+                    if(i==1)
+                        $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hour</option>");
+                    else
+                        $('#Request_SessionLength').append("<option value='" + i + "'>" + i + " hours</option>");
+                }
+
+            });
+            //Function to filter the modules based on the search string
+            $('#btnModSearch').click(function () {
+                var str = $('#txtModSearch').val();
+                if (str.replace(/ /g, '') == "")
+                    str = "";
+                var results;
+                $.post('@Url.Action("getModules", "Request")', { searchString: str }, function (data) {
+                    results = data;
+                    $('#Request_ModCode').html('<option value="">-- Select Module --</option>');
+                    for (var i = 0; i < results.length; i++) {
+                        var modCode = results[i].Whole.substr(0, 6); //extract modcode from string
+                        $('#Request_ModCode').append('<option value="'+modCode+'">' + results[i].Whole + '</option>');
+                    }
+
+                });
+            });
+
+            $('#facListDiv :input').click(function () {
+                updateFac();
+            });
+
+
+            //Function to display a list of rooms based on ticked facilities
+            $("#btnFindRooms").click(function () {
+                fac = [];
+                var len = $('#facListDiv').children().length;
+                for (var i = 0; i < len; i += 2) {
+                    if ($('#facListDiv').children().eq(i).is(":checked")) {
+                        fac.push($('#facListDiv').children().eq(i).val());
+                    }
+                }
+                //alert(fac.join("\n"));
+
+                facs = JSON.stringify(fac);
+                var html = "";
+                $.post('@Url.Action("getMatchedRooms", "Request")', { facList: fac.join(',') }, function (data) {
+                    var results = data;
+                    for (var i = 0; i < results.length; i++) {
+                        var name = results[i].Name;
+                        var roomID = name.replace(/\./g, '');
+                        html += "<option id='matched"+roomID+"'>"+name+"</option>";
+                    }
+                    if (results.length == 0) {
+                        alert("no room has all of the chosen facilities");
+                        $('#matchedRooms').hide();
+                        $('#btnAddMatchedRoom').hide();
+                        return;
+                    }
+                    $('#matchedRooms').fadeOut(300);
+                    $('#matchedRooms').promise().done(function () {
+                        $('#matchedRooms').html(html).show(300);
+                        $('#btnAddMatchedRoom').show(300);
+                    });
+                },"json");
+            });
+
+           
+
+            //Function to change the label of module students and module info displayed depending on chosen module
+            $("#Request_ModCode").change(function (e) {
+                var module = $(this).val().substr(0, 6);
+            
+                //get the students from the module
+                $.post('@Url.Action("getModuleStudents", "Request")', { modCode: module }, function (data) {
+                    var lecturer = "";
+                    var students = 0;
+                    var html = "";
+                    students = data;
+                    $('#studentsLeft').text(students + " student(s) left");
+                    $('#studentsLeft').attr('data-max', students);
+                    $('#studentsLeft').attr('data-left', students);
+                    html += students + " students on this module";
+
+                    //get the lecturer from the module, must be inside the first post so we can use the same variables
+                    $.post('@Url.Action("getModuleLecturers", "Request")', { modCode: module }, function (data) {
+                        var results = data;
+                        if (results.length > 0)
+                            html += " taught by ";
+                        for (var i = 0; i < results.length; i++) {
+                            if (i == results.length - 1)
+                                lecturer += "<u>"+results[i].Whole+"</u>";
+                            else
+                                lecturer += "<u>"+results[i].Whole + "</u> and ";
+                        }
+                        html += lecturer;
+                        $('#studentsOnModuleDiv').html(html); //write the information to the display
+                        $("#listOfRooms").find("input:last").trigger("change");//change the students left label on the room choice
+                    });
+
+                });
+            });
+
+            //function to ensure the user hasnt entered a room with no group size
+            $('body').click(function () {
+                var len = $('#listOfRooms').children().children().children().length;
+                for (var i = 2 ; i < len; i+=6) {
+                    if( $('#listOfRooms').children().children().children().eq(i).children().eq(0).val() == "")
+                        $('#listOfRooms').children().children().children().eq(i).children().eq(0).val(0)
+                        
+                }
+            });
+
+            //Function to handle the user choice of preset week choices
+            $('#btnAllWeeks, #btnDefaultWeeks, #btnEvenWeeks, #btnOddWeeks').click(function () {
+                var id = $(this).attr('id');
+                if (id == "btnAllWeeks") {
+                    for (var i = 0; i < 15; i++) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnDefaultWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 0; i < 13; i++) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnEvenWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 1; i < 15; i += 2) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = ['2', '4', '6', '8', '10', '12', '14'];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+
+                if (id == "btnOddWeeks") {
+                    $('#btnClearAllWeeks').trigger('click');
+                    for (var i = 0; i < 15; i += 2) {
+                        $('#popupWeeks').children().eq(i).removeClass("ui-selectee");
+                        $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                        selectedItems = ['1', '3', '5', '7', '9', '11', '13', '15'];
+                        $('#selectedWeeks').val(selectedItems.join(","));
+                    }
+                }
+            });
+
+            //function to clear all of the selected weeks
+            $('#btnClearAllWeeks').click(function () {
+                for (var i = 0; i < 15; i++) {
+                    $('#popupWeeks').children().eq(i).removeClass("ui-selected");
+                    $('#popupWeeks').children().eq(i).addClass("ui-selectee");
+                    selectedItems = [];
+                    $('#selectedWeeks').val("");
+                }
+            });
+
+
+            //Function to check user inputs before sending the request to the controller, 
+            $('#btnCheck').click(function () {
+                //Check at least 1 week has been chosen
+                var selectedCount = 0;
+                for (var i = 0; i < 15; i++) {
+                    if ($('#popupWeeks').children().eq(i).hasClass("ui-selected"))
+                        selectedCount++;
+                }
+                if (selectedCount == 0) {
+                    alert("Please choose at least one week");
+                    return;
+                }
+
+                //check there are no students left to allocate if the user has chosen room(s)
+                var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
+                if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
+                    if (confirm("You still have students left to allocate into rooms. Continue anyway?"))
+                        $('#btnCreate').trigger('click');
+                }
+                else {
+                    $('#btnEdit').trigger('click');
+                }
+
+            });
+            
+
+            //executed here as the functions were made earlier
+            if ($('#Request_ModCode').val() != "") {
+                $('#Request_ModCode').trigger('change').delay(800).promise().done(function () {
+                    updateFacAndRoomsList();
+                });
+            }
+            if ($('#selectedWeeks').val() == "")
+                $("#btnDefaultWeeks").trigger('click');
+
+
+
+
+        }); //end document ready
+
+
+        //Function to delete the room chosen
+        function deleteRoom(id) {
+            id = id.substr(3, id.length); //change 'delJB021' to 'JB021'
+            var size = $('#'+id).children().eq(2).children().val();
+            if (size == "")
+                size = 0;
+            var left = $('#studentsLeft').attr('data-left');
+            var newLeft = parseInt(left) + parseInt(size);
+            $('#studentsLeft').attr('data-left', newLeft); //change label showing students left
+            $('#studentsLeft').text(newLeft + " student(s) left");
+            $('#' + id).remove(); //remove the html <tr> element
+
+        }
+
+        function updateFac() {
+            fac = [];
+            var len = $('#facListDiv').children().length;
+            for (var i = 0; i < len; i += 2) {
+                if ($('#facListDiv').children().eq(i).is(":checked")) {
+                    fac.push($('#facListDiv').children().eq(i).val());
+                }
+            }
+        }
+
+        //function to check the session 'state' and see if there are any saved facilities and rooms to display
+        function updateFacAndRoomsList() {
+            //update facility list
+            var facStr = $('#hiddenfacList').val();
+            if (facStr != "") {
+                fac = facStr.split(',');
+
+                for (var i = 0; i < fac.length; i++) {
+                    $('#facListDiv :input[value="' + fac[i] + '"]').prop('checked', true); //find the input with the given value and check it
+                }
+
+            }
+
+            //update room list
+            var room = [];
+            var roomStr = $('#hiddenroomList').val();
+            if (roomStr != "") {
+                room = roomStr.split(',');
+                $('#Room').show(); //temporarily show the elements so that we can use them
+                $('#btnAddToRoom').show();
+                for (var i = 0; i < room.length ; i++) { //loop through each room
+                    $('#Room') //we must add it to the dropdownlist before we can select it
+                     .append($("<option></option>")
+                     .attr("value", room[i])
+                     .text(room[i]));
+                    $('#Room').val(room[i]);
+                    $('#btnAddToRoom').trigger('click'); //trigger the addToRoom click event
+                }
+                $('#Room').hide(); //re-hide the elements
+                $('#btnAddToRoom').hide();
+            }
+
+            //update weeks selected
+            var weeks = $('#selectedWeeks').val().split(',');
+            for (var i = 0; i < weeks.length; i++) {
+                var w = parseInt(weeks[i]);
+                $('#popupWeeks').children().eq(w-1).removeClass("ui-selectee");
+                $('#popupWeeks').children().eq(w-1).addClass("ui-selected");
+                selectedItems = weeks;
+            }
+
+        }
+
+        
+    </script>
+
+}
+
+

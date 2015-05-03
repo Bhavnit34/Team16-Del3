@@ -201,12 +201,13 @@
 
         //function to show room info of selected room
         function showRoomInfo(room) {
-            $.post('@Url.Action("ShowRoomInfo")',
-               {
-                   room: room
-               },
-               function (data, status) {
-               });
+           // $.post('@Url.Action("ShowRoomInfo")',
+             //  {
+            //       room: room
+             //  },
+            //   function (data, status) {
+             //  });
+        
 
             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
             window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");

@@ -69,6 +69,7 @@
                            @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
                         </div>
                         <div class="editor-field">
+                            <input id="hiddenLength" type="hidden" value="@ViewBag.Length" />
                             @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
@@ -224,8 +225,16 @@
             $('#btnCreate').hide(); 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
             updateFac();
-        
-
+            
+            //set the length field if the page is loaded from the state
+            if ($('#hiddenLength').val() != "") {
+                var len = $('#hiddenLength').val();
+                var lengthDisplay = $('#hiddenLength').val() + " hours";
+                if (lengthDisplay == "1 hours")
+                    length = "1 hour";
+                $('#Request_SessionLength').append("<option value="+len+">" + length + "</option>");//we must add it to the dropdownlist before we can select it
+                $('#Request_SessionLength').val(len);
+            }
 
 
             //Function to add the list of buildings based on park choice

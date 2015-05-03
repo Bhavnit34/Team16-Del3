@@ -159,6 +159,14 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CreateNew()
         {
+            string s = "";
+            if (Request.UrlReferrer != null)
+            {
+                s = Request.UrlReferrer.ToString();
+            }
+            if (s.Contains("Edit"))
+                Session.Remove("State");
+
             User userSession = (User)HttpContext.Session["User"];
             var row = db.Depts.Find(userSession.Username);
 
@@ -210,10 +218,10 @@ namespace DBFirstMVC.Controllers
                 }
                 wk = wk.Substring(1, wk.Length-1); //remove leading comma
                 ViewBag.SelectedWeeks = wk;
-
+                ViewBag.Length = r.SessionLength; //add this to force display the length using javascript
             }
 
-
+            
 
 
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities, Request = r});
@@ -419,8 +427,8 @@ namespace DBFirstMVC.Controllers
                         db.SaveChanges();
                     }
                 }
-            
 
+               Session.Remove("State"); //remove current saved request
                return RedirectToAction("Index"); //redirect to the list of requests
         }
 
@@ -531,6 +539,11 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public void SaveState(Request r, string Fac, string selectedWeeks, string SelectedRoom, string Rooms, string Sizes, string PriorityRoomName)
         {
+            string s = Request.UrlReferrer.ToString();
+            string caller = "CreateNew";
+            if (s.Contains("Edit"))
+                caller = "Edit";
+
             RequestState state = new RequestState();
             state.Request = r;
             state.Facilities = Fac.Split(',').ToList<string>();
@@ -539,7 +552,7 @@ namespace DBFirstMVC.Controllers
             state.Sizes = Sizes.Split(',').ToList<string>();
             state.PriorityRoomName = PriorityRoomName;
             Session["State"] = state; //save session
-            DisplayRoomInfo(SelectedRoom, "CreateNew");
+            DisplayRoomInfo(SelectedRoom, caller);
         }
 
         public ActionResult CheckAvailability(string rooms, string selectedWeeks, string day, string period, string length)
@@ -699,8 +712,56 @@ namespace DBFirstMVC.Controllers
             state.Facilities = facList;
 
             Session["State"] = state; //save state
-            //ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title", request.ModCode);
-            return RedirectToAction("CreateNew");
+
+            User userSession = (User)HttpContext.Session["User"];
+            var row = db.Depts.Find(userSession.Username);
+
+            if (row.DeptCode == "CA")
+                ViewBag.Modules = db.Modules; //this will be used as the list of modules
+            else
+                ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username)); //this will be used as the list of modules
+
+
+            List<SelectListItem> Period = new List<SelectListItem>();
+            Period.Add(new SelectListItem { Text = "p1 - 9:00", Value = "1" });
+            Period.Add(new SelectListItem { Text = "p2 - 10:00", Value = "2" });
+            Period.Add(new SelectListItem { Text = "p3 - 11:00", Value = "3" });
+            Period.Add(new SelectListItem { Text = "p4 - 12:00", Value = "4" });
+            Period.Add(new SelectListItem { Text = "p5 - 13:00", Value = "5" });
+            Period.Add(new SelectListItem { Text = "p6 - 14:00", Value = "6" });
+            Period.Add(new SelectListItem { Text = "p7 - 15:00", Value = "7" });
+            Period.Add(new SelectListItem { Text = "p8 - 16:00", Value = "8" });
+            Period.Add(new SelectListItem { Text = "p9 - 17:00", Value = "9" });
+
+            ViewBag.Periods = Period; //This will be passed into the view for the dropdownlist
+
+            var allRooms = from room in db.Rooms select room;  //same as SELECT * from Room
+
+            var allFacilities = from fac in db.Facilities select fac; //same as SELECT * from Facility
+            ViewBag.Facility = new SelectList(db.Facilities, "FacilityName", "FacilityName");
+            ViewBag.Park = new SelectList(db.Parks, "ParkName", "ParkName");
+
+                string x = string.Join(",", state.Facilities.ToArray()); //add in facilities
+                ViewBag.facList = x;
+                string y = string.Join(",", state.Rooms.ToArray()); //add in rooms
+                ViewBag.roomList = y;
+                string z = string.Join(",", state.Sizes.ToArray()); //add in sizes
+                ViewBag.sizeList = z;
+
+                ViewBag.PriorityRoomName = state.PriorityRoomName; //add the priority room choice
+                string wk = "";
+                for (var i = 0; i < state.Weeks.Count; i++)
+                {
+                    wk += "," + state.Weeks[i];
+                }
+                wk = wk.Substring(1, wk.Length - 1); //remove leading comma
+                ViewBag.SelectedWeeks = wk;
+                ViewBag.Length = request.SessionLength; //add this to force display the length using javascript
+
+
+
+
+                return View(new CreateNewRequest() { Rooms = allRooms, Facilities = allFacilities, Request = request });
         }
         
 
