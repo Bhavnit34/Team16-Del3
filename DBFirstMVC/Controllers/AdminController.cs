@@ -536,12 +536,54 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult Edit(Request request)
         {
-            if (ModelState.IsValid)
+
+
+
+            if (request.Status == "1")
             {
-                db.Entry(request).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var temp = request.RequestID;
+                var t = (from d in db.RequestToRooms.Include("RoomRequests")
+                         where (d.RequestID == temp)
+                         select d.RoomRequest.RoomName).ToList();
+
+
+
+                foreach (var item in t)
+                {
+
+                    var q = (from r in db.Requests
+                             join rtr in db.RequestToRooms on r.RequestID equals rtr.RequestID
+                             join roomR in db.RoomRequests on rtr.RoomRequestID equals roomR.RoomRequestID
+                             where (r.DayID == request.DayID && r.PeriodID == request.PeriodID
+                             && r.WeekID == request.WeekID && r.Status == "1" && roomR.RoomName == item)
+                             select r.RequestID).FirstOrDefault();
+
+
+                    if (q != 0)
+                    {
+
+
+                        var obj = db.Requests.Where(c => c.RequestID == q).First();
+                        obj.Status = "0";
+                        db.SaveChanges();
+                        break;
+
+
+
+                    }
+
+
+
+
+                }
             }
+            
+                if (ModelState.IsValid)
+                {
+                    db.Entry(request).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
             return View(request);
         }

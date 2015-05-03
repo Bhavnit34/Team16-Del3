@@ -419,9 +419,16 @@ namespace DBFirstMVC.Controllers
                         db.SaveChanges();
                     }
                 }
-            
+                if (myRequest.Request.UserID == 0)
+                {
 
-               return RedirectToAction("Index"); //redirect to the list of requests
+                    return RedirectToAction("Index", "Admin");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }//redirect to the list of requests
         }
 
 
@@ -619,17 +626,98 @@ namespace DBFirstMVC.Controllers
             TempData["Message"] = "The round has been incremented, please check your requests below";
             return RedirectToAction("Index");
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+        //Edit Module view 
+        public ActionResult Module()
+        {
+
+            User userSession = (User)HttpContext.Session["User"];
+            var row = db.Depts.Find(userSession.Username);
+
+
+            ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username));
+
+
+
+            return View();
+
+
+        }
+
+        public ActionResult CreateNewModule()
+
+        {
+           User userSession = (User)HttpContext.Session["User"];
+           ViewBag.Dept = userSession.Username;
+           ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
+            return View();
+
+
+        }
+
+
+
+        //create new Module 
+        [HttpPost]
+        public ActionResult CreateNewModule(Module module)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Modules.Add(module);
+                db.SaveChanges();
+                return RedirectToAction("Module");
+            }
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
+            return View(module);
+        }
+
+       //[HttpPost]
+     
+        public ActionResult GetModuleInfo(string id)
+        {
+           
+
+            Module module = db.Modules.Find(id);
+            if (module == null)
+            {
+                return HttpNotFound();
+                // return RedirectToAction("Index");
+            }
+            return View(module);
+        }
+
+        public ActionResult EditModule(string id)
+        {
+
+
+            Module module = db.Modules.Find(id);
+            if (module == null)
+            {
+                return HttpNotFound();
+                // return RedirectToAction("Index");
+            }
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
+            return View(module);
+        }
+        [HttpPost]
+        public ActionResult EditModule(Module module)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(module).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("GetModuleInfo/"+module.ModCode);
+            }
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
+            return View(module);
+        }
         
         
         
