@@ -560,22 +560,6 @@ namespace DBFirstMVC.Controllers
 
 
 
-
-        //
-        // GET: /Request/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Request request = db.Requests.Find(id);
-            if (request == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title", request.ModCode);
-            return View(request);
-        }
-
-
        //Function to increment the round and simulate results of requests randomly
         public ActionResult NextRound()
         {
@@ -638,23 +622,88 @@ namespace DBFirstMVC.Controllers
             TempData["Message"] = "The round has been incremented, please check your requests below";
             return RedirectToAction("Index");
         }
+
+
+        //
+        // GET: /Request/Edit/5
+
+        public ActionResult Edit(int id = 0)
+        {
+            Request request = db.Requests.Find(id);
+            RequestState state = new RequestState(); //This will be the model for the session
+            if (request == null)
+            {
+                return HttpNotFound();
+            }
+
+            //Begin saving state. Save rooms and sizes
+            var requestToRooms = db.RequestToRooms.Where(a => a.RequestID.Equals(id)).ToList();
+            List<string> roomList = new List<string>();
+            List<string> sizeList = new List<string>();
+            foreach(RequestToRoom r in requestToRooms)
+            {
+                RoomRequest RoomRequest = db.RoomRequests.Where(a => a.RoomRequestID.Equals(r.RoomRequestID)).FirstOrDefault();
+                string roomName = RoomRequest.RoomName;
+                string size = RoomRequest.GroupSize.ToString();
+                roomList.Add(roomName);
+                sizeList.Add(size);
+                if (RoomRequest.PriorityRoom == 1) //restore the priority room
+                    state.PriorityRoomName = roomName;
+            }
+            state.Rooms = roomList;
+            state.Sizes = sizeList;
+            state.Request = request; //save request
+            
+            //save weeks
+            List<string> weekList = new List<string>();
+            Week week = db.Weeks.Find(request.WeekID);
+            if (week.Week1 == 1)
+                weekList.Add("1");
+            if (week.Week2 == 1)
+                weekList.Add("2");
+            if (week.Week3 == 1)
+                weekList.Add("3");
+            if (week.Week4 == 1)
+                weekList.Add("4");
+            if (week.Week5 == 1)
+                weekList.Add("5");
+            if (week.Week6 == 1)
+                weekList.Add("6");
+            if (week.Week7 == 1)
+                weekList.Add("7");
+            if (week.Week8 == 1)
+                weekList.Add("8");
+            if (week.Week9 == 1)
+                weekList.Add("9");
+            if (week.Week10 == 1)
+                weekList.Add("10");
+            if (week.Week11 == 1)
+                weekList.Add("11");
+            if (week.Week12 == 1)
+                weekList.Add("12");
+            if (week.Week13 == 1)
+                weekList.Add("13");
+            if (week.Week14 == 1)
+                weekList.Add("14");
+            if (week.Week15 == 1)
+                weekList.Add("15");
+            state.Weeks = weekList; //add the weekList array to the model
+            
+            //Add facilities
+            List<string> facList = new List<string>();
+            var facilities = db.FacilityRequests.Where(a => a.RequestID.Equals(id));
+            foreach (FacilityRequest f in facilities)
+            {
+                facList.Add(f.Facility.FacilityName);
+            }
+            state.Facilities = facList;
+
+            Session["State"] = state; //save state
+            //ViewBag.ModCode = new SelectList(db.Modules, "ModCode", "Title", request.ModCode);
+            return RedirectToAction("CreateNew");
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         
         //
         // POST: /Request/Edit/5
