@@ -1,84 +1,108 @@
 ﻿
-@model DBFirstMVC.Module
+@model DBFirstMVC.Models.ModuleInfo
 @{
     ViewBag.Title = "Module Info";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
 
-<h2>Get Module Info</h2>
+<h2>Module Info</h2>
 
-@using (Html.BeginForm()) {
-           // @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+<h2> Degrees</h2>
+<ol>
+@foreach (var item in Model.ModuleDegrees) {
+
+    <li>
+            @Html.DisplayFor(modelItem => item.Degree.FullName) <!-- Display the facility name -->
+        </li>
+    
+}
+</ol>
+
+<h2> Lecturers</h2>
+<ol>
+@foreach (var item in Model.ModuleLecturers) {
+
+    <li>
+            @Html.DisplayFor(modelItem => item.Lecturer.FullName) <!-- Display the facility name -->
+        </li>
+    
+}
+</ol>
+
 
     <fieldset>
-        <legend>Request</legend>
+        <legend>Module</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ModCode)
+            @Html.LabelFor(model => model.Module.ModCode)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.ModCode)
+            @Html.DisplayFor(model => model.Module.ModCode)
           
         </div>
             <div class="editor-label">
-            @Html.LabelFor(model => model.Title)
+            @Html.LabelFor(model => model.Module.Title)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Module.Title)
             
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Part)
+            @Html.LabelFor(model => model.Module.Part)
         </div>
         <div class="editor-field">
-              @Html.DisplayFor(model => model.Part)      
+              @Html.DisplayFor(model => model.Module.Part)      
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Students)
+            @Html.LabelFor(model => model.Module.Students)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.Students)
+            @Html.DisplayFor(model => model.Module.Students)
             
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Hours)
+            @Html.LabelFor(model => model.Module.Hours)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.Hours)
+            @Html.DisplayFor(model => model.Module.Hours)
             
         </div>
 
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Weight)
+            @Html.LabelFor(model => model.Module.Weight)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.Weight)
+            @Html.DisplayFor(model => model.Module.Weight)
            </div>
 
 
      <div class="editor-label">
-            @Html.LabelFor(model => model.DeptCode)
+            @Html.LabelFor(model => model.Module.DeptCode)
         </div>
         <div class="editor-field">
-            @Html.DisplayFor(model => model.DeptCode)
+            @Html.DisplayFor(model => model.Module.DeptCode)
            
         </div>
        
          <p>
-        @Html.ActionLink("Edit", "EditModule",new { id= Model.ModCode})
-        @Html.ActionLink("Delete", "DeleteModule",new { id= Model.ModCode})
         @Html.ActionLink("Back", "Module")
+        @Html.ActionLink("Edit Module", "EditModule",new { id= Model.Module.ModCode})
+        @Html.ActionLink("Delete Module", "DeleteModule",new { id= Model.Module.ModCode})
+        @Html.ActionLink("Add Lecturer", "AddLecturer",new { id= Model.Module.ModCode})
+        @Html.ActionLink("Remove Lecturer", "RemoveLecturer",new { id= Model.Module.ModCode})
+        @Html.ActionLink("Add Degree", "AddDegree",new { id= Model.Module.ModCode})
+        @Html.ActionLink("Remove Degree", "RemoveDegree",new { id= Model.Module.ModCode})
+     
          </p>
     </fieldset>
     <div>
 
 </div>
-}
+
 
 

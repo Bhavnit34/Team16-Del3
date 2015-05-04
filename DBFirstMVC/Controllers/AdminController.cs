@@ -405,10 +405,11 @@ namespace DBFirstMVC.Controllers
         {
             Facility facility = db.Facilities.Find(id);
             db.Facilities.Remove(facility);
+            db.SaveChanges();
 
             var fcltDelete = db.RoomFacilities.Where(a => a.FacilityID == id).ToList();
             foreach (var vp in fcltDelete)
-                db.RoomFacilities.Remove(vp);
+             db.RoomFacilities.Remove(vp);
             db.SaveChanges();
 
             return RedirectToAction("ShowFacility");

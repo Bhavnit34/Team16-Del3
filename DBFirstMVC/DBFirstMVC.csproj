@@ -218,6 +218,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\FacilityAndRoomFacility.cs" />
+    <Compile Include="Models\ModuleInfo.cs" />
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Models\RequestState.cs" />
     <Compile Include="Models\RoomInfo.cs" />
@@ -449,6 +450,11 @@
     <Content Include="Views\Request\CreateNewModule.cshtml" />
     <Content Include="Views\Request\GetModuleInfo.cshtml" />
     <Content Include="Views\Request\EditModule.cshtml" />
+    <Content Include="Views\Request\DeleteModule.cshtml" />
+    <Content Include="Views\Request\AddLecturer.cshtml" />
+    <Content Include="Views\Request\RemoveLecturer.cshtml" />
+    <Content Include="Views\Request\AddDegree.cshtml" />
+    <Content Include="Views\Request\RemoveDegree.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

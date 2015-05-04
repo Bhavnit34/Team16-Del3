@@ -678,15 +678,28 @@ namespace DBFirstMVC.Controllers
      
         public ActionResult GetModuleInfo(string id)
         {
-           
 
-            Module module = db.Modules.Find(id);
-            if (module == null)
-            {
-                return HttpNotFound();
-                // return RedirectToAction("Index");
+            Module r = db.Modules.Find(id);
+           
+          if (r == null)
+           {
+               return HttpNotFound();
+               
+           }
+
+            var l=(db.ModuleLecturers.Where(a=>a.ModCode.Equals(r.ModCode)));
+            var d = (db.ModuleDegrees.Where(a => a.ModCode.Equals(r.ModCode)));
+          
+            if (l != null) {
+
+                var t = l.Include(b => b.Lecturer);
+
+                var degName = d.Include(x => x.Degree);
+                return View(new ModuleInfo() { Module = r, ModuleLecturers = t , ModuleDegrees=degName});
+            
             }
-            return View(module);
+            return View();
+            
         }
 
         public ActionResult EditModule(string id)
@@ -718,15 +731,249 @@ namespace DBFirstMVC.Controllers
             ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
             return View(module);
         }
-        
-        
-        
-        
-        
-        
-        
+
+
+
+        public ActionResult DeleteModule(string id)
+        {
+            Module module = db.Modules.Find(id);
+            if (module == null)
+            {
+                return HttpNotFound();
+
+            }
+            return View(module);
+        }
+
+
+        [HttpPost, ActionName("DeleteModule")]
+        public ActionResult DeleteConfirmed1(string id)
+        {
+            var modDegree = (from d in db.ModuleDegrees
+                              where d.ModCode == id
+                              select d).ToList();
+            var modLecturer = (from d in db.ModuleLecturers
+                             where d.ModCode == id
+                             select d).ToList();
+
+
+            for (var i = 0; i < modDegree.Count; i++)
+            {
+
+                var rID = modDegree[i].ModuleDegreeID;
+                ModuleDegree row = db.ModuleDegrees.Where(a => a.ModuleDegreeID.Equals(rID)).FirstOrDefault();
+                db.ModuleDegrees.Remove(row);
+                db.SaveChanges();
+
+
+
+            }
+            for (var i = 0; i < modLecturer.Count; i++)
+            {
+
+                var lID = modLecturer[i].ModuleLecturerID;
+                ModuleLecturer row = db.ModuleLecturers.Where(a => a.ModuleLecturerID.Equals(lID)).FirstOrDefault();
+                db.ModuleLecturers.Remove(row);
+                db.SaveChanges();
+
+            }
+           
+            Module module = db.Modules.Find(id);
+            db.Modules.Remove(module);
+            db.SaveChanges();
+
+
+
+
+
+
+            return RedirectToAction("Module");
+        }
         //
         // POST: /Request/Edit/5
+
+
+        public ActionResult AddLecturer(string id)
+        {
+            ViewBag.id = id;
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.LecturerID= new SelectList(db.Lecturers, "LecturerID", "FullName", userSession.Username);
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult AddLecturer(ModuleLecturer moduleLecturer)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var check = (from f in db.ModuleLecturers where f.ModCode==moduleLecturer.ModCode &&
+                             f.LecturerID==moduleLecturer.LecturerID select f.ModCode).Count();
+
+
+                if (check == 0)
+                {
+                    db.ModuleLecturers.Add(moduleLecturer);
+                    db.SaveChanges();
+                    return RedirectToAction("GetModuleInfo/" + moduleLecturer.ModCode);
+                }
+                else {
+                    TempData["error"] = "Lecturer is already assigned for this module";
+                    ViewData["error"] = TempData["error"];
+                    ViewBag.id = moduleLecturer.ModCode;
+                    User userSess = (User)HttpContext.Session["User"];
+                    ViewBag.Dept = userSess.Username;
+                    ViewBag.LecturerID = new SelectList(db.Lecturers, "LecturerID", "FullName", userSess.Username);
+                    return View();
+                
+                }
+            }
+            ViewBag.id = moduleLecturer.ModCode;
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.LecturerID = new SelectList(db.Lecturers, "LecturerID", "FullName", userSession.Username);
+            return View();
+        }
+        public ActionResult RemoveLecturer(string id)
+        {
+
+            ViewBag.id = id;
+
+            var r = (db.ModuleLecturers.Where(a => a.ModCode.Equals(id)));
+                    
+            
+            if (r == null)
+            {
+                return HttpNotFound();
+
+           }
+       
+                var t = r.Include(b => b.Lecturer);
+                return View(new ModuleInfo() {  ModuleLecturers = t });
+
+          
+
+        }
+        [HttpPost]
+        public ActionResult DeleteLecturer1(string id)
+        {
+            //array with parameters
+            string[] Splittedwords = id.Split(new string[] { "?" }, System.StringSplitOptions.None);
+
+            int lecID = Convert.ToInt32(Splittedwords[0]);
+            var modc = Splittedwords[1];
+
+            int did = (from x in db.ModuleLecturers
+                       where x.LecturerID == lecID && x.ModCode == modc
+                       select x.ModuleLecturerID).SingleOrDefault();
+
+            ModuleLecturer row = db.ModuleLecturers.Find(did);
+            db.ModuleLecturers.Remove(row);
+            db.SaveChanges();
+
+
+
+            return Json(Url.Action("GetModuleInfo", "Request", new { id = "__id__" }));
+   
+
+        }
+
+        public ActionResult AddDegree(string id)
+        {
+            ViewBag.id = id;
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.DegreeID = new SelectList(db.Degrees, "DegreeID", "FullName", userSession.Username);
+
+            return View();
+
+        }
+        [HttpPost]
+        public ActionResult AddDegree(ModuleDegree moduleDegree)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var check = (from f in db.ModuleDegrees
+                             where f.ModCode == moduleDegree.ModCode &&
+                                 f.DegreeID == moduleDegree.DegreeID
+                             select f.ModCode).Count();
+
+
+                if (check == 0)
+                {
+                    db.ModuleDegrees.Add(moduleDegree);
+                    db.SaveChanges();
+                    return RedirectToAction("GetModuleInfo/" + moduleDegree.ModCode);
+
+                }
+
+                else {
+
+
+                    TempData["error"] = "Degree is already assigned for this module";
+                    ViewData["error"] = TempData["error"];
+                    ViewBag.id = moduleDegree.ModCode;
+                    User userSess = (User)HttpContext.Session["User"];
+                    ViewBag.Dept = userSess.Username;
+                    ViewBag.DegreeID = new SelectList(db.Degrees, "DegreeID", "FullName", userSess.Username);
+                    return View();
+                
+                
+                }
+
+            }
+            ViewBag.id = moduleDegree.ModCode;
+            User userSession = (User)HttpContext.Session["User"];
+            ViewBag.Dept = userSession.Username;
+            ViewBag.DegreeID = new SelectList(db.Degrees, "DegreeID", "FullName", userSession.Username);
+            return View();
+        }
+
+        public ActionResult RemoveDegree(string id)
+        {
+            ViewBag.id = id;
+
+            var r = (db.ModuleDegrees.Where(a => a.ModCode.Equals(id)));
+
+
+            if (r == null)
+            {
+                return HttpNotFound();
+
+            }
+
+            var t = r.Include(b => b.Degree);
+           
+            
+            return View(new ModuleInfo() { ModuleDegrees = t });
+
+
+        }
+         [HttpPost]
+        public ActionResult DeleteDegree1(string id)
+        {
+            string[] Splittedwords = id.Split(new string[] { "?" }, System.StringSplitOptions.None);
+
+            int deqID =  Convert.ToInt32(Splittedwords[0]);
+            var modc = Splittedwords[1];
+
+            int did = (from x in db.ModuleDegrees
+                      where x.DegreeID == deqID && x.ModCode == modc
+                      select x.ModuleDegreeID).SingleOrDefault();
+
+            ModuleDegree row = db.ModuleDegrees.Find(did);
+            db.ModuleDegrees.Remove(row);
+            db.SaveChanges();
+            
+            
+            
+            return Json(Url.Action("GetModuleInfo", "Request", new { id = "__id__" }));
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
