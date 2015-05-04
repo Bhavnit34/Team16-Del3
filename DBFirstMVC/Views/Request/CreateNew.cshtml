@@ -22,16 +22,21 @@
                             @Html.LabelFor(model => model.Request.ModCode, "Module")
                             Search below or choose from list:
                         </div>
+
                         <div class="editor-field">
                             <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
                             <input type="button" id="btnModSearch" value="Filter" />
                             @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules,"ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
+                        
+                        <br /> 
+                    
                         <div id="studentsOnModuleDiv"></div>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.SessionType, "Session Type")
                         </div>
+                        
                         <div class="editor-field">     
                             <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
                             <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
@@ -39,9 +44,12 @@
                             @Html.ValidationMessageFor(model => model.Request.SessionType)
                         </div>
 
+                        <br />
+
                          <div class="editor-label">
                             @Html.LabelFor(model => model.Request.DayID, "Day")
                         </div>
+
                         <div class="editor-field">
                         @{
                             List<SelectListItem> listItems= new List<SelectListItem>();
@@ -56,23 +64,34 @@
 
                             @Html.ValidationMessageFor(model => model.Request.DayID)
                         </div>
+                        
+                         <br />
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PeriodID, "Period")
                         </div>
+
                         <div class="editor-field">
                             @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.PeriodID)
                         </div>
 
+                        
+                         <br />
+
                          <div class="editor-label">
                            @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
                         </div>
+                        
                         <div class="editor-field">
                             @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
+
+                        
+                         <br />
+                        
                         <div>
                             <table>
                                 <tr>
@@ -110,8 +129,45 @@
                             <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="@ViewBag.SelectedWeeks" /><!-- this will be passed to the controller -->
                             <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
                         </div>
+  
+                    </fieldset>
+                
+   
+        </div>
+ 
+          <div id="right">
+                    <fieldset>
+                        <legend>Request</legend>
+                      
 
                         <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.ModCode, "Facilites")
+                        </div>
+
+                        <div id="facListDiv">
+                            @foreach (var item in Model.Facilities) {
+                                <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
+                            }
+                    <br />
+                        </div>                               
+                            <div class="editor-field">
+                                 <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
+                        </div>
+          
+                            @Html.EditorFor(model => model.Request.SpecialRequirements)
+                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
+                        </div>
+                        
+                        <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
+                        
+                        <select id="matchedRooms"></select>
+                        
+                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
+                        
+                        <input type="hidden" id="hiddenfacList" value="@ViewBag.facList" />
+
+                          <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
                         </div>
                         <div class="editor-field">
@@ -129,36 +185,11 @@
                             @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
                         </div>
 
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
-                        </div>
-                        <div class="editor-field">
-                            @Html.EditorFor(model => model.Request.SpecialRequirements)
-                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
-                        </div>
-                    </fieldset>
-                
-   
-        </div>
- 
-          <div id="right">
-                    <fieldset>
-                        <legend>Request</legend>
-                      
+                           <p>
+            <input type="button" id="btnCheck" value="Create Request" />
+            <input type="submit" value="Create" id="btnCreate"  name='Command' />
+        </p>
 
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.ModCode, "Facilites")
-                        </div>
-                        <div id="facListDiv">
-                            @foreach (var item in Model.Facilities) {
-                                <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
-                            }
-                    
-                        </div>                                  
-                        <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
-                        <select id="matchedRooms"></select>
-                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
-                        <input type="hidden" id="hiddenfacList" value="@ViewBag.facList" />
                     </fieldset>
          
         </div>
@@ -196,10 +227,7 @@
          
         </div>
          </div>
-        <p>
-            <input type="button" id="btnCheck" value="Create" />
-            <input type="submit" value="Create" id="btnCreate"  name='Command' />
-        </p>
+     
 }
          
 

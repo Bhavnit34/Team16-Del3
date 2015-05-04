@@ -14,26 +14,21 @@ body {
 }
 
 a {
-    color: #333;
+    color: rgba(51, 0, 102, 1);
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
-    text-decoration: underline;
+    font-size:18px;
 }
 
-   a:link, a:visited,
-    a:active, a:hover {
-        color: #333;
-    }
-
-    a:hover {
-        background-color: #c7d1d6;
+   a:link,{
+        color: rgba(51, 0, 102, 1);
+        font-size:18px;
     }
 
 header, footer, hgroup,
 nav, section {
     display: block;
-    background-color: fff;
 }
 
 mark {
@@ -60,7 +55,7 @@ mark {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #000;
+    color: rgba(51, 0, 102, 1);
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -95,6 +90,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
+    height:100%;
     max-width: 960px;
 }
 
@@ -106,10 +102,14 @@ h5, h6 {
 
 .editor-label {
 font-family: Arial, sans-serif;
-} 
+}
 
+.editor-field
+{
+  //width: 100px;
+}
    .main-content //* Container design */ {
-    padding-right: 2em;
+    padding-right: 1em;
     padding-top: 30px;
 }
 
@@ -117,15 +117,15 @@ font-family: Arial, sans-serif;
     .featured + .main-content {
 }
 
-    #container {
+ #container {
     background-color: #415f66;
     border-style: double;
     border-color: rgba(51, 0, 102, 1);
     color: #fff;
-    text-align: center;
-    width:100%;
-
+    width:120%;
+    height:50em;
 }
+
 #left {
     float: left;
     width: 100px;
@@ -133,35 +133,38 @@ font-family: Arial, sans-serif;
 
 #center {
     display: inline-block;
-    margin-left:30em;
+    margin-left:38em;
     width: 100px;
 }
+
 
 #right {
     float: right;
-    width: 100px;
-}
-/* OLD for the general request area div. This div is in Views/Request/Create.cshtml */
-.generalRequest {
-    border-style: double;
-    border-color: rgba(51, 0, 102, 1);
-    float: left;
-    margin: auto;
-    padding: 10%;
-}
+    width: 250px;
+    //margin-top:50em;
+   }
 
-header .content-wrapper {
-    padding-top: 20px; 
-}
+
 
 footer {
-    clear: both;
-    background-color: #e2e2e2;
-    font-size: .8em;
-    height: 100px;
+    clear:initial;
+    font-size: 1.3em;
+    height: 50px;
+    text-align:center;
 }
 
+#facListDiv
+{
+    display: grid;
+    font-size:15px;
+}
 
+#studentsOnModuleDiv
+{
+    font-size: 20px;
+    padding-bottom:20px;
+}
+  
 /* site title
 ----------------------------------------------------------*/
 .site-title {
@@ -220,7 +223,7 @@ ul#menu {
     font-weight: 600;
     margin: 0 0 5px;
     padding: 0;
-    text-align: right;
+    text-align: center;
 }
 
     ul#menu li {
@@ -236,10 +239,10 @@ ul#menu {
         }
 
         ul#menu li a:hover {
-            color: #c8c8c8;
-            text-decoration: none;
+            color: #ff0000;
+            text-decoration: bold;
+            font-size:20px; /*makes nav bigger when highlighted*/
         }
-
 
 /* page elements
 ----------------------------------------------------------*/
@@ -308,9 +311,10 @@ ol.round {
             border-radius: 10px; /* These elements help shape the Home screen buttons    */
 	        -moz-border-radius: 10px;
 	        -webkit-border-radius:10px;
-            background-color:#c8c8c8;
+            background-color:#fff;
 	        display:inline-block;
-            width:15%;
+            width:17%;
+            height:60px;
         }
 
         ol.round li.two {
@@ -318,8 +322,9 @@ ol.round {
             border-radius: 10px; /* These elements help shape the Home screen buttons   */
 	        -moz-border-radius: 10px;
 	        -webkit-border-radius:10px;
-            background-color:#c8c8c8;
-	        width:15%;
+            background-color:#fff;
+	        width:17%;
+            height:60px;
 	        display:inline-block;
             margin-left:10em;
         }
@@ -329,8 +334,9 @@ ol.round {
             border-radius: 10px; /* These elements help shape the Home screen buttons    */
 	        -moz-border-radius: 10px;
 	        -webkit-border-radius:10px;
-            background-color:#c8c8c8;
-	        width:15%;
+            background-color:#fff;
+	        width:17%;
+            height:60px;
 	        display:inline-block;
             margin-left:11em;
         }
@@ -389,7 +395,7 @@ aside {
 #loginForm {
     border-right: solid 2px #c8c8c8;
     float: left;
-    width: 55%;
+    width: 65%;
 }
 
     #loginForm .validation-error {
@@ -473,8 +479,9 @@ fieldset {
 
 label {
     display: block;
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: 600;
+    text-decoration:underline;
 }
 
 label.checkbox {
@@ -488,8 +495,8 @@ input, textarea {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
-}
+   /* width: 232px;  Size of the text fields*/
+} 
 
 textarea {
     font-family: inherit;
@@ -585,16 +592,22 @@ input[type="checkbox"].input-validation-error {
 /* tables
 ----------------------------------------------------------*/
 table {
-    border-collapse: collapse;
+    border-collapse:inherit;
     border-spacing: 0;
     margin-top: 0.75em;
-    border: 0 none;
+    border: solid 1px;
+    display:grid;
+}
+
+tr:hover
+{
+    color:blue;
 }
 
 th {
     font-size: 1.2em;
-    text-align: left;
-    border: none 0px;
+    text-align: center;
+    border:dotted 1px;
     padding-right: 9px;
 }
 
@@ -604,28 +617,16 @@ th {
     }
 
     th a:link, th a:visited, th a:active, th a:hover {
-        color: #333;
+        color: #fff;
         font-weight: 600;
         text-decoration: none;
         padding: 0;
     }
 
     th a:hover {
-        color: #000;
+        color: #fff;
     }
 
-    th.asc a, th.desc a {
-        margin-right: .75em;
-    }
-
-    th.asc a:after, th.desc a:after {
-        display: block;
-        position: absolute;
-        right: 0em;
-        top: 0;
- }
-        font-size: 0.75em;
-   
     th.asc a:after {
         content: '▲';
     }
@@ -635,9 +636,16 @@ th {
     }
 
 td {
+    display:grid;
     padding: 0.25em 2em 0.25em 0em;
-    border: 0 none;
+    border: dashed 1px;
+    text-align:center;
 }
+
+    td:hover
+    {
+        color: #ff0000;
+    }
 
 tr.pager td {
     padding: 0 0.25em 0 0;
@@ -647,7 +655,7 @@ tr.pager td {
 /********************
 *   Mobile Styles   *
 ********************/
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 360px) {
 
     /* header
     ----------------------------------------------------------*/
@@ -658,7 +666,7 @@ tr.pager td {
 
     /* logo */
     header .site-title {
-        margin: 10px;
+        margin: ;
         text-align: center;
     }
 
@@ -720,7 +728,7 @@ tr.pager td {
     .content-wrapper {
         padding-right: 10px;
         padding-left: 10px;
-        background-color:ffffff;
+        background-color:fff;
     }
 
     .featured .content-wrapper {
@@ -795,9 +803,8 @@ tr.pager td {
         float: none;
     }
 
-    footer {
+    footer a {
         text-align: center;
-        height: auto;
         padding: 10px 0;
     }
 

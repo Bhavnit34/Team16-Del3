@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Team 16 Timetabling System</title>
  
+        <img src ="/Images/logo.png" />
 
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
@@ -18,12 +19,16 @@
     </head>
     <body>
         <header>
-            <div class="content-wrapper">
+           
+             <div class="content-wrapper">
                 <div class="float-left">
-                    <p id="siteTitle" class="site-title">@Html.ActionLink("Team 16", "Index", "Home")
-                        <a style="color:gray; font-style:italic; font-size:0.6em">@ViewBag.CurrentUserTitle</a>
+                <p id="siteTitle" class="site-title"> @* @Html.ActionLink("Home", "Index", "Home") *@ 
+
+                        <a style="color:gray; font-style:italic; font-size:0.6em;"> @ViewBag.CurrentUserTitle</a>
                     </p>
                 </div>
+                    
+
                 <div>
                     <span style="float: right; text-decoration: none;">Current Round: @ViewBag.CurrentRound</span><br />
                     <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span>
@@ -34,6 +39,7 @@
                     </section>
                     <nav>
                         <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("Create Request", "CreateNew", "Request")</li>
                             <li>@Html.ActionLink("History","Index","Request")</li>
                             <li>@Html.ActionLink("Ad-Hoc","Index","Request")</li>
@@ -55,9 +61,7 @@
             </section>
         </div>
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - Team 16</p>
+            <p>&copy; @DateTime.Now.Year - Team 16</p>
                 </div>
             </div>
         </footer>
