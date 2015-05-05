@@ -151,10 +151,10 @@
             <!--@Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)-->
             @{
                     if(Model.Request.PriorityRequest == 1){
-                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                        @Html.CheckBox("Priority",true, new{@onclick = "return false;"})
                     }
                     else{
-                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                        @Html.CheckBox("Priority",false, new{@onclick = "return false;"})
                     }
         
               }
@@ -163,10 +163,10 @@
             <!--@Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)-->
                         @{
                     if(Model.Request.AdhocRequest == 1){
-                        @Html.CheckBox("Adhoc",true, new{@disabled = "disabled"})
+                        @Html.CheckBox("Adhoc",true, new{@onclick = "return false;"})
                     }
                     else{
-                        @Html.CheckBox("Adhoc",false, new{@disabled = "disabled"})
+                        @Html.CheckBox("Adhoc",false, new{@onclick = "return false;"})
                     }
         
               }
@@ -198,7 +198,6 @@
             //loop through the weeks passed in and check if any have been selected, change the class of the circle if so
             for (var i = 0; i < 15; i++) {
                 if ($('#hiddenWeeks').children().eq(i).val() == "1") {
-                    alert("hello");
                     $('#popupWeeks').children().eq(i).addClass("ui-selected");
                 }
 

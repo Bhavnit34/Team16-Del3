@@ -129,6 +129,7 @@ font-family: Arial, sans-serif;
 #left {
     float: left;
     width: 100px;
+    margin-left:5px;
 }
 
 #center {
