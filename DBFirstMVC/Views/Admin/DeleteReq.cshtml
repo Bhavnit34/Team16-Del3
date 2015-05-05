@@ -1,0 +1,104 @@
+﻿@model DBFirstMVC.Request
+
+@{
+    ViewBag.Title = "Delete";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Request</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Module.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Module.Title)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SessionType)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SessionType)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SessionLength)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SessionLength)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DayID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DayID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PriorityRequest)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PriorityRequest)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.AdhocRequest)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AdhocRequest)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SpecialRequirements)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SpecialRequirements)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Semester)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Semester)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RoundID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RoundID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Status)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

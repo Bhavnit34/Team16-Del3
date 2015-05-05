@@ -1,0 +1,90 @@
+﻿@model DBFirstMVC.Module
+
+
+@{
+    ViewBag.Title = "Edit Module";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>Edit Module</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+         <div class="editor-label">
+            
+            @Html.LabelFor(model => model.ModCode)
+        </div>
+           
+          <div class="editor-field">
+        @Html.EditorFor(model => model.ModCode)
+        @Html.ValidationMessageFor(model => model.ModCode)
+      
+        </div>
+           
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+          
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Part)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Part)
+          
+            @Html.ValidationMessageFor(model => model.Part)
+        </div>
+           <div class="editor-label">
+            @Html.LabelFor(model => model.Students)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Students)
+          
+            @Html.ValidationMessageFor(model => model.Students)
+        </div>
+           <div class="editor-label">
+            @Html.LabelFor(model => model.Hours)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Hours)
+          
+            @Html.ValidationMessageFor(model => model.Hours)
+        </div>
+                <div class="editor-label">
+            @Html.LabelFor(model => model.Weight)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Weight)
+          
+            @Html.ValidationMessageFor(model => model.Weight)
+        </div>
+        
+     <div class="editor-label">
+            @Html.LabelFor(model => model.DeptCode, "Department Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("DeptCode", "-------- Select --------")
+            @Html.ValidationMessageFor(model => model.DeptCode)
+        </div>
+       
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back", "GetModuleInfo",new { id= Model.ModCode})
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

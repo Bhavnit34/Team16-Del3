@@ -4,7 +4,21 @@
     ViewBag.Title = "Display Room Info";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+ @{
+     if (ViewBag.CurrentUserTitle=="CA - Central Admin"){
+    
 
+        Layout = "~/Views/Shared/adminView.cshtml";
+
+     
+     
+     }
+            
+            
+            
+            
+            
+        }
 <h2>@ViewBag.RoomName</h2>
 
 <fieldset>

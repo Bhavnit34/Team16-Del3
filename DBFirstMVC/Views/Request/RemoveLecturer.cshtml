@@ -1,0 +1,68 @@
+﻿
+@model DBFirstMVC.Models.ModuleInfo
+@{
+    ViewBag.Title = "Remove Lecturer";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>RemoveLecturer</h2>
+<h2> Lecturers</h2>
+@using (Html.BeginForm()) {
+<div class="editor-label">
+            
+            @Html.LabelFor(model => model.Module.ModCode)
+        </div>
+           
+ <div class="editor-field">
+     @Html.TextBox( "ModCode",(string)@ViewBag.id, new{@readonly = true})
+
+        
+
+ </div>
+    <table>
+
+@foreach (var item in Model.ModuleLecturers) {
+
+    <tr>
+        <td> 
+            @Html.DisplayFor(modelItem => item.Lecturer.FullName) 
+
+           </td>
+        <td>
+        <input type="button" value="Remove" class="delButton" id=" @item.Lecturer.LecturerID "/>
+        </td>
+
+      
+    </tr>
+}
+    </table>
+        <div>
+    @Html.ActionLink("Back", "GetModuleInfo",new { id=@ViewBag.id})
+</div>
+}
+ @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section MyScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#body").on("click", "input.delButton", function () {
+                var lecturer = [];
+                lecturer.push($(this).attr("id"));
+                lecturer.push($("#ModCode").val());
+
+                var strArr = lecturer.join("?");
+                alert(strArr);
+                //alert(lecturerID+" "+modcode);
+
+                $.post('@Url.Action("DeleteLecturer1", "Request")', { id: strArr }, function (data) {
+
+                    window.location.href = '/Request/GetModuleInfo/' + $("#ModCode").val();
+                });
+             });
+
+
+        });
+        </script>
+}

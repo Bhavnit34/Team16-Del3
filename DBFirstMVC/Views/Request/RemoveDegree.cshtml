@@ -1,0 +1,74 @@
+﻿@model DBFirstMVC.Models.ModuleInfo
+    
+    
+
+    @{
+    ViewBag.Title = "Remove Degree";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>Remove Degree</h2>
+<h2>Degrees</h2>
+@using (Html.BeginForm()) {
+<div class="editor-label">
+            
+            @Html.LabelFor(model => model.Module.ModCode)
+        </div>
+           
+ <div class="editor-field">
+     @Html.TextBox( "ModCode",(string)@ViewBag.id, new{@readonly = true})
+
+        
+
+ </div>
+ <table>
+
+ 
+@foreach (var item in Model.ModuleDegrees) {
+
+   <tr>
+         <td>
+            @Html.DisplayFor(modelItem => item.Degree.FullName) 
+            </td>
+          <td>  
+        <input type="button" value="Remove" class="delButton" id=" @item.Degree.DegreeID "/>
+         </td>
+
+       
+ </tr>
+}
+   
+
+
+      </table>
+    
+    <div>
+    @Html.ActionLink("Back", "GetModuleInfo",new { id= @ViewBag.id})
+</div>
+}
+ @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section MyScripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#body").on("click", "input.delButton", function () {
+                var degree = [];
+                degree.push($(this).attr("id"));
+                degree.push($("#ModCode").val());
+
+                var strArr = degree.join("?");
+                alert(strArr);
+             
+
+                $.post('@Url.Action("DeleteDegree1", "Request")', { id:strArr }, function (data) {
+
+                    window.location.href = '/Request/GetModuleInfo/' + $("#ModCode").val();
+                });
+            });
+
+
+        });
+        </script>
+}
