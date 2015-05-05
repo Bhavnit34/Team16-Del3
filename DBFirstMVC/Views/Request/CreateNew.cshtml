@@ -317,8 +317,20 @@
                     $('#RoomDiv').html("");
                     return;
                 }
-                //check the any option has been selected
 
+
+                //check the any option has been selected
+                if (building.indexOf("ANY") > -1) {
+                    buildingID = building.replace(/ /g, '_');
+                    
+                    html = "";
+                    html += "<option id='" + buildingID + "' value='" + building + "'>" + building + "</option>";
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                    return;
+                }
 
 
 
@@ -368,6 +380,9 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
+                if (room.indexOf("ANY") > -1){
+                    roomID = room.replace(/ /g, '');
+                }
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms
@@ -388,18 +403,23 @@
                     return;
                 }
                 
-
                 var roomSize = 0;
                 $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
                     roomSize = data;
-                }).done(function(result){
+                }).done(function (result) {
+                    //make capacity default if the option was any
+                    if (roomID.indexOf("ANY") > -1) {
+                        roomSize = 401;
+                    }
                     var size = roomSize;
                     //Create html for the room item and add it to the list
                     var html = "<tr id='" + roomID + "'>";
                     var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
-                    //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
                     if (studentsLeft < roomSize)
                         size = studentsLeft;
+
+
+
                     //we need to add this hidden input so that we can pass the room value to the controller
                     html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
                     html += "<td>" + room + "</td>";
