@@ -17,6 +17,7 @@ namespace DBFirstMVC.Controllers
             if (Session["User"] != null)
             {
                 ViewBag.CurrentUser = getCurrentUser(); // get user logged in
+                ViewBag.LogOut = true; //set button to logout, not login
                 //get current round and semester
                 RoundAndSemester RandS = (from d in db.RoundAndSemesters
                                           where d.CurrentRound == true
