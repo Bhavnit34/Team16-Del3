@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DBFirstMVC.RoundAndSemester>
+
+@{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
+@{
+    ViewBag.Title = "Change Round Dates";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+
+<h2>Round Dates</h2>
+
+<table>
+    <tr>
+        <th>
+            @Html.Label("Round")
+        </th>
+        <th>
+            @Html.Label("Semester")
+        </th>
+        <th>
+            @Html.Label("Start Date")
+        </th>
+        <th>
+            @Html.Label("End Date")
+        </th>
+        <th>
+            @Html.Label("Current Round")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoundID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate).ToString().Substring(0,10)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndDate).ToString().Substring(0,10)
+        </td>
+        <td>
+            @{
+                if(item.CurrentRound == true){
+                    @Html.CheckBox("CurrentRound",true, new{@onclick = "return false;"})
+                }
+                else{
+                    @Html.CheckBox("CurrentRound",false, new{@onclick = "return false;"})
+                }
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditRound", new { id=item.RoundAndSemesterID })
+        </td>
+    </tr>
+}
+
+</table>
