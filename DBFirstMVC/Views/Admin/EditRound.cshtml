@@ -63,7 +63,8 @@ Layout = "~/Views/Shared/adminView.cshtml";
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="button" id="btnCheck" value="Save" />
+            <input type="submit" id="btnSave" value="Save" />
         </p>
     </fieldset>
 }
@@ -76,8 +77,9 @@ Layout = "~/Views/Shared/adminView.cshtml";
     @Scripts.Render("~/bundles/jqueryval")
 }
 @section CreateNewScript{
-    <script type="text/javascript">        
+    <script type="text/javascript">       
         $(document).ready(function () {
+            $('#btnSave').hide();
             //set end date
             var date2 = $('#hiddenEndDate').val().replace(/\//g, '-');
             $("#endDatePicker").datepicker({
@@ -92,7 +94,22 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
 
             $('#CurrentRound').children().eq(0).remove(); // remove the 'Not Set' option for CurrentRound
-        })
+
+
+            $('#btnCheck').click(function () {
+                //check roundID entered is numeric
+                var round = $('#RoundID').val();
+                if (isNumeric(round) == false) {
+                    alert("Round is not a number");
+                    return;
+                }
+                $('#btnSave').trigger('click');
+
+            });
+        });
+        function isNumeric(n) {
+            return !isNaN(parseInt(n)) && isFinite(n);
+        }
     </script>
 
 }
