@@ -6,18 +6,26 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
 }
 
-@{
+
+ @if (@ViewBag.CurrentUserTitle=="CA - Central Admin"){
     ViewBag.Title = "Edit room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
-}
+
 
 <h2>Edit pool room</h2>
+ }
+else{
+     ViewBag.Title = "Add private room";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 
+
+<h2>Add Private Room</h2>}
 @using (Html.BeginForm()) {
+    if (@ViewBag.CurrentUserTitle=="CA - Central Admin"){
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Request</legend>
+        <legend>Edit Room</legend>
            <div class="editor-label">
             @Html.LabelFor(model => model.RoomName)
         </div>
@@ -76,7 +84,79 @@ Layout = "~/Views/Shared/adminView.cshtml";
         </p>
     </fieldset>
 }
+else {
 
+            @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Add Private Room</legend>
+           <div class="editor-label">
+       @Html.LabelFor(model => model.RoomName)
+        </div>
+          <div class="editor-field">
+            @Html.TextBoxFor(model => model.RoomName, new { @readonly = "readonly" } )
+           
+               @Html.ValidationMessageFor(model => model.RoomName)
+    
+     
+        </div>
+         <div class="editor-label">
+         @Html.LabelFor(model => model.BuildingCode, "Building Code")
+        </div>
+        <div class="editor-field">
+     
+            @Html.TextBoxFor(model => model.BuildingCode, new { @readonly = "readonly" } )
+           
+              @Html.ValidationMessageFor(model => model.BuildingCode)
+            
+        
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Capacity)
+        </div>
+        <div class="editor-field">
+     
+            @Html.TextBoxFor(model => model.Capacity, new { @readonly = "readonly" } )
+            
+               @Html.ValidationMessageFor(model => model.Capacity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lab)
+        </div>
+        <div class="editor-field">
+
+           
+                   @{
+                            List<SelectListItem> listItems= new List<SelectListItem>();
+                            listItems.Add(new SelectListItem{Text = "Yes", Value = "1"});
+                            listItems.Add(new SelectListItem{Text = "No", Value = "0"});
+                      
+                        }
+
+            @Html.DropDownListFor(model => model.Lab, listItems,  "-------- Select --------", new { @disabled = "disabled" })           
+          
+        </div>
+           @Html.HiddenFor(model => model.URL)
+      <div class="editor-label">
+            @Html.LabelFor(model => model.DeptCode, "Department Name")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("DeptCode", "-------- Select --------")
+            @Html.ValidationMessageFor(model => model.DeptCode)
+        </div>
+
+       
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+
+
+    }
+}
 <div>
     @Html.ActionLink("Back to List", "EditPool")
 </div>

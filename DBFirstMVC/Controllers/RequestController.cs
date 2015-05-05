@@ -242,7 +242,9 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateRequest(CreateNewRequest myRequest, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
-        {   
+        {
+
+
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -421,12 +423,15 @@ namespace DBFirstMVC.Controllers
 
                     }
                     //here pRoomsNew is now the correct array of bool values
-
+                  
                     for (int i = 0; i < chosenRooms.Length; i++)
-                    {
+                    {//******************************************************************
                         //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
                         RoomRequest roomRequest = new RoomRequest();
                         string room = chosenRooms[i];
+                   
+               
+
                         short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
 
                         roomRequest.RoomRequestID = 0;

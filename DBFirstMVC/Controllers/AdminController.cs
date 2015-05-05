@@ -610,6 +610,7 @@ namespace DBFirstMVC.Controllers
                 return HttpNotFound();
                 // return RedirectToAction("Index");
             }
+            
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName", selected);
             ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", selected1);
             return View(room);
