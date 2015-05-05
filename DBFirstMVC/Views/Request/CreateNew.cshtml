@@ -323,7 +323,6 @@
                 if (building.indexOf("ANY") > -1) {
                     buildingID = building.replace(/ /g, '');
                     buildingID = buildingID.replace("ANY", "Any");
-                    buildingID = buildingID.charAt(0).toUpperCase() + buildingID.slice(1).toLowerCase();
                     
                     html = "";
                     html += "<option id='" + buildingID + "' value='" + buildingID + "'>" + building + "</option>";
@@ -382,11 +381,12 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
-                if (room.indexOf("ANY") > -1){
-                    roomID = room.replace(/ /g, '');
-                    roomID = roomID.replace("ANY", "");
-                    roomID = roomID.charAt(0).toUpperCase() + buildingID.slice(1).toLowerCase();
+                if (room.indexOf("Any") > -1) { //if the building is 'any'
+                    roomID = roomID.replace("Any", "");
+                    roomID = roomID.charAt(0).toUpperCase() + roomID.slice(1).toLowerCase();
+                    room = roomID; //e.g. turned AnyEAST to East
                 }
+
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms

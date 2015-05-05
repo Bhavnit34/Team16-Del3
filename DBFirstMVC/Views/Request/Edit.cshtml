@@ -255,7 +255,8 @@
                 var buildings = data;
                 html = "";
                 html += "<option value='--Select Building--'>--Select Building--</option>";
-                //create a dropdown list of buildings
+                    //create a dropdown list of buildings
+                html += "<option id='Any'" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                 for (var i = 0; i < buildings.length; i++) {
                     if (buildings[i] != park)
                         html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
@@ -279,10 +280,11 @@
 
                 //check the any option has been selected
                 if (building.indexOf("ANY") > -1) {
-                    buildingID = building.replace(/ /g, '_');
+                    buildingID = building.replace(/ /g, '');
+                    buildingID = buildingID.replace("ANY", "Any");
 
                     html = "";
-                    html += "<option id='" + buildingID + "' value='" + building + "'>" + building + "</option>";
+                    html += "<option id='" + buildingID + "' value='" + buildingID + "'>" + building + "</option>";
                     $('#Room').html(html); //add this html to the tag
                     $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
                     $('#Room').show(200);
@@ -290,13 +292,11 @@
                     return;
                 }
 
-
                 $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                     // Postback response of rooms
                     var rooms = data;
                     html = "";
                     //create a dropdown list of rooms
-                    html += "<option id='Any" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                     for (var i = 0; i < rooms.length; i++) {
                             html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
                     }
@@ -338,8 +338,10 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
-                if (room.indexOf("ANY") > -1) {
-                    roomID = room.replace(/ /g, '');
+                if (room.indexOf("Any") > -1) { //if the building is 'any'
+                    roomID = roomID.replace("Any", "");
+                    roomID = roomID.charAt(0).toUpperCase() + roomID.slice(1).toLowerCase();
+                    room = roomID; //e.g. turned AnyEAST to East
                 }
                 var len = $('#listOfRooms').children().children().length;
 
