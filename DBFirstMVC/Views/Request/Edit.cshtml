@@ -276,11 +276,27 @@
                     $('#RoomDiv').html("");
                     return;
                 }
+
+                //check the any option has been selected
+                if (building.indexOf("ANY") > -1) {
+                    buildingID = building.replace(/ /g, '_');
+
+                    html = "";
+                    html += "<option id='" + buildingID + "' value='" + building + "'>" + building + "</option>";
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                    return;
+                }
+
+
                 $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                     // Postback response of rooms
                     var rooms = data;
                     html = "";
                     //create a dropdown list of rooms
+                    html += "<option id='Any" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                     for (var i = 0; i < rooms.length; i++) {
                             html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
                     }
@@ -322,6 +338,9 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
+                if (room.indexOf("ANY") > -1) {
+                    roomID = room.replace(/ /g, '');
+                }
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms
@@ -346,7 +365,11 @@
                 var roomSize = 0;
                 $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
                     roomSize = data;
-                }).done(function(result){
+                }).done(function (result) {
+                    //make capacity default if the option was any
+                    if (roomID.indexOf("ANY") > -1) {
+                        roomSize = 401;
+                    }
                     var size = roomSize;
                     //Create html for the room item and add it to the list
                     var html = "<tr id='" + roomID + "'>";

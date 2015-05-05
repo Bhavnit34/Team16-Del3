@@ -295,7 +295,7 @@
                 html = "";
                 html += "<option value='--Select Building--'>--Select Building--</option>";
                     //create a dropdown list of buildings
-                html += "<option id='Any" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
+                html += "<option id='Any'" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                 for (var i = 0; i < buildings.length; i++) {
                     if (buildings[i] != park)
                         html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
@@ -321,10 +321,12 @@
 
                 //check the any option has been selected
                 if (building.indexOf("ANY") > -1) {
-                    buildingID = building.replace(/ /g, '_');
+                    buildingID = building.replace(/ /g, '');
+                    buildingID = buildingID.replace("ANY", "Any");
+                    buildingID = buildingID.charAt(0).toUpperCase() + buildingID.slice(1).toLowerCase();
                     
                     html = "";
-                    html += "<option id='" + buildingID + "' value='" + building + "'>" + building + "</option>";
+                    html += "<option id='" + buildingID + "' value='" + buildingID + "'>" + building + "</option>";
                     $('#Room').html(html); //add this html to the tag
                     $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
                     $('#Room').show(200);
@@ -382,6 +384,8 @@
                 var roomID = room.replace(/\./g, '');
                 if (room.indexOf("ANY") > -1){
                     roomID = room.replace(/ /g, '');
+                    roomID = roomID.replace("ANY", "");
+                    roomID = roomID.charAt(0).toUpperCase() + buildingID.slice(1).toLowerCase();
                 }
                 var len = $('#listOfRooms').children().children().length;
 
