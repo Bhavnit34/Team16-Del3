@@ -690,6 +690,26 @@ namespace DBFirstMVC.Controllers
             return View(room);
         }
 
+        public ActionResult ChangeRoundDates()
+        {
+            var r = db.RoundAndSemesters.ToList();
+
+
+            return View(r);
+        }
+
+
+        public ActionResult EditRound(int id = 0)
+        {
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(id); 
+            return View(RandS);
+        }
+
+
+
+
+
+
 
         //delete room view
 
