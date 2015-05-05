@@ -295,7 +295,7 @@
                 html = "";
                 html += "<option value='--Select Building--'>--Select Building--</option>";
                     //create a dropdown list of buildings
-                html += "<option id='Any" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
+                html += "<option id='Any'" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                 for (var i = 0; i < buildings.length; i++) {
                     if (buildings[i] != park)
                         html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
@@ -317,8 +317,21 @@
                     $('#RoomDiv').html("");
                     return;
                 }
-                //check the any option has been selected
 
+
+                //check the any option has been selected
+                if (building.indexOf("ANY") > -1) {
+                    buildingID = building.replace(/ /g, '');
+                    buildingID = buildingID.replace("ANY", "Any");
+                    
+                    html = "";
+                    html += "<option id='" + buildingID + "' value='" + buildingID + "'>" + building + "</option>";
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                    return;
+                }
 
 
 
@@ -368,6 +381,12 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
+                if (room.indexOf("Any") > -1) { //if the building is 'any'
+                    roomID = roomID.replace("Any", "");
+                    roomID = roomID.charAt(0).toUpperCase() + roomID.slice(1).toLowerCase();
+                    room = roomID; //e.g. turned AnyEAST to East
+                }
+
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms
@@ -388,18 +407,23 @@
                     return;
                 }
                 
-
                 var roomSize = 0;
                 $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
                     roomSize = data;
-                }).done(function(result){
+                }).done(function (result) {
+                    //make capacity default if the option was any
+                    if (roomID.indexOf("ANY") > -1) {
+                        roomSize = 401;
+                    }
                     var size = roomSize;
                     //Create html for the room item and add it to the list
                     var html = "<tr id='" + roomID + "'>";
                     var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
-                    //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
                     if (studentsLeft < roomSize)
                         size = studentsLeft;
+
+
+
                     //we need to add this hidden input so that we can pass the room value to the controller
                     html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
                     html += "<td>" + room + "</td>";
