@@ -480,10 +480,19 @@ namespace DBFirstMVC.Controllers
             User userSession = (User)HttpContext.Session["User"];
             string user = userSession.Username;
 
+           
+            
             var rm = from d in db.Rooms
                     where ((d.Building.BuildingName == chosenBuilding) && ((d.DeptCode == null) || (d.DeptCode == user)))
                     select d.RoomName;
 
+            if (user == "CA")
+            {
+                rm = from d in db.Rooms
+                     where (d.Building.BuildingName == chosenBuilding)
+                     select d.RoomName;
+            }
+            
             return Json(rm);
         }
 
