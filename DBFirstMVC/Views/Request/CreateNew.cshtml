@@ -197,8 +197,6 @@
                         </div>
 
                            <p>
-            <input type="button" id="btnCheck" value="Create Request" />
-            <input type="submit" value="Create" id="btnCreate"  name='Command' />
         </p>
 
                     </fieldset>
@@ -355,6 +353,10 @@
             $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){
                 var id = $(this).attr('id');
                 var room = $('#Room').val();
+
+                if (room == null)
+                    return;
+
                 if (id == 'btnAddMatchedRoom')
                     room = $('#matchedRooms').val();
 

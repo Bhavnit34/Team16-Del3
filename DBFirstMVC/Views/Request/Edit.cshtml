@@ -314,6 +314,10 @@
             $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){
                 var id = $(this).attr('id');
                 var room = $('#Room').val();
+
+                if (room == null)
+                    return;
+
                 if (id == 'btnAddMatchedRoom')
                     room = $('#matchedRooms').val();
 
