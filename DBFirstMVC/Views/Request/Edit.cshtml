@@ -202,6 +202,8 @@
         <p>
             <input type="button" id="btnCheck" value="Edit" />
             <input type="submit" value="Edit" id="btnEdit"  name='Command' />
+            <input type="button" id="btnCancel" value="Cancel" data-requestID="@Model.Request.RequestID" />
+            <input type="button" id="btnReset" value="Reset Page" />
         </p>
 }
          
@@ -676,6 +678,43 @@
                 }
             });
 
+            $('#btnReset').click(function () {
+                //reset main request section
+                $('#txtModSearch').val("");
+                $('#Request_ModCode')[0].selectedIndex = 0;
+                $('#studentsOnModuleDiv').html("");
+                $('#Request_DayID')[0].selectedIndex = 0;
+                $('#Request_PeriodID')[0].selectedIndex = 0;
+                $('#Request_SessionLength')[0].selectedIndex = 0;
+                $('#btnDefaultWeeks').trigger('click');
+                $('#Request_SpecialRequirements').val("");
+                $('#cbPriorityRequest').attr('checked', false);
+
+                //reset room list
+                $('#Room').hide(200);
+                $('#Building').hide(200);
+                $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                $('#BuildingDiv').html("");
+                $('#Park')[0].selectedIndex = 0;
+                $('#listOfRooms').html("");
+                $('#studentsLeft').html("");
+                $('#studentsLeft').attr("data-max", "0");
+                $('#studentsLeft').attr("data-left", "0");
+
+                //reset facilities
+                var len = $('#facListDiv').children().length;
+                for (var i = 0; i < len; i++) {
+                    $('#facListDiv').children().eq(i).attr('checked', false)
+                }
+            });
+
+            $('#btnCancel').click(function () {
+                if (confirm("Are you sure you want to discard all changes?")){
+                    var id = $('#btnCancel').attr("data-requestID");
+                    window.location = "/Request/GetRequest/" + id;
+                }
+            });
 
             //Function to check user inputs before sending the request to the controller, 
             $('#btnCheck').click(function () {

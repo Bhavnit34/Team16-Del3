@@ -240,6 +240,7 @@
         <p>
             <input type="button" id="btnCheck" value="Create" />
             <input type="submit" value="Create" id="btnCreate"  name='Command' />
+            <input type="button" id="btnReset" value="Reset Page" />
         </p>
 
 }
@@ -537,13 +538,6 @@
                     });
 
 
-
-
-
-
-
-
-
                     $("#students" + roomID).trigger("change");
 
                 });
@@ -720,6 +714,38 @@
                     $('#selectedWeeks').val("");
                 }
             });
+
+            $('#btnReset').click(function () {
+                //reset main request section
+                $('#txtModSearch').val("");
+                $('#Request_ModCode')[0].selectedIndex = 0;
+                $('#studentsOnModuleDiv').html("");
+                $('#Request_DayID')[0].selectedIndex = 0;
+                $('#Request_PeriodID')[0].selectedIndex = 0;
+                $('#Request_SessionLength')[0].selectedIndex = 0;
+                $('#btnDefaultWeeks').trigger('click');
+                $('#Request_SpecialRequirements').val("");
+                $('#cbPriorityRequest').attr('checked', false);
+
+                //reset room list
+                $('#Room').hide(200);
+                $('#Building').hide(200);
+                $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                $('#BuildingDiv').html("");
+                $('#Park')[0].selectedIndex = 0;
+                $('#listOfRooms').html("");
+                $('#studentsLeft').html("");
+                $('#studentsLeft').attr("data-max", "0");
+                $('#studentsLeft').attr("data-left", "0");
+
+                //reset facilities
+                var len = $('#facListDiv').children().length;
+                for (var i = 0; i < len; i++) {
+                    $('#facListDiv').children().eq(i).attr('checked', false)
+                }
+            });
+
 
 
             //Function to check user inputs before sending the request to the controller, 
