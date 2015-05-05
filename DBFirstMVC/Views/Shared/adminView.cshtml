@@ -1,11 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Team 16 Timetabling System</title>
- 
-        <img src ="/Images/logo.png" />
-
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -19,16 +16,12 @@
     </head>
     <body>
         <header>
-           
-             <div class="content-wrapper">
+            <div class="content-wrapper">
                 <div class="float-left">
-                <p id="siteTitle" class="site-title"> @* @Html.ActionLink("Home", "Index", "Home") *@ 
-
-                        <a style="color:gray; font-style:italic; font-size:0.6em;"> @ViewBag.CurrentUserTitle</a>
+                    <p id="siteTitle" class="site-title">@Html.ActionLink("Team 16", "Index", "Home")
+                        <a style="color:gray; font-style:italic; font-size:0.6em">@ViewBag.CurrentUserTitle</a>
                     </p>
                 </div>
-                    
-
                 <div>
                     <span style="float: right; text-decoration: none;">Current Round: @ViewBag.CurrentRound</span><br />
                     <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span>
@@ -39,13 +32,13 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Create Request", "CreateNew", "Request")</li>
-                            <li>@Html.ActionLink("History","Index","Request")</li>
-                            <li>@Html.ActionLink("Ad-Hoc","Index","Request")</li>
-                            <li>@Html.ActionLink("Module","Module","Request")</li>
-                           
+                     
+                             <li>@Html.ActionLink("Edit pool room", "EditPool", "Admin")</li>
+                            <li>@Html.ActionLink("History", "Index", "Admin")</li>
+                            <li>@Html.ActionLink("Edit facility", "ShowFacility", "Admin")</li>
+                            <li>@Html.ActionLink("Edit Room facility", "ShowRoomFacility", "Admin")</li>
                             <li>@Html.ActionLink("Log out","Logout","Login")</li>
+                             <li>@Html.ActionLink("Create Request", "CreateNew", "Request")</li>
                             
                         </ul>
                     </nav>
@@ -60,7 +53,9 @@
             </section>
         </div>
         <footer>
-            <p>&copy; @DateTime.Now.Year - Team 16</p>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Team 16</p>
                 </div>
             </div>
         </footer>
@@ -72,3 +67,4 @@
         @RenderSection("LoginScript", required: false)
     </body>
 </html>
+}

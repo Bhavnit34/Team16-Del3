@@ -218,6 +218,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\FacilityAndRoomFacility.cs" />
+    <Compile Include="Models\ModuleInfo.cs" />
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Models\RequestState.cs" />
     <Compile Include="Models\RoomInfo.cs" />
@@ -399,7 +400,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Request\Index.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
-    <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Request\Delete.cshtml" />
     <Content Include="Views\Request\GetRequest.cshtml" />
     <Content Include="Views\Request\CreateNew.cshtml" />
@@ -443,6 +443,18 @@
     <Content Include="Views\Login\Delete.cshtml" />
     <Content Include="Views\Message\TempMessage.cshtml" />
     <Content Include="Views\Request\DisplayRoomInfo.cshtml" />
+    <Content Include="Views\Request\Edit.cshtml" />
+    <Content Include="Views\Shared\adminView.cshtml" />
+    <Content Include="Views\Admin\DeleteReq.cshtml" />
+    <Content Include="Views\Request\Module.cshtml" />
+    <Content Include="Views\Request\CreateNewModule.cshtml" />
+    <Content Include="Views\Request\GetModuleInfo.cshtml" />
+    <Content Include="Views\Request\EditModule.cshtml" />
+    <Content Include="Views\Request\DeleteModule.cshtml" />
+    <Content Include="Views\Request\AddLecturer.cshtml" />
+    <Content Include="Views\Request\RemoveLecturer.cshtml" />
+    <Content Include="Views\Request\AddDegree.cshtml" />
+    <Content Include="Views\Request\RemoveDegree.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

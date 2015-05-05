@@ -4,6 +4,16 @@
     ViewBag.Title = "Create a Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+ @{
+     if (ViewBag.CurrentUserTitle=="CA - Central Admin"){
+    
+
+        Layout = "~/Views/Shared/adminView.cshtml";
+
+     
+     
+     }
+     }
 <script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
@@ -84,6 +94,7 @@
                         </div>
                         
                         <div class="editor-field">
+                            <input id="hiddenLength" type="hidden" value="@ViewBag.Length" />
                             @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
                             @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
@@ -136,7 +147,7 @@
         </div>
  
           <div id="right">
-                    <fieldset>
+                   <fieldset>
                         <legend>Request</legend>
                       
 
@@ -217,17 +228,22 @@
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
+                        <input type="button" id="btnCheckAvail" value="Check Availability" />
                         <a id="studentsLeft" data-left="0" data-max="0"></a>
                         <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
                         <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
                         <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
                         <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
                     </fieldset>
-         
+        
          
         </div>
          </div>
-     
+        <p>
+            <input type="button" id="btnCheck" value="Create" />
+            <input type="submit" value="Create" id="btnCreate"  name='Command' />
+        </p>
+
 }
          
 
@@ -251,8 +267,16 @@
             $('#btnCreate').hide(); 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
             updateFac();
-        
-
+            
+            //set the length field if the page is loaded from the state
+            if ($('#hiddenLength').val() != "") {
+                var len = $('#hiddenLength').val();
+                var lengthDisplay = $('#hiddenLength').val() + " hours";
+                if (lengthDisplay == "1 hours")
+                    length = "1 hour";
+                $('#Request_SessionLength').append("<option value="+len+">" + length + "</option>");//we must add it to the dropdownlist before we can select it
+                $('#Request_SessionLength').val(len);
+            }
 
 
             //Function to add the list of buildings based on park choice
@@ -308,6 +332,24 @@
                 });  //end $.post
             }); //end function
 
+
+            //function to check which rooms are available at the given day, time and weeks
+            $('#btnCheckAvail').click(function () {
+                var roomList = [];
+                var len = $('#Room').children().length;
+                for (var i = 0; i < len; i++) {
+                    roomList.push($('#Room').children().eq(i).val());
+                }
+                var dayID = $('#Request_DayID').val();
+                var periodID = $('#Request_PeriodID').val();
+                var seshLength = $('#Request_SessionLength').val();
+                //send the rooms and the request data to check if the room is available
+                $.post('@Url.Action("CheckAvailability", "Request")', { rooms: roomList.join(','), selectedWeeks: selectedItems.join(','), day: dayID, period:periodID, length:seshLength  }, function (data) {
+
+                });
+
+
+            });
 
             //Function to add a room to the displayed list of chosen rooms
             $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){

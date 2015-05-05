@@ -1,11 +1,21 @@
-﻿@model DBFirstMVC.Models.RequestAndFacility
+﻿@model DBFirstMVC.Models.RequestInfo
+@{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
 
 @{
     ViewBag.Title = "Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
-<h2>Request @Model.Request.RequestID</h2>
+<link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
+
+ @Html.ActionLink("Back", "Index") |  @Html.ActionLink("Delete", "DeleteReq", new { id=Model.Request.RequestID })
+
+<h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
 
 
             <h2> Facilities</h2>
@@ -19,13 +29,60 @@
 }
 </ol>
         <h2>Rooms</h2>
-<ol>
+<ol id="roomList">
 @foreach(var item in Model.RequestToRooms){
 
-       <li>@Html.DisplayFor(modelItem => item.RoomRequest.RoomName) <!-- Display the room name --> </li>         
+       <li><a style="cursor:pointer;" onclick="showRoomInfo(this.text);">@Html.DisplayFor(modelItem => item.RoomRequest.RoomName)</a>  (@Html.DisplayFor(modelItem => item.RoomRequest.GroupSize) students)   
+           @{
+                if (item.RoomRequest.PriorityRoom == 1)
+                {
+                    <span><u>   Priority</u></span>
+                }
+                   
+           }
+           
+       </li><!-- Display the room name -->
+  
 
 }
-    </ol>
+</ol>
+
+<h2>Weeks</h2>
+<div>
+                            <table>
+                                <tr>
+							        <td colspan='2'>
+								        <ol id="popupWeeks">
+									        <li class="ui-state-default myCircle">1</li>
+									        <li class="ui-state-default myCircle">2</li>
+									        <li class="ui-state-default myCircle">3</li>
+									        <li class="ui-state-default myCircle">4</li>
+									        <li class="ui-state-default myCircle">5</li>
+									        <li class="ui-state-default myCircle">6</li>
+									        <li class="ui-state-default myCircle">7</li>
+									        <li class="ui-state-default myCircle">8</li>
+									        <li class="ui-state-default myCircle">9</li>
+									        <li class="ui-state-default myCircle">10</li>
+									        <li class="ui-state-default myCircle">11</li>
+									        <li class="ui-state-default myCircle">12</li>
+									        <li class="ui-state-default myCircle">13</li>
+									        <li class="ui-state-default myCircle">14</li>
+									        <li class="ui-state-default myCircle">15</li>
+								        </ol>
+							        </td>
+						        </tr>
+
+                            </table>
+                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="" />
+                        </div>
+
+<!-- bring in the weeks selected, this will be shown on the selector using javascript -->
+<div id="hiddenWeeks">
+@Html.HiddenFor(model => model.Week.Week1)@Html.HiddenFor(model => model.Week.Week2)@Html.HiddenFor(model => model.Week.Week3)@Html.HiddenFor(model => model.Week.Week4)@Html.HiddenFor(model => model.Week.Week5)
+@Html.HiddenFor(model => model.Week.Week6)@Html.HiddenFor(model => model.Week.Week7)@Html.HiddenFor(model => model.Week.Week8)@Html.HiddenFor(model => model.Week.Week9)@Html.HiddenFor(model => model.Week.Week10)
+@Html.HiddenFor(model => model.Week.Week11)@Html.HiddenFor(model => model.Week.Week12)@Html.HiddenFor(model => model.Week.Week13)@Html.HiddenFor(model => model.Week.Week14)@Html.HiddenFor(model => model.Week.Week15)
+</div>
+
 <table>
     <tr>
         <td>
@@ -34,47 +91,48 @@
     </tr>
        <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Request.UserID)
+            @Html.LabelFor(model => model.Request.User.Dept.FullDept, "Dept")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Module.Title)
+            @Html.LabelFor(model => model.Request.Module.Title, "Module")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SessionType)
+            @Html.LabelFor(model => model.Request.SessionType, "Type")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SessionLength)
+            @Html.LabelFor(model => model.Request.SessionLength, "Length")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.DayID)
+            @Html.LabelFor(model => model.Request.DayID, "Day")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.PeriodID)
+            @Html.LabelFor(model => model.Request.PeriodID, "Period")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.PriorityRequest)
+            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.AdhocRequest)
+            @Html.LabelFor(model => model.Request.AdhocRequest, "Ad-hoc")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.SpecialRequirements)
+            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Semester)
+            @Html.LabelFor(model => model.Request.Semester)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.RoundID)
+            @Html.LabelFor(model => model.Request.RoundID, "Round")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Request.Status)
+            @Html.LabelFor(model => model.Request.Status)
         </th>
     </tr>
 <tr>
-        <td
-            @Html.DisplayFor(modelItem => modelItem.Request.RequestID)
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Request.User.Dept.FullDept)
         </td>
         <td>
+            <b>@Html.DisplayFor(modelItem => modelItem.Request.ModCode)</b><br />
             @Html.DisplayFor(modelItem => modelItem.Request.Module.Title)
         </td>
         <td>
@@ -90,10 +148,28 @@
             @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)
+            <!--@Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)-->
+            @{
+                    if(Model.Request.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)
+            <!--@Html.DisplayFor(modelItem => modelItem.Request.AdhocRequest)-->
+                        @{
+                    if(Model.Request.AdhocRequest == 1){
+                        @Html.CheckBox("Adhoc",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Adhoc",false, new{@disabled = "disabled"})
+                    }
+        
+              }
         </td>
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.SpecialRequirements)
@@ -115,3 +191,40 @@
     
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section GetRequestScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+        
+            //loop through the weeks passed in and check if any have been selected, change the class of the circle if so
+            for (var i = 0; i < 15; i++) {
+             
+                if ($('#hiddenWeeks').children().eq(i).val() == "1") {
+                    
+                    $('#popupWeeks').children().eq(i).addClass("ui-selected");
+                }
+
+            }
+
+        });
+
+        //function to show room info of selected room
+        function showRoomInfo(room) {
+            $.post('@Url.Action("ShowRoomInfo", "Request")',
+               {
+                   room: room
+               },
+               function (data, status) {
+               });
+
+            var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
+            window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");
+
+
+        }
+    </script>
+}
+

@@ -1,0 +1,44 @@
+﻿@model DBFirstMVC.ModuleDegree
+
+@{
+    ViewBag.Title = "Add Degree";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+
+
+
+
+<h2>Add  Degree</h2>
+@using (Html.BeginForm()) {
+         // @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+    <div>@ViewData["error"]</div>   
+     <fieldset>
+        <legend>Degree</legend>
+<div class="editor-label">
+            
+            @Html.LabelFor(model => model.ModCode)
+        </div>
+           
+ <div class="editor-field">
+     @Html.TextBox( "ModCode",(string)@ViewBag.id, new{@readonly = true})
+
+ </div>
+<div class="editor-label">
+            @Html.LabelFor(model => model.DegreeID, "Degree")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("DegreeID", "-------- Select --------")
+            @Html.ValidationMessageFor(model => model.DegreeID)
+        </div>
+    <p>
+                
+            <input type="submit" value="Create" />
+        
+        </p>
+            </fieldset>
+            <div>
+    @Html.ActionLink("Back", "GetModuleInfo",new { id=@ViewBag.id})
+</div>
+}

@@ -12,42 +12,45 @@
 <table>
     <tr>
         <th>
-            @Html.Label("Module")
+            @Html.ActionLink("User", "Index", new { sortOrder = ViewBag.UserSortParm })
         </th>
         <th>
-            @Html.Label("Type")
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleSortParm })
         </th>
         <th>
-            @Html.Label("Length")
+            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm })
         </th>
         <th>
-            @Html.Label("Day")
+            @Html.ActionLink("Length", "Index", new { sortOrder = ViewBag.LengthSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })
         </th>
         <th>
             @Html.Label("Period")
         </th>
         <th>
-            @Html.Label("Priority")
+            @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.PrioritySortParm })
         </th>
         <th>
-            @Html.Label("Ad-hoc")
+            @Html.ActionLink("Adhoc", "Index", new { sortOrder = ViewBag.AdhocSortParm })
         </th>
         <th>
-            @Html.Label("Special Requirements")
+            @Html.ActionLink("Semester", "Index", new { sortOrder = ViewBag.SemesterSortParm })
         </th>
         <th>
-            @Html.Label("Semester")
+            @Html.ActionLink("Round", "Index", new { sortOrder = ViewBag.RoundSortParm })
         </th>
         <th>
-            @Html.Label("Round")
-        </th>
-        <th>
-            @Html.Label("Status")
+            @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm })
         </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Username)
+        </td>
         <td>
             <b>@Html.DisplayFor(modelItem => item.ModCode)</b><br />
             @Html.DisplayFor(modelItem => item.Module.Title)
@@ -89,9 +92,6 @@
             <!--@Html.DisplayFor(modelItem => item.AdhocRequest)-->
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SpecialRequirements)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Semester)
         </td>
         <td>
@@ -101,10 +101,11 @@
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-            <!--@Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |-->
-            <!--@Html.ActionLink("Details", "Details", new { id=item.RequestID })|--> 
-            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID }) |
-            @Html.ActionLink("View", "GetRequest", new { id=item.RequestID})
+            @{
+                if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
+            }
+            @Html.ActionLink("Delete", "Delete", new { id = item.RequestID }) |
+            @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
         </td>
     </tr>
 }
