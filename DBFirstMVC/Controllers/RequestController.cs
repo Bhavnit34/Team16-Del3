@@ -452,12 +452,9 @@ namespace DBFirstMVC.Controllers
                     return RedirectToAction("Index", "Admin");
 
                 }
-                else
-                {
-                    return RedirectToAction("Index");
-                }//redirect to the list of requests
 
 
+               
                Session.Remove("State"); //remove current saved request
                return RedirectToAction("Index"); //redirect to the list of requests
         }
@@ -480,8 +477,11 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult GetRooms(string chosenBuilding)
         {
+            User userSession = (User)HttpContext.Session["User"];
+            string user = userSession.Username;
+
             var rm = from d in db.Rooms
-                    where (d.Building.BuildingName == chosenBuilding)
+                    where ((d.Building.BuildingName == chosenBuilding) && ((d.DeptCode == null) || (d.DeptCode == user)))
                     select d.RoomName;
 
             return Json(rm);
@@ -667,7 +667,6 @@ namespace DBFirstMVC.Controllers
         }
 
 
-<<<<<<< HEAD
         //Edit Module view 
         public ActionResult Module()
         {
@@ -829,7 +828,7 @@ namespace DBFirstMVC.Controllers
 
             return RedirectToAction("Module");
         }
-=======
+
         //
         // GET: /Request/Edit/5
 
@@ -964,7 +963,6 @@ namespace DBFirstMVC.Controllers
         
 
         
->>>>>>> master
         //
         // POST: /Request/Edit/5
 
