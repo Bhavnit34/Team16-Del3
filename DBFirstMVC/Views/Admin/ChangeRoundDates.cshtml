@@ -16,19 +16,19 @@ Layout = "~/Views/Shared/adminView.cshtml";
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.RoundID)
+            @Html.Label("Round")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Semester)
+            @Html.Label("Semester")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.Label("Start Date")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.Label("End Date")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CurrentRound)
+            @Html.Label("Current Round")
         </th>
         <th></th>
     </tr>
@@ -48,7 +48,14 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => item.EndDate).ToString().Substring(0,10)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CurrentRound)
+            @{
+                if(item.CurrentRound == true){
+                    @Html.CheckBox("CurrentRound",true, new{@onclick = "return false;"})
+                }
+                else{
+                    @Html.CheckBox("CurrentRound",false, new{@onclick = "return false;"})
+                }
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "EditRound", new { id=item.RoundAndSemesterID }) |

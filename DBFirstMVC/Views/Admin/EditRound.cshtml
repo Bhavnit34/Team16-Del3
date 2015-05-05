@@ -20,7 +20,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         @Html.HiddenFor(model => model.RoundAndSemesterID)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RoundID)
+            @Html.LabelFor(model => model.RoundID, "Round")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.RoundID)
@@ -31,28 +31,31 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.LabelFor(model => model.Semester)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Semester)
+            <label>@Html.RadioButtonFor(model => model.Semester, "1") 1</label>
+            <label>@Html.RadioButtonFor(model => model.Semester, "2") 2</label> 
             @Html.ValidationMessageFor(model => model.Semester)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.StartDate)
+            @Html.LabelFor(model => model.StartDate, "Start Date")
         </div>
         <div class="editor-field">
-            <input type="text" id="startDatePicker" value="@Model.StartDate.ToString().Substring(0,10)">
+            <input type="text" id="startDatePicker" name="startDate" />
+            <input type="hidden" id="hiddenStartDate" value="@Model.StartDate.ToString().Substring(0,10)" />
             @Html.ValidationMessageFor(model => model.StartDate)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.EndDate)
+            @Html.LabelFor(model => model.EndDate, "End Date")
         </div>
         <div class="editor-field">
-            <input type="text" id="endDatePicker" value="@Model.EndDate.ToString().Substring(0,10)">
+            <input type="text" id="endDatePicker" name="endDate" />
+            <input type="hidden" id="hiddenEndDate" value="@Model.EndDate.ToString().Substring(0,10)" />
             @Html.ValidationMessageFor(model => model.EndDate)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CurrentRound)
+            @Html.LabelFor(model => model.CurrentRound, "Current Round?")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.CurrentRound)
@@ -66,7 +69,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "ChangeRoundDates")
 </div>
 
 @section Scripts {
@@ -74,9 +77,21 @@ Layout = "~/Views/Shared/adminView.cshtml";
 }
 @section CreateNewScript{
     <script type="text/javascript">        
-        $(document).ready(function(){
-            $("#startDatePicker").datepicker();
-            $("#endDatePicker").datepicker();
+        $(document).ready(function () {
+            //set end date
+            var date2 = $('#hiddenEndDate').val().replace(/\//g, '-');
+            $("#endDatePicker").datepicker({
+                dateFormat: "dd-mm-yy"
+            }).datepicker("setDate", date2);
+
+            //set start date
+            var date = $('#hiddenStartDate').val().replace(/\//g, '-');
+            $("#startDatePicker").datepicker({
+                dateFormat: "dd-mm-yy"
+            }).datepicker("setDate", date);
+
+
+            $('#CurrentRound').children().eq(0).remove(); // remove the 'Not Set' option for CurrentRound
         })
     </script>
 
