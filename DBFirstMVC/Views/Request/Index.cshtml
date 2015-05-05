@@ -101,10 +101,11 @@
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
-            <!--@Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |-->
-            <!--@Html.ActionLink("Details", "Details", new { id=item.RequestID })|--> 
-            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID }) |
-            @Html.ActionLink("View", "GetRequest", new { id=item.RequestID})
+            @{
+                if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
+            }
+            @Html.ActionLink("Delete", "Delete", new { id = item.RequestID }) |
+            @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
         </td>
     </tr>
 }

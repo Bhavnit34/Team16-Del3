@@ -400,7 +400,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Request\Index.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
-    <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Request\Delete.cshtml" />
     <Content Include="Views\Request\GetRequest.cshtml" />
     <Content Include="Views\Request\CreateNew.cshtml" />
@@ -444,6 +443,7 @@
     <Content Include="Views\Login\Delete.cshtml" />
     <Content Include="Views\Message\TempMessage.cshtml" />
     <Content Include="Views\Request\DisplayRoomInfo.cshtml" />
+    <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Shared\adminView.cshtml" />
     <Content Include="Views\Admin\DeleteReq.cshtml" />
     <Content Include="Views\Request\Module.cshtml" />

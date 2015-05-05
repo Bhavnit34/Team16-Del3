@@ -31,6 +31,9 @@
         if(ViewBag.Caller == "GetRequest"){
             @Html.ActionLink("Back",null, null, null, new { href = Request.UrlReferrer})
         }
+        if(ViewBag.Caller == "Edit"){
+            @Html.ActionLink("Back",null, null, null, new { href = Request.UrlReferrer})
+        }
     }
     
     <!--@Html.ActionLink("Back to previous page",null, null, null, new { href = Request.UrlReferrer})-->
