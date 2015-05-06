@@ -8,8 +8,39 @@
 <h2>Timetables</h2>
 <input type="radio" id="radLecturer" name="TimetableType" value="Lecturer" checked="checked" /> Lecturer
 <input type="radio" id="radCourse" name="TimetableType" value="Course"/> Course
+<input type="text" id="txtFilter" placeholder="e.g. Ray Dawson" />
 @Html.DropDownListFor(model => model.Lecturer, new SelectList(ViewBag.Lecturers,"LecturerID","FullName"),"-- Select Lecturer --")
 @Html.DropDownListFor(model => model.Degree, new SelectList(ViewBag.Degrees,"DegreeID","FullName"),"-- Select Degree --")
+<input type="button" id="btnFind" value="Find Timetable" />
+
+<table id="TimeTable">
+    <tr id="WeekChanger">
+        <td></td>
+        <td>Prev</td>
+        <td colspan="7"> Week 1</td>
+        <td>Next</td>
+    </tr>
+    <tr id="times">
+        <th></th>
+        <th>P1 9:00am</th>
+        <th>P2 10:00am</th>
+        <th>P3 11:00am</th>
+        <th>P4 12:00pm</th>
+        <th>P5 1:00pm</th>
+        <th>P6 2:00pm</th>
+        <th>P7 3:00pm</th>
+        <th>P8 4:00pm</th>
+        <th>P9 5:00pm</th>
+    </tr>
+    <tr id="RowMon"><td id="Mon">Monday</td></tr>
+    <tr id="RowTue"><td id="Tue">Tuesday</td></tr>
+    <tr id="RowWed"><td id="Wed">Wednesday</td></tr>
+    <tr id="RowThu"><td id="Thu">Thursday</td></tr>
+    <tr id="RowFri"><td id="Fri">Friday</td></tr>
+
+</table>
+
+
 
 
 @section Scripts {
@@ -17,6 +48,7 @@
 }
 @section CreateNewScript{
     <script type="text/javascript">
+        var res;
         $(document).ready(function () {
             $('#Degree').hide();
             $('#radLecturer').click(function () {
@@ -30,6 +62,71 @@
                 $('#Lecturer').hide(200);
 
             });
+
+
+            $('#btnFind').click(function(){
+                var name = "";
+                var lecturer = true;
+                if ($('#radLecturer').is(":checked")) {
+                    name = $("#Lecturer option:selected").text();
+                }
+                else {
+                    name = $("#Degree option:selected").text();
+                    lecturer = false;
+                }
+
+                //check valid input was selected
+                if (name == "") {
+                    alert("You didnt enter a valid input");
+                    return;
+                }
+
+
+                $.post('@Url.Action("FindTimetable", "Timetable")', { Name: name, Lecturer: lecturer }, function (data) {
+                    alert(data);
+                    res = data;
+
+                });
+
+
+
+            }); //end btnFind click
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         }); //end document ready
