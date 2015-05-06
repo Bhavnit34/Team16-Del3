@@ -430,8 +430,14 @@ namespace DBFirstMVC.Controllers
                         //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
                         RoomRequest roomRequest = new RoomRequest();
                         string room = chosenRooms[i];
-                   
-               
+
+                        if (room.IndexOf("ANY") > -1)
+                        {
+                            room = room.Substring(4, room.Length-4);
+                            room = room.First().ToString().ToUpper() + room.Substring(1).ToLower();
+                        }
+
+
 
                         short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
 

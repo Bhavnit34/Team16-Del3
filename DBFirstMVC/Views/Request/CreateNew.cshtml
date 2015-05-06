@@ -240,6 +240,7 @@
         <p>
             <input type="button" id="btnCheck" value="Create" />
             <input type="submit" value="Create" id="btnCreate"  name='Command' />
+            <input type="button" id="btnReset" value="Reset Page" />
         </p>
 
 }
@@ -294,7 +295,8 @@
                 var buildings = data;
                 html = "";
                 html += "<option value='--Select Building--'>--Select Building--</option>";
-                //create a dropdown list of buildings
+                    //create a dropdown list of buildings
+                html += "<option id='Any'" + park + "' value='ANY " + park.toUpperCase() + "'style='font-style:italic;' > ANY " + park.toUpperCase() + "</option>";
                 for (var i = 0; i < buildings.length; i++) {
                     if (buildings[i] != park)
                         html += "<option id='" + buildings[i] + "' value='" + buildings[i] + "'>" + buildings[i] + "</option>";
@@ -309,12 +311,31 @@
             //Function to add the list of rooms based on building choice
             $("#Building").on('change', function () {
                 var building = $(this).val();
+                //check the default value hasnt been selected
                 if (building.substr(0, 1) == "-") {
                     $('#Room').hide();
                     $('#btnAddToRoom').hide();
                     $('#RoomDiv').html("");
                     return;
                 }
+
+
+                //check the any option has been selected
+                if (building.indexOf("ANY") > -1) {
+                    buildingID = building.replace(/ /g, '');
+                    buildingID = buildingID.replace("ANY", "Any");
+                    
+                    html = "";
+                    html += "<option id='" + buildingID + "' value='" + buildingID + "'>" + building + "</option>";
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
+                    return;
+                }
+
+
+
                 $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                     // Postback response of rooms
                     var rooms = data;
@@ -361,6 +382,12 @@
                     room = $('#matchedRooms').val();
 
                 var roomID = room.replace(/\./g, '');
+                if (room.indexOf("Any") > -1) { //if the building is 'any'
+                    roomID = roomID.replace("Any", "");
+                    roomID = roomID.charAt(0).toUpperCase() + roomID.slice(1).toLowerCase();
+                    room = roomID; //e.g. turned AnyEAST to East
+                }
+
                 var len = $('#listOfRooms').children().children().length;
 
                 //return if they have picked 3 rooms
@@ -381,18 +408,23 @@
                     return;
                 }
                 
-
                 var roomSize = 0;
                 $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
                     roomSize = data;
-                }).done(function(result){
+                }).done(function (result) {
+                    //make capacity default if the option was any
+                    if (roomID.indexOf("ANY") > -1) {
+                        roomSize = 401;
+                    }
                     var size = roomSize;
                     //Create html for the room item and add it to the list
                     var html = "<tr id='" + roomID + "'>";
                     var studentsLeft = parseInt($('#studentsLeft').attr('data-left'));
-                    //alert("students left: " + studentsLeft + " < roomSize: " + roomSize);
                     if (studentsLeft < roomSize)
                         size = studentsLeft;
+
+
+
                     //we need to add this hidden input so that we can pass the room value to the controller
                     html+= "<input type='hidden' id='"+roomID+"' name='chosenRooms' value='"+room+"' />";
                     html += "<td>" + room + "</td>";
@@ -504,13 +536,6 @@
 
 
                     });
-
-
-
-
-
-
-
 
 
                     $("#students" + roomID).trigger("change");
@@ -689,6 +714,38 @@
                     $('#selectedWeeks').val("");
                 }
             });
+
+            $('#btnReset').click(function () {
+                //reset main request section
+                $('#txtModSearch').val("");
+                $('#Request_ModCode')[0].selectedIndex = 0;
+                $('#studentsOnModuleDiv').html("");
+                $('#Request_DayID')[0].selectedIndex = 0;
+                $('#Request_PeriodID')[0].selectedIndex = 0;
+                $('#Request_SessionLength')[0].selectedIndex = 0;
+                $('#btnDefaultWeeks').trigger('click');
+                $('#Request_SpecialRequirements').val("");
+                $('#cbPriorityRequest').attr('checked', false);
+
+                //reset room list
+                $('#Room').hide(200);
+                $('#Building').hide(200);
+                $('#btnAddToRoom').hide();
+                $('#RoomDiv').html("");
+                $('#BuildingDiv').html("");
+                $('#Park')[0].selectedIndex = 0;
+                $('#listOfRooms').html("");
+                $('#studentsLeft').html("");
+                $('#studentsLeft').attr("data-max", "0");
+                $('#studentsLeft').attr("data-left", "0");
+
+                //reset facilities
+                var len = $('#facListDiv').children().length;
+                for (var i = 0; i < len; i++) {
+                    $('#facListDiv').children().eq(i).attr('checked', false)
+                }
+            });
+
 
 
             //Function to check user inputs before sending the request to the controller, 

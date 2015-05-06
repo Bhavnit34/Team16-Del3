@@ -724,6 +724,56 @@ namespace DBFirstMVC.Controllers
             return View(room);
         }
 
+        public ActionResult ChangeRoundDates()
+        {
+            var r = db.RoundAndSemesters.ToList();
+
+
+            return View(r);
+        }
+
+
+        public ActionResult EditRound(int id = 0)
+        {
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(id); 
+            return View(RandS);
+        }
+
+        [HttpPost]
+        public ActionResult EditRound(RoundAndSemester RandS, string startDate, string endDate)
+        {
+            if (ModelState.IsValid)
+            {
+                //save current row
+                RandS.StartDate = Convert.ToDateTime(startDate);
+                RandS.EndDate = Convert.ToDateTime(endDate);
+                db.Entry(RandS).State = EntityState.Modified;
+                db.SaveChanges();
+                
+                
+                //if this updated row is the new current round, then make all others false
+                if (RandS.CurrentRound == true)
+                {
+                    var allRounds = (from d in db.RoundAndSemesters
+                                     where d.RoundAndSemesterID != RandS.RoundAndSemesterID
+                                     select d).ToList();
+                    foreach (RoundAndSemester r in allRounds)
+                    {
+                        r.CurrentRound = false;
+                    }
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("ChangeRoundDates");
+            }
+
+
+            return View(RandS);
+        }
+
+
+
+
 
         //delete room view
 
