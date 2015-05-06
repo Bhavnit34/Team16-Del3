@@ -284,17 +284,28 @@
 
             //function to check which rooms are available at the given day, time and weeks
             $('#btnCheckAvail').click(function () {
-                var roomList = [];
-                var len = $('#Room').children().length;
-                for (var i = 0; i < len; i++) {
-                    roomList.push($('#Room').children().eq(i).val());
-                }
+                //var roomList = [];
+                //var len = $('#Room').children().length;
+                //for (var i = 0; i < len; i++) {
+                //    roomList.push($('#Room').children().eq(i).val());
+                //}
+                var building = $('#Building').val();
                 var dayID = $('#Request_DayID').val();
                 var periodID = $('#Request_PeriodID').val();
                 var seshLength = $('#Request_SessionLength').val();
-                //send the rooms and the request data to check if the room is available
-                $.post('@Url.Action("CheckAvailability", "Request")', { rooms: roomList.join(','), selectedWeeks: selectedItems.join(','), day: dayID, period:periodID, length:seshLength  }, function (data) {
-
+                //send the rooms and the request data to check if the room is available rooms: roomList.join(',')
+                $.post('@Url.Action("CheckAvailability", "Request")', { buildingChosen: building, selectedWeeks: selectedItems.join(','), day: parseInt(dayID), period: parseInt(periodID), length: parseInt(seshLength) }, function (data) {
+                    // Postback response of rooms
+                    var rooms = data;
+                    html = "";
+                    //create a dropdown list of rooms
+                    for (var i = 0; i < rooms.length; i++) {
+                        html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                    }
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+                    $('#btnAddToRoom').show(200);
                 });
 
 
