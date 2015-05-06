@@ -21,6 +21,10 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index(string sortOrder)
         {
+            if (sortOrder == null) //order by status as default
+                sortOrder = "status";
+
+
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
@@ -244,8 +248,6 @@ namespace DBFirstMVC.Controllers
         public ActionResult CreateRequest(CreateNewRequest myRequest, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
         {
 
-
-            
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -262,7 +264,8 @@ namespace DBFirstMVC.Controllers
 
            
             myRequest.Request.Status = "0";
-               
+            myRequest.Request.Year = "2014/15";
+
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
             if(selectedWeeks.Contains(','))
@@ -1175,25 +1178,32 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(CreateNewRequest myRequest, string requestID, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
         {
             Request request = db.Requests.Find(Convert.ToInt16(requestID));
-            myRequest.Request = request;
+
+            //update general request items
+            request.ModCode = myRequest.Request.ModCode;
+            request.SessionType = myRequest.Request.SessionType;
+            request.DayID = myRequest.Request.DayID;
+            request.PeriodID = myRequest.Request.PeriodID;
+            request.SessionLength = myRequest.Request.SessionLength;
+            request.SpecialRequirements = myRequest.Request.SpecialRequirements;
+
 
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
-                myRequest.Request.PriorityRequest = 1;
+               request.PriorityRequest= 1;
             else
-                myRequest.Request.PriorityRequest = 0;
+                request.PriorityRequest = 0;
 
-            myRequest.Request.RequestID = Convert.ToInt32(requestID);
             //set user of the request
             User user = (User)Session["User"];
-            myRequest.Request.UserID = user.UserID;
+            request.UserID = user.UserID;
 
             //This needs to be calculated when we do ad hoc requests
-            myRequest.Request.AdhocRequest = 0;
+            request.AdhocRequest = 0;
 
 
-            myRequest.Request.Status = "0";
+            request.Status = "0";
 
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
@@ -1286,7 +1296,7 @@ namespace DBFirstMVC.Controllers
                 db.SaveChanges();
             }
             int weekID = week.WeekID;
-            myRequest.Request.WeekID = weekID;
+            request.WeekID = weekID;
 
 
 
@@ -1299,9 +1309,8 @@ namespace DBFirstMVC.Controllers
                 validRooms = false;
 
             //save the modified request row
-            request = myRequest.Request;
             db.SaveChanges();
-            int newRequestID = myRequest.Request.RequestID; //get the newly created key made for the new request
+            int newRequestID = request.RequestID; //get the newly created key made for the new request
 
             //Edit facility requests
             if (validFacilities)
@@ -1421,7 +1430,7 @@ namespace DBFirstMVC.Controllers
             }
 
             Session.Remove("State"); //remove current saved request
-            return RedirectToAction("GetRequest", new { id = myRequest.Request.RequestID }); //redirect to the updated request info page
+            return RedirectToAction("GetRequest", new { id = request.RequestID }); //redirect to the updated request info page
             
             //----------old code------------------
             /*if (ModelState.IsValid)
