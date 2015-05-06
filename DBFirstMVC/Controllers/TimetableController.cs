@@ -143,6 +143,27 @@ namespace DBFirstMVC.Controllers
                 return Json(FinalRequests);
             }
 
+        } //end function
+
+
+        //function to return the essential request info to display to the user who clicked on the tile
+        [HttpPost]
+        public ActionResult getRequestInfo(int id)
+        {
+            var request = from d in db.Requests
+                          where d.RequestID == id
+                          select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, ModName = d.Module.Title };
+
+            var requestToRooms = db.RequestToRooms.Where(a => a.RequestID.Equals(id));
+            List<string> rooms = new List<string>();
+            foreach (RequestToRoom r in requestToRooms)
+            {
+                RoomRequest roomRequest = db.RoomRequests.Find(r.RoomRequestID);
+                rooms.Add(roomRequest.RoomName);
+            }
+
+
+            return Json(new SampleRequestInfo() { Request = request, RoomNames = rooms });
         }
 
 

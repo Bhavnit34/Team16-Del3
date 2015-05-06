@@ -8,7 +8,6 @@
 <h2>Timetables</h2>
 <input type="radio" id="radLecturer" name="TimetableType" value="Lecturer" checked="checked" /> Lecturer
 <input type="radio" id="radCourse" name="TimetableType" value="Course"/> Course
-<input type="text" id="txtFilter" placeholder="e.g. Ray Dawson" />
 @Html.DropDownListFor(model => model.Lecturer, new SelectList(ViewBag.Lecturers,"LecturerID","FullName"),"-- Select Lecturer --")
 @Html.DropDownListFor(model => model.Degree, new SelectList(ViewBag.Degrees,"DegreeID","FullName"),"-- Select Degree --")
 <input type="button" id="btnFind" value="Find Timetable" />
@@ -16,9 +15,9 @@
 <table id="TimeTable">
     <tr id="WeekChanger">
         <td></td>
-        <td id="btnPrev">Prev</td>
+        <td id="btnPrev"><img src="~/Images/PrevArrow.png" alt="Prev" height="30" width="50" style="float:right;"< /></td>
         <td colspan="7" id="WeekSelector" data-week="1"> Week 1</td>
-        <td id="btnNext">Next</td>
+        <td id="btnNext"><img src="~/Images/NextArrow.png" alt="Prev" height="30" width="50" style="float:right;"< /></td>
     </tr>
     <tr id="times">
         <th></th>
@@ -39,7 +38,7 @@
     <tr id="Day5"><td id="Fri">Friday</td></tr>
 
 </table>
-
+<div id="requestInfoDiv"></div><!-- shall be used to display the request info dynamically -->
 
 
 
@@ -48,7 +47,7 @@
 }
 @section CreateNewScript{
     <script type="text/javascript">
-        var res;
+        var res, res2;
         $(document).ready(function () {
             $('#Degree').hide();
             $('#radLecturer').click(function () {
@@ -107,6 +106,7 @@
                                 var weeks = data;
                                 $('#' + origId).attr("data-weeks",weeks);
                                 checkCurrentWeek(origId, modCode);
+                                createClickEvent(origId);
                             }
                         });
 
@@ -117,7 +117,9 @@
                                 var weeks = $('#' + origId).attr("data-weeks");
                                 $('#' + id).attr("data-weeks", weeks);
                                 $('#' + id).attr("data-modcode", modCode);
-                                checkCurrentWeek(id,modCode);
+                                $('#' + id).attr("data-id", res[i].id);
+                                checkCurrentWeek(id, modCode);
+                                createClickEvent(id);
                             }
                         }
 
@@ -161,9 +163,7 @@
                     }
                 }
 
-
             });
-
 
 
 
@@ -229,6 +229,7 @@
             }
         }
         
+        //function to check the given tile to see if it should be displayed for the current week
         function checkCurrentWeek(id, modCode) {
             var weeks = $('#' + id).attr("data-weeks");
 
@@ -250,6 +251,45 @@
                 $('#' + id).addClass('freeTile');
             }
         }
+
+        //function to create the click event for each tile to display the request as a popup
+        function createClickEvent(id) {
+            $('#' + id).on('click', function () {
+                var requestID = parseInt($('#' + id).attr("data-id"));
+                $.ajax({
+                    type: 'POST',
+                    async: false, //must be synchronous otherwise will skip past tiles
+                    url: '@Url.Action("getRequestInfo", "Timetable")',
+                            data: {id: parseInt(requestID) },
+                            success: function (data) {
+                                res2 = data;
+
+                                var html = "";
+                                html += "<h2>" + res2["Request"][0].id + "</h2><br/>";
+                                html += "<label>" + res2["Request"][0].ModCode + " - " + res2["Request"][0].ModName + "</label><br/>";
+                                html += "<label>Day: " + res2["Request"][0].DayID + " Period: " + res2["Request"][0].PeriodID + "</label><br/>";
+                                html += "<label>" + res2["Request"][0].Length + " hour(s)</label><br/>";
+                                if (res2["RoomNames"][0] != null) {
+                                    html += "<h3>Rooms:</h3>";
+                                    html += "<ol>";
+                                    for (var i = 0; i < res2["RoomNames"].length; i++) {
+                                        html+= "<li>"+res2["RoomNames"][i]+"</li>";
+                                    }
+                                    html += "</ol>";
+                                }
+                                $('#requestInfoDiv').html(html);
+                                $('#requestInfoDiv').dialog();
+
+
+
+                            }
+                });
+
+
+
+            });
+        }
+
 
     </script>
 }
