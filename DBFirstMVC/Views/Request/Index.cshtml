@@ -9,6 +9,13 @@
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
 <a id="scrollToBottom">Bottom of Page</a>
 
+<table style="float:right;"> 
+    <tr><td class="approved"></td><td>APROVED</td></tr>
+     <tr><td class="rejected"></td><td>REJETCED</td></tr>
+       <tr><td class="pending"></td><td>PENDING</td></tr>
+
+</table>
+<p style="white-space: pre-line"></p>
 <table>
     <tr>
         <th>
@@ -47,8 +54,29 @@
     </tr>
 
 @foreach (var item in Model) {
+    var statusClass = "";
+
+    if (item.Status == 1.ToString())
+    {
+        statusClass = "approved";
+
+    }
+
+    else if (item.Status == 2.ToString())
+    {
+        statusClass = "rejected";
+
+
+
+    }
+
+    else
+    {
+        statusClass = "pending";
+
+    }
     <tr>
-        <td>
+        <td  class ="@statusClass">
             @Html.DisplayFor(modelItem => item.User.Username)
         </td>
         <td>
@@ -100,7 +128,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
-        <td>
+        <td class ="@statusClass">
             @{
                 if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
             }
@@ -111,6 +139,18 @@
 }
 
 </table>
+<style type="text/css">
+
+    .approved {
+        background-color:green;
+    }
+    .rejected {
+        background-color:#C80000;
+    }
+    .pending {
+        background-color:grey;
+    }
+</style>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

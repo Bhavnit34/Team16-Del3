@@ -13,47 +13,66 @@ Layout = "~/Views/Shared/adminView.cshtml";
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
+ @using (Html.BeginForm()) {
+
 <fieldset>
     <legend>Request</legend>
-
+   
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.RoomName)
+         @Html.LabelFor(model => model.RoomName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.RoomName)
+      @Html.TextBoxFor(model => model.RoomName, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.RoomName)
+       
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Building.BuildingName)
+         @Html.LabelFor(model => model.Building.BuildingName)
     </div>
     <div class="display-field">
+            @Html.TextBoxFor(model => model.BuildingCode, new { @readonly = "readonly" } )
         @Html.DisplayFor(model => model.Building.BuildingName)
+             
+       
+
+    </div>
+             <div class="editor-label">
+                 
+             
+          
+            
+            @Html.HiddenFor(model => model.URL)
+        </div>
+
+    <div class="display-label">
+         @Html.LabelFor(model => model.Capacity)
+        
+    </div>
+    <div class="display-field">
+             @Html.TextBoxFor(model => model.Capacity, new { @readonly = "readonly" } )
+             @Html.HiddenFor(model => model.Capacity)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Capacity)
+         @Html.LabelFor(model => model.Lab)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Capacity)
+           @Html.TextBoxFor(model => model.Lab, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.Lab)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Lab)
+         @Html.LabelFor(model => model.DeptCode)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Lab)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DeptCode)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DeptCode)
+           @Html.TextBoxFor(model => model.DeptCode, new { @readonly = "readonly" } )
+           @Html.HiddenFor(model => model.DeptCode)
     </div>
 
    
 </fieldset>
-@using (Html.BeginForm()) {
+
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "EditPool")

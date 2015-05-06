@@ -455,9 +455,6 @@
     <Content Include="Views\Request\RemoveLecturer.cshtml" />
     <Content Include="Views\Request\AddDegree.cshtml" />
     <Content Include="Views\Request\RemoveDegree.cshtml" />
-    <Content Include="Views\Admin\RoundDate.cshtml" />
-    <Content Include="Views\Admin\EditDate.cshtml" />
-    <Content Include="Views\Admin\DeleteDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
