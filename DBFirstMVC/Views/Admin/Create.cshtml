@@ -5,17 +5,18 @@
 Layout = "~/Views/Shared/adminView.cshtml";
 
 }
-
-@{
+ @{
     ViewBag.Title = "Add new Room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
-}
-
+    }
+ 
 <h2>Add New Room</h2>
 
 @using (Html.BeginForm()) {
            // @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+    
+   
+         @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Request</legend>
@@ -76,6 +77,11 @@ Layout = "~/Views/Shared/adminView.cshtml";
             <input type="submit" value="Create" />
         </p>
     </fieldset>
+   
+    
+    
+
+     
 }
 
 <div>

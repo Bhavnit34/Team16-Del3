@@ -51,13 +51,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => item.Capacity)
         </td>
         <td>
-            @*@if (item.Lab==0) {
-            @Html.DisplayText("NO");
-            }
-            else {
-                @Html.DisplayText("YES");
-                
-            }*@
+          
              @Html.DisplayFor(modelItem => item.Lab)
 
         </td>
@@ -67,12 +61,23 @@ Layout = "~/Views/Shared/adminView.cshtml";
         <td>
             @Html.DisplayFor(modelItem => item.Building.ParkName)
         </td>
- 
+ @if (@ViewBag.CurrentUserTitle=="CA - Central Admin"){
         <td>
-            @Html.ActionLink("Delete Room","Delete", new {id1=item.RoomName})|
-              @Html.ActionLink("Edit Room","EditRoom", new {id1=item.RoomName})|
+            @Html.ActionLink("Delete","Delete", new {id1=item.RoomName})|
+              @Html.ActionLink("Edit ","EditRoom", new {id1=item.RoomName})
  
         </td>
+ }
+
+        else {
+ 
+ 
+    <td>
+            
+              @Html.ActionLink("Edit Room","EditRoom", new {id1=item.RoomName})
+ 
+        </td>
+ }
     </tr>
 }
 

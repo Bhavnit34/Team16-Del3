@@ -11,14 +11,25 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class RoundAndSemester
     {
         public int RoundAndSemesterID { get; set; }
+        [Required]
         public Nullable<byte> RoundID { get; set; }
+        [Required]
         public Nullable<byte> Semester { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public Nullable<System.DateTime> StartDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+
         public Nullable<System.DateTime> EndDate { get; set; }
+        [Required]
         public Nullable<bool> CurrentRound { get; set; }
     }
 }

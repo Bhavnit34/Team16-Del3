@@ -242,7 +242,10 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateRequest(CreateNewRequest myRequest, string Command, string[] facList, string[] chosenRooms, string[] groupSizes, bool[] pRooms, string selectedWeeks, bool cbPriorityRequest = false, string Park = "")
-        {   
+        {
+
+
+            
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -257,7 +260,7 @@ namespace DBFirstMVC.Controllers
             //This needs to be calculated when we do ad hoc requests
             myRequest.Request.AdhocRequest = 0;
 
-
+           
             myRequest.Request.Status = "0";
                
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
@@ -421,17 +424,19 @@ namespace DBFirstMVC.Controllers
 
                     }
                     //here pRoomsNew is now the correct array of bool values
-
+                  
                     for (int i = 0; i < chosenRooms.Length; i++)
-                    {
+                    {//******************************************************************
                         //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
                         RoomRequest roomRequest = new RoomRequest();
                         string room = chosenRooms[i];
+
                         if (room.IndexOf("ANY") > -1)
                         {
                             room = room.Substring(4, room.Length-4);
                             room = room.First().ToString().ToUpper() + room.Substring(1).ToLower();
                         }
+
 
 
                         short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       

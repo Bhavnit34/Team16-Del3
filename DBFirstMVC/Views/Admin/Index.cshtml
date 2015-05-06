@@ -9,9 +9,15 @@ Layout = "~/Views/Shared/adminView.cshtml";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
 
+
 <h2>Requests</h2>
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
 <a id="scrollToBottom">Bottom of Page</a>
+<table style="float:right;"> 
+    <tr><td class="approved"></td><td>APROVED</td></tr>
+     <tr><td class="rejected"></td><td>REJETCED</td></tr>
+       <tr><td class="pending"></td><td>PENDING</td></tr>
+    </table>
 
 <table>
     <tr>
@@ -49,30 +55,30 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm })
         </th>
     </tr>
-@foreach (var item in Model) {
-    var statusClass="";
+    @foreach (var item in Model) {
+        var statusClass = "";
 
-    if (item.Status == 1.ToString())
-    {
-        statusClass = "approved";
+        if (item.Status == 1.ToString())
+        {
+            statusClass = "approved";
 
-    }
+        }
 
-    else if (item.Status == 2.ToString())
-    {
-        statusClass = "rejected";
+        else if (item.Status == 2.ToString())
+        {
+            statusClass = "rejected";
 
 
 
-    }
+        }
 
-    else
-    {
-        statusClass = "pending";
+        else
+        {
+            statusClass = "pending";
 
-    }
-    <tr class ="@statusClass">
-        <td>
+        }
+     <tr >
+        <td class ="@statusClass">
             @Html.DisplayFor(modelItem => item.User.Username)
         </td>
         <td>
@@ -124,7 +130,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
-        <td>
+        <td class ="@statusClass">
           @Html.ActionLink("Get Request", "GetRequest", new { id=item.RequestID})
         </td>
     </tr>
@@ -137,7 +143,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         background-color:green;
     }
     .rejected {
-        background-color:red;
+        background-color:#C80000;
     }
     .pending {
         background-color:grey;
