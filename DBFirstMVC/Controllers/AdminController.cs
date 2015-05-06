@@ -30,6 +30,8 @@ namespace DBFirstMVC.Controllers
        // }
         public ActionResult Index(string sortOrder)
         {
+            if (sortOrder == null) //order by status as default
+                sortOrder = "status";
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
