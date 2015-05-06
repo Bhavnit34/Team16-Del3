@@ -1,0 +1,38 @@
+﻿@model DBFirstMVC.Models.TimetableModel
+
+@{
+    ViewBag.Title = "Timetables";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>Timetables</h2>
+<input type="radio" id="radLecturer" name="TimetableType" value="Lecturer" checked="checked" /> Lecturer
+<input type="radio" id="radCourse" name="TimetableType" value="Course"/> Course
+@Html.DropDownListFor(model => model.Lecturer, new SelectList(ViewBag.Lecturers,"LecturerID","FullName"),"-- Select Lecturer --")
+@Html.DropDownListFor(model => model.Degree, new SelectList(ViewBag.Degrees,"DegreeID","FullName"),"-- Select Degree --")
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section CreateNewScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Degree').hide();
+            $('#radLecturer').click(function () {
+                $('#Degree').hide(200);
+                $('#Lecturer').show(200);
+
+            });
+
+            $('#radCourse').click(function () {
+                $('#Degree').show(200);
+                $('#Lecturer').hide(200);
+
+            });
+
+
+        }); //end document ready
+
+    </script>
+}

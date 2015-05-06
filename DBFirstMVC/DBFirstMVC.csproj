@@ -196,6 +196,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\TimetableController.cs" />
     <Compile Include="Degree.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -222,6 +223,7 @@
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Models\RequestState.cs" />
     <Compile Include="Models\RoomInfo.cs" />
+    <Compile Include="Models\TimetableModel.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -457,6 +459,7 @@
     <Content Include="Views\Request\RemoveDegree.cshtml" />
     <Content Include="Views\Admin\ChangeRoundDates.cshtml" />
     <Content Include="Views\Admin\EditRound.cshtml" />
+    <Content Include="Views\Timetable\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
