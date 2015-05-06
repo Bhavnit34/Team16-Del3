@@ -571,10 +571,10 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(Request request)
         {
 
-
+            //if accepted request
 
             if (request.Status == "1")
-            {
+            {//get the rooms associated with the request
                 var temp = request.RequestID;
                 var t = (from d in db.RequestToRooms.Include("RoomRequests")
                          where (d.RequestID == temp)

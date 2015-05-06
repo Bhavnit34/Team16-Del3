@@ -245,6 +245,7 @@ namespace DBFirstMVC.Controllers
         {
 
 
+            
             bool validFacilities = true;
             bool validRooms = true;
             if (cbPriorityRequest) //take boolean of checkbox and turn into 1 or 0
@@ -259,7 +260,7 @@ namespace DBFirstMVC.Controllers
             //This needs to be calculated when we do ad hoc requests
             myRequest.Request.AdhocRequest = 0;
 
-
+           
             myRequest.Request.Status = "0";
                
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
