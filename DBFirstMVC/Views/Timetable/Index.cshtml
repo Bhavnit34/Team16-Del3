@@ -134,17 +134,21 @@
 
                 if (id == 'btnPrev') {
                     var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
-                    if (currentWeek < 2)
-                        return;
-                    currentWeek--;
+                    if (currentWeek < 2) {
+                        currentWeek = 15;
+                    }
+                    else
+                        currentWeek--;
+ 
                     $('#WeekSelector').attr("data-week", currentWeek);
                     $('#WeekSelector').text("Week " + currentWeek);
                 }
                 else {
                     var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
                     if (currentWeek > 14)
-                        return;
-                    currentWeek++;
+                        currentWeek = 1;
+                    else
+                        currentWeek++;
                     $('#WeekSelector').attr("data-week", currentWeek);
                     $('#WeekSelector').text("Week " + currentWeek);
                 }
