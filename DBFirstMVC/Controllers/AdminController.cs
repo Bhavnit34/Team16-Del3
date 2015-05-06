@@ -120,7 +120,71 @@ namespace DBFirstMVC.Controllers
             return View(list);
         }
 
-        
+        //round date view
+        public ActionResult RoundDate()
+        {
+
+            ViewBag.CurrentUser = getCurrentUser();
+            var dates = db.RoundAndSemesters.ToList();
+            return View(dates);
+
+        }
+
+        public ActionResult EditDate(int id)
+        {
+
+            RoundAndSemester dates = db.RoundAndSemesters.Find(id);
+           
+            if (dates == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            ViewBag.CurrentUser = getCurrentUser();
+            return View(dates);
+
+        }
+        //save changes to facility
+        [HttpPost]
+        public ActionResult EditDate(RoundAndSemester roundAndSemester)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(roundAndSemester).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("RoundDate");
+            }
+
+            return View(roundAndSemester);
+        }
+
+        public ActionResult DeleteDate(int id)
+        {
+
+            RoundAndSemester dates = db.RoundAndSemesters.Find(id);
+
+            if (dates == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            ViewBag.CurrentUser = getCurrentUser();
+            return View(dates);
+
+        }
+
+        [HttpPost, ActionName("DeleteDate")]
+        public ActionResult DeleteConfirmed5(int id)
+        {
+            RoundAndSemester dates = db.RoundAndSemesters.Find(id);
+            db.RoundAndSemesters.Remove(dates);
+            db.SaveChanges();
+
+
+            return RedirectToAction("RoundDate");
+        }
         //show the list of all rooms oreder in alpabetical order Building Name 
         public ActionResult EditPool()
         {
@@ -497,6 +561,9 @@ namespace DBFirstMVC.Controllers
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var wk = (from d in db.Weeks
+                      where d.WeekID == r.WeekID
+                      select d).FirstOrDefault();//added
             if (v != null)
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
@@ -508,7 +575,7 @@ namespace DBFirstMVC.Controllers
 
                 ViewBag.GroupSize = t;
 
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq, Week = wk }); //return view with the data filled model
 
 
             }
@@ -529,7 +596,8 @@ namespace DBFirstMVC.Controllers
                 return HttpNotFound();
             }
 
-            return View(request);
+            //return View(request);
+            return View(new RequestInfo() { Request = request });
         }
 
 

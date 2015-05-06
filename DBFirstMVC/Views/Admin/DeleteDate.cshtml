@@ -1,0 +1,85 @@
+﻿
+@model DBFirstMVC.RoundAndSemester
+
+
+@{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
+
+@{
+    ViewBag.Title = "Edit Round Date";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+
+<h2>Round Dates</h2>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Request</legend>
+
+         <div class="editor-label">
+            
+            @Html.HiddenFor(model => model.RoundAndSemesterID)
+        </div>
+  
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoundID)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.RoundID)
+            @Html.HiddenFor(model => model.RoundID)
+          
+            @Html.ValidationMessageFor(model => model.RoundID)
+        </div>
+
+             <div class="editor-label">
+            @Html.LabelFor(model => model.Semester)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.Semester)
+            @Html.HiddenFor(model => model.Semester)
+          
+            @Html.ValidationMessageFor(model => model.Semester)
+        </div>
+             <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+         <div class="editor-field">
+       @Html.TextBoxFor(model=> model.StartDate, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+                 
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+           
+             <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate)
+        </div>
+         <div class="editor-field">
+             @Html.TextBoxFor(model=> model.EndDate, "{0:dd/MM/yyyy}", new { @readonly = "readonly" })
+          
+            @Html.ValidationMessageFor(model => model.EndDate)
+        </div>
+               <div class="editor-label">
+            @Html.LabelFor(model => model.CurrentRound)
+        </div>
+         <div class="editor-field">
+            @Html.DisplayFor(model => model.CurrentRound)
+              @Html.HiddenFor(model => model.CurrentRound)
+          
+            @Html.ValidationMessageFor(model => model.CurrentRound)
+        </div>
+        <p>
+            <input type="submit" value="Delete" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "RoundDate")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
