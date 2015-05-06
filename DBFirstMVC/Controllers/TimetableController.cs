@@ -27,6 +27,48 @@ namespace DBFirstMVC.Controllers
             return View(new TimetableModel() {Degree = d, Lecturer = l });
         }
 
+        //function to return an array of weeks given the weekID
+        public ActionResult getWeeks(int WeekID)
+        {
+            var week = db.Weeks.Find(WeekID);
+            List<string> weekList = new List<string>();
+
+            //go through each week and check if its 1. Long-winded but the only way
+            if (week.Week1 == 1)
+                weekList.Add("1");
+            if (week.Week2 == 1)
+                weekList.Add("2");
+            if (week.Week3 == 1)
+                weekList.Add("3");
+            if (week.Week4 == 1)
+                weekList.Add("4");
+            if (week.Week5 == 1)
+                weekList.Add("5");
+            if (week.Week6 == 1)
+                weekList.Add("6");
+            if (week.Week7 == 1)
+                weekList.Add("7");
+            if (week.Week8 == 1)
+                weekList.Add("8");
+            if (week.Week9 == 1)
+                weekList.Add("9");
+            if (week.Week10 == 1)
+                weekList.Add("10");
+            if (week.Week11 == 1)
+                weekList.Add("11");
+            if (week.Week12 == 1)
+                weekList.Add("12");
+            if (week.Week13 == 1)
+                weekList.Add("13");
+            if (week.Week14 == 1)
+                weekList.Add("14");
+            if (week.Week15 == 1)
+                weekList.Add("15");
+
+
+
+            return Json(weekList);
+        }
 
         public ActionResult FindTimetable(string Name, bool Lecturer)
         {
@@ -62,7 +104,7 @@ namespace DBFirstMVC.Controllers
                 //get requests that contain any of the modcodes in the array
                 var FinalRequests = from d in db.Requests
                                     where (modCodes.Contains(d.ModCode) && d.Status == "1" && d.Semester == RandS.Semester)
-                                    select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode};
+                                    select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, weekID = d.WeekID};
 
                 return Json(FinalRequests);
             }
@@ -72,6 +114,7 @@ namespace DBFirstMVC.Controllers
         }
 
 
+        
 
     }
 }

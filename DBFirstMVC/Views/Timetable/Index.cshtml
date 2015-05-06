@@ -16,9 +16,9 @@
 <table id="TimeTable">
     <tr id="WeekChanger">
         <td></td>
-        <td>Prev</td>
-        <td colspan="7"> Week 1</td>
-        <td>Next</td>
+        <td id="btnPrev">Prev</td>
+        <td colspan="7" id="WeekSelector" data-week="1"> Week 1</td>
+        <td id="btnNext">Next</td>
     </tr>
     <tr id="times">
         <th></th>
@@ -32,11 +32,11 @@
         <th>P8 4:00pm</th>
         <th>P9 5:00pm</th>
     </tr>
-    <tr id="RowMon"><td id="Mon">Monday</td></tr>
-    <tr id="RowTue"><td id="Tue">Tuesday</td></tr>
-    <tr id="RowWed"><td id="Wed">Wednesday</td></tr>
-    <tr id="RowThu"><td id="Thu">Thursday</td></tr>
-    <tr id="RowFri"><td id="Fri">Friday</td></tr>
+    <tr id="Day1"><td id="Mon">Monday</td></tr>
+    <tr id="Day2"><td id="Tue">Tuesday</td></tr>
+    <tr id="Day3"><td id="Wed">Wednesday</td></tr>
+    <tr id="Day4"><td id="Thu">Thursday</td></tr>
+    <tr id="Day5"><td id="Fri">Friday</td></tr>
 
 </table>
 
@@ -63,7 +63,11 @@
 
             });
 
+            createTimetable();
 
+
+
+            //function to populate the timetable from the given lecturer or course
             $('#btnFind').click(function(){
                 var name = "";
                 var lecturer = true;
@@ -83,15 +87,78 @@
 
 
                 $.post('@Url.Action("FindTimetable", "Timetable")', { Name: name, Lecturer: lecturer }, function (data) {
-                    alert(data);
                     res = data;
+                    resetTimetable(); //reset the timetable back to default before loading the times
+                    
+                    for (var i = 0; i < res.length; i++) {
+                        var origId = "d" + res[i].DayID + "p" + res[i].PeriodID;
+                        var modCode = res[i].ModCode;
+                        var length = res[i].Length;
+                        $('#' + origId).attr("data-modcode", modCode);
+                        $('#' + origId).attr("data-id", res[i].id);
+                 
+                        //add in the taken weeks for each tile
+                        $.ajax({
+                            type: 'POST',
+                            async: false, //must be synchronous otherwise will skip past tiles
+                            url:'@Url.Action("getWeeks", "Timetable")',
+                            data: { WeekID: res[i].weekID },
+                            success: function (data) {
+                                var weeks = data;
+                                $('#' + origId).attr("data-weeks",weeks);
+                                checkCurrentWeek(origId, modCode);
+                            }
+                        });
 
-                });
+                        //add on tiles for the length of the request
+                        if (length > 1) {
+                            for (var l = 0; l < length; l++) {
+                                var id = "d" + res[i].DayID + "p" + (res[i].PeriodID + l);
+                                var weeks = $('#' + origId).attr("data-weeks");
+                                $('#' + id).attr("data-weeks", weeks);
+                                $('#' + id).attr("data-modcode", modCode);
+                                checkCurrentWeek(id,modCode);
+                            }
+                        }
 
+   
+                    } //end res[i] for loop
 
+                }); //end AJAX post FindTimetable
 
             }); //end btnFind click
 
+            //function to increment/decrement the current week being viewed
+            $('#btnNext, #btnPrev').click(function () {
+                var id = this.id;
+
+                if (id == 'btnPrev') {
+                    var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
+                    if (currentWeek < 2)
+                        return;
+                    currentWeek--;
+                    $('#WeekSelector').attr("data-week", currentWeek);
+                    $('#WeekSelector').text("Week " + currentWeek);
+                }
+                else {
+                    var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
+                    if (currentWeek > 14)
+                        return;
+                    currentWeek++;
+                    $('#WeekSelector').attr("data-week", currentWeek);
+                    $('#WeekSelector').text("Week " + currentWeek);
+                }
+
+                for (var i = 1; i < 6; i++) {
+                    for (var j = 1; j < 10; j++) {
+                        var id = "d" + i + "p" + j;
+                        var modCode = $('#'+id).attr("data-modcode");
+                        checkCurrentWeek(id, modCode);
+                    }
+                }
+
+
+            });
 
 
 
@@ -130,6 +197,55 @@
 
 
         }); //end document ready
+
+        //function to create the tiles inside the timetable
+        function createTimetable() {
+            //create tiles
+            for (var i = 1 ; i < 6; i++) {
+                var html = "";
+                for (var j = 1; j < 10; j++) {
+                    html += "<td id='d" + i + "p" + j + "' class='freeTile' data-free='true' data-id='' data-weeks='' data-modcode=''></td>";
+                }
+
+                $('#Day' + i).append(html);
+            }
+        }
+
+        //function to reset the tiles back to their original state
+        function resetTimetable() {
+            for (var i = 1; i < 6; i++) { //for each row
+                for (var j = 1; j < 10; j++) { //for each time
+                    $("#d" + i + "p" + j).removeClass();
+                    $("#d" + i + "p" + j).addClass('freeTile');
+                    $("#d" + i + "p" + j).attr("data-free", "true");
+                    $("#d" + i + "p" + j).attr("data-id", "");
+                    $("#d" + i + "p" + j).attr("data-weeks", "");
+                    $("#d" + i + "p" + j).text("");
+                }
+            }
+        }
+        
+        function checkCurrentWeek(id, modCode) {
+            var weeks = $('#' + id).attr("data-weeks");
+
+            if (weeks.indexOf(',') > -1)
+                var takenWeeks = weeks.split(',');
+            else
+                var takenWeeks = [weeks];
+
+            var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
+            
+            if (takenWeeks.indexOf(currentWeek.toString()) > -1) {
+                $('#' + id).text(modCode);
+                $('#' + id).removeClass();
+                $('#' + id).addClass('takenTile');
+            }
+            else {
+                $('#' + id).text("");
+                $('#' + id).removeClass();
+                $('#' + id).addClass('freeTile');
+            }
+        }
 
     </script>
 }
