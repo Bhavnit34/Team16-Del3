@@ -13,21 +13,7 @@ namespace DBFirstMVC.Controllers
     {
         private team16Entities db = new team16Entities();
 
-        //
-        // GET: /Admin/
-        //show all the requests
-      //  public ActionResult Index1()
-       // {
-
-            //get current round and semester
-            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            // ViewBag.CurrentRound = RandS.CurrentRoundID;
-
-            // ViewBag.CurrentSemester = RandS.CurrentSemester;
-            //var requests = db.Requests.Include(r => r.Module);
-            //var list = requests.OrderBy(z => z.Status).ToList();
-            //return View(requests);
-       // }
+ 
         public ActionResult Index(string sortOrder)
         {
             if (sortOrder == null) //order by status as default
@@ -123,18 +109,58 @@ namespace DBFirstMVC.Controllers
         }
 
       
-        //show the list of all rooms oreder in alpabetical order Building Name 
-        public ActionResult EditPool()
+        //show the list of all rooms . filtered
+        public ActionResult EditPool(string sortOrder)
         {
-            //get current round and semester
-            // RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            //  ViewBag.CurrentRound = RandS.CurrentRoundID;
-            //ViewBag.CurrentSemester = RandS.CurrentSemester;
-
-            var rooms = db.Rooms.Include(r => r.Building);
-            var list = rooms.OrderBy(z => z.Building.BuildingName).ToList();
-
-            return View(list);
+     
+             ViewBag.RoomSortParm = sortOrder == "room" ? "room_desc" : "room";
+             ViewBag.BuildingSortParm = sortOrder == "building" ? "building_desc" : "building";
+             ViewBag.CapacitySortParm = sortOrder == "capacity" ? "capacity_desc" : "capacity";
+             ViewBag.LabSortParm = sortOrder == "lab" ? "lab_desc" : "lab";
+             ViewBag.DeptSortParm =sortOrder == "dept" ? "dept_desc" : "dept";
+             ViewBag.ParkSortParm = sortOrder == "park" ? "park_desc" : "park";
+             var rooms = db.Rooms.Include(r => r.Building);
+           
+           switch (sortOrder)
+           {
+               case "room_desc":
+                   rooms = rooms.OrderByDescending(r => r.RoomName);
+                   break;
+               case "room":
+                   rooms = rooms.OrderBy(r => r.RoomName);
+                   break;
+               case "building_desc":
+                   rooms = rooms.OrderByDescending(r => r.Building.BuildingName);
+                   break;
+               case "building":
+                   rooms = rooms.OrderBy(r => r.Building.BuildingName);
+                   break;
+               case "capacity_desc":
+                   rooms = rooms.OrderByDescending(r => r.Capacity);
+                   break;
+               case "capacity":
+                   rooms = rooms.OrderBy(r => r.Capacity);
+                   break;
+               case "lab_desc":
+                   rooms = rooms.OrderByDescending(r => r.Lab);
+                   break;
+               case "lab":
+                   rooms = rooms.OrderBy(r => r.Lab);
+                   break;
+               case "dept_desc":
+                   rooms = rooms.OrderByDescending(r => r.DeptCode);
+                   break;
+               case "dept":
+                   rooms = rooms.OrderBy(r => r.DeptCode);
+                   break;
+               case "park_desc":
+                   rooms = rooms.OrderByDescending(r => r.Building.ParkName);
+                   break;
+               case "park":
+                   rooms = rooms.OrderBy(r => r.Building.ParkName);
+                   break;
+           }
+            return View(rooms.ToList());
         }
 
         //show the list of all facilities
