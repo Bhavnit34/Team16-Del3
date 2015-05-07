@@ -17,6 +17,7 @@ namespace DBFirstMVC.Controllers
         //
         // GET: /Timetable/
 
+        //index page to display the blank timetable
         public ActionResult Index()
         {
             var l = db.Lecturers.ToList();
@@ -70,7 +71,8 @@ namespace DBFirstMVC.Controllers
             return Json(weekList);
         }
 
-        public ActionResult FindTimetable(string Name, bool Lecturer)
+        //Function to find the successful requests for a given lecturer or course
+        public ActionResult FindTimetable(string Name, bool Lecturer, int Semester)
         {
             if (Lecturer) //If the inputted name was a lecturer name
             {
@@ -103,8 +105,8 @@ namespace DBFirstMVC.Controllers
 
                 //get requests that contain any of the modcodes in the array
                 var FinalRequests = from d in db.Requests
-                                    where (modCodes.Contains(d.ModCode) && d.Status == "1" && d.Semester == RandS.Semester)
-                                    select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, weekID = d.WeekID };
+                                    where (modCodes.Contains(d.ModCode) && d.Status == "1" && d.Semester == Semester)
+                                    select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, weekID = d.WeekID};
 
                 return Json(FinalRequests);
             }
@@ -150,10 +152,14 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult getRequestInfo(int id)
         {
+            //find the request row
             var request = from d in db.Requests
                           where d.RequestID == id
-                          select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, ModName = d.Module.Title };
+                          select new { id = d.RequestID, DayID = d.DayID, PeriodID = d.PeriodID, Length = d.SessionLength, ModCode = d.ModCode, ModName = d.Module.Title, Semester = d.Semester };
 
+            var foundRequest = request.FirstOrDefault();
+
+            //get rooms that are on the request
             var requestToRooms = db.RequestToRooms.Where(a => a.RequestID.Equals(id));
             List<string> rooms = new List<string>();
             foreach (RequestToRoom r in requestToRooms)
@@ -162,8 +168,17 @@ namespace DBFirstMVC.Controllers
                 rooms.Add(roomRequest.RoomName);
             }
 
+            //get lecturers that are on the request
+            var lecturers = from d in db.ModuleLecturers
+                            where d.ModCode == foundRequest.ModCode
+                            select new { FullName = d.Lecturer.FirstName + " " + d.Lecturer.LastName };
 
-            return Json(new SampleRequestInfo() { Request = request, RoomNames = rooms });
+            //get degrees that are part of that request
+            var courses = from d in db.ModuleDegrees
+                          where d.ModCode == foundRequest.ModCode
+                          select d.Degree.DegreeName;
+
+            return Json(new SampleRequestInfo() { Request = request, RoomNames = rooms, Lecturers = lecturers, Courses = courses });
         }
 
 

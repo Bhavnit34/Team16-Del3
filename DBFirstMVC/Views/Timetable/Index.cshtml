@@ -10,9 +10,13 @@
 <input type="radio" id="radCourse" name="TimetableType" value="Course"/> Course
 @Html.DropDownListFor(model => model.Lecturer, new SelectList(ViewBag.Lecturers,"LecturerID","FullName"),"-- Select Lecturer --")
 @Html.DropDownListFor(model => model.Degree, new SelectList(ViewBag.Degrees,"DegreeID","FullName"),"-- Select Degree --")
-<input type="button" id="btnFind" value="Find Timetable" />
+<input type="button" id="btnFind" value="Find Timetable" style="float:right; margin-left:5px;" />
+<input type="radio" id="radSem2" name="Semester" value="2" style="float:right; margin-left:5px;" checked="checked"/> <span style="float:right; margin-left:5px;"> 2</span>
+<input type="radio" id="radSem1" name="Semester" value="1" style="float:right; margin-left:5px;" /> <span style="float:right; margin-left:5px;"> Semester 1</span>
 
-<table id="TimeTable">
+
+
+<table id="TimeTable" style="float:left;">
     <tr id="WeekChanger">
         <td></td>
         <td id="btnPrev"><img src="~/Images/PrevArrow.png" alt="Prev" height="30" width="50" style="float:right;"< /></td>
@@ -49,6 +53,7 @@
     <script type="text/javascript">
         var res, res2;
         $(document).ready(function () {
+            //show and hide the dropdown list depending on which radio was clicked
             $('#Degree').hide();
             $('#radLecturer').click(function () {
                 $('#Degree').hide(200);
@@ -84,8 +89,15 @@
                     return;
                 }
 
+                //get semester ticked
+                var Sem = 2;
+                if ($('#radSem1').is(":checked")) {
+                    Sem = 1;
+                }
 
-                $.post('@Url.Action("FindTimetable", "Timetable")', { Name: name, Lecturer: lecturer }, function (data) {
+
+
+                $.post('@Url.Action("FindTimetable", "Timetable")', { Name: name, Lecturer: lecturer, Semester: Sem }, function (data) {
                     res = data;
                     resetTimetable(); //reset the timetable back to default before loading the times
                     
@@ -145,7 +157,7 @@
                     $('#WeekSelector').attr("data-week", currentWeek);
                     $('#WeekSelector').text("Week " + currentWeek);
                 }
-                else {
+                else { //else btn next was clicked
                     var currentWeek = parseInt($('#WeekSelector').attr("data-week"));
                     if (currentWeek > 14)
                         currentWeek = 1;
@@ -155,52 +167,21 @@
                     $('#WeekSelector').text("Week " + currentWeek);
                 }
 
+                //loop through each tile and display or hide the tile depending on the week
                 for (var i = 1; i < 6; i++) {
                     for (var j = 1; j < 10; j++) {
                         var id = "d" + i + "p" + j;
                         var modCode = $('#'+id).attr("data-modcode");
-                        checkCurrentWeek(id, modCode);
+                        checkCurrentWeek(id, modCode); 
                     }
                 }
 
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }); //end document ready
+
+
+
 
         //function to create the tiles inside the timetable
         function createTimetable() {
@@ -265,10 +246,13 @@
                                 res2 = data;
 
                                 var html = "";
-                                html += "<h2>" + res2["Request"][0].id + "</h2><br/>";
+                                html += "<h2>Request " + res2["Request"][0].id + "</h2><br/>";
+                                html += "<label>Semester " + res2["Request"][0].Semester + "</label>";
                                 html += "<label>" + res2["Request"][0].ModCode + " - " + res2["Request"][0].ModName + "</label><br/>";
                                 html += "<label>Day: " + res2["Request"][0].DayID + " Period: " + res2["Request"][0].PeriodID + "</label><br/>";
-                                html += "<label>" + res2["Request"][0].Length + " hour(s)</label><br/>";
+                                html += "<label>" + res2["Request"][0].Length + " hour(s)</label>";
+
+                                //add rooms
                                 if (res2["RoomNames"][0] != null) {
                                     html += "<h3>Rooms:</h3>";
                                     html += "<ol>";
@@ -277,9 +261,27 @@
                                     }
                                     html += "</ol>";
                                 }
+                                //add lecturer info
+                                if (res2["Lecturers"].length > 0) {
+                                    html += "<h3>Lecturers:</h3>";
+                                    html += "<ol>";
+                                    for (var i = 0; i < res2["Lecturers"].length; i++) {
+                                        html += "<li>" + res2["Lecturers"][i].FullName + "</li>";
+                                    }
+                                    html += "</ol>";
+                                }
+                                //add course info
+                                if (res2["Courses"].length > 0) {
+                                    html += "<h3>Courses:</h3>";
+                                    html += "<ol>";
+                                    for (var i = 0; i < res2["Courses"].length; i++) {
+                                        html += "<li>" + res2["Courses"][i] + "</li>";
+                                    }
+                                    html += "</ol>";
+                                }
+
                                 $('#requestInfoDiv').html(html);
                                 $('#requestInfoDiv').dialog();
-
 
 
                             }
