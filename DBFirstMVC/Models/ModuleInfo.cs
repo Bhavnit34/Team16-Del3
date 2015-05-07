@@ -5,6 +5,7 @@ using System.Web;
 
 namespace DBFirstMVC.Models
 {
+    //Model to display the infomation about a module
     public class ModuleInfo
 
     {

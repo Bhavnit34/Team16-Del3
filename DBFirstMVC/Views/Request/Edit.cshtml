@@ -733,7 +733,7 @@
                 var len = $('#listOfRooms').children().children().children().length; //this finds if there are any rooms selected
                 if ((len > 0) && ((parseInt($('#studentsLeft').attr('data-left')) > 0))) { //check there are students left and rooms selected
                     if (confirm("You still have students left to allocate into rooms. Continue anyway?"))
-                        $('#btnCreate').trigger('click');
+                        $('#btnEdit').trigger('click');
                 }
                 else {
                     $('#btnEdit').trigger('click');

@@ -617,10 +617,6 @@ namespace DBFirstMVC.Controllers
             List<string> availRooms = new List<string>(); //array of free rooms to return
 
 
-
-
-              
-
             return Json(availRooms);
         }
 
