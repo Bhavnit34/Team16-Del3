@@ -584,6 +584,8 @@ namespace DBFirstMVC.Controllers
                 year = (current.Year - 1) + "/" + (current.Year - 2000);
             }
 
+
+            //get requests that match the allocated room which is in the list of rooms in given building
             var request = (from r in db.AllocatedRooms
                            join d in db.Requests on r.RequestID equals d.RequestID
                            join w in db.Weeks on d.WeekID equals w.WeekID
@@ -714,7 +716,7 @@ namespace DBFirstMVC.Controllers
                 }
             }
             
-            return Json(availRooms);
+            return Json(availRooms); //return the array of available rooms
         }
 
 
