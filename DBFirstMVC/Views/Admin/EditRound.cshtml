@@ -1,0 +1,115 @@
+﻿@model DBFirstMVC.RoundAndSemester
+
+@{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
+@{
+    ViewBag.Title = "Edit Round ";
+    ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
+}
+<h2>EditRound</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>RoundAndSemester</legend>
+
+        @Html.HiddenFor(model => model.RoundAndSemesterID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoundID, "Round")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RoundID)
+            @Html.ValidationMessageFor(model => model.RoundID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Semester)
+        </div>
+        <div class="editor-field">
+            <label>@Html.RadioButtonFor(model => model.Semester, "1") 1</label>
+            <label>@Html.RadioButtonFor(model => model.Semester, "2") 2</label> 
+            @Html.ValidationMessageFor(model => model.Semester)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate, "Start Date")
+        </div>
+        <div class="editor-field">
+            <input type="text" id="startDatePicker" name="startDate" />
+            <input type="hidden" id="hiddenStartDate" value="@Model.StartDate.ToString().Substring(0,10)" />
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate, "End Date")
+        </div>
+        <div class="editor-field">
+            <input type="text" id="endDatePicker" name="endDate" />
+            <input type="hidden" id="hiddenEndDate" value="@Model.EndDate.ToString().Substring(0,10)" />
+            @Html.ValidationMessageFor(model => model.EndDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CurrentRound, "Current Round?")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CurrentRound)
+            @Html.ValidationMessageFor(model => model.CurrentRound)
+        </div>
+
+        <p>
+            <input type="button" id="btnCheck" value="Save" />
+            <input type="submit" id="btnSave" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ChangeRoundDates")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+@section CreateNewScript{
+    <script type="text/javascript">       
+        $(document).ready(function () {
+            $('#btnSave').hide();
+            //set end date
+            var date2 = $('#hiddenEndDate').val().replace(/\//g, '-');
+            $("#endDatePicker").datepicker({
+                dateFormat: "dd-mm-yy"
+            }).datepicker("setDate", date2);
+
+            //set start date
+            var date = $('#hiddenStartDate').val().replace(/\//g, '-');
+            $("#startDatePicker").datepicker({
+                dateFormat: "dd-mm-yy"
+            }).datepicker("setDate", date);
+
+
+            $('#CurrentRound').children().eq(0).remove(); // remove the 'Not Set' option for CurrentRound
+
+
+            $('#btnCheck').click(function () {
+                //check roundID entered is numeric
+                var round = $('#RoundID').val();
+                if (isNumeric(round) == false) {
+                    alert("Round is not a number");
+                    return;
+                }
+                $('#btnSave').trigger('click');
+
+            });
+        });
+        function isNumeric(n) {
+            return !isNaN(parseInt(n)) && isFinite(n);
+        }
+    </script>
+
+}

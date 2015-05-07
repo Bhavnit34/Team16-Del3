@@ -1,6 +1,12 @@
 ﻿@model IEnumerable<DBFirstMVC.Room>
 
 @{
+
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
+
+@{
     ViewBag.Title = "Edit-Room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
@@ -13,22 +19,22 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.RoomName)
+              @Html.ActionLink("Room", "EditPool", new { sortOrder = ViewBag.RoomSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Building.BuildingName)
+           @Html.ActionLink("Building", "EditPool", new { sortOrder = ViewBag.BuildingSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Capacity)
+           @Html.ActionLink("Capacity", "EditPool", new { sortOrder = ViewBag.CapacitySortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Lab)
+             @Html.ActionLink("Lab", "EditPool", new { sortOrder = ViewBag.LabSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DeptCode)
+           @Html.ActionLink("Dept", "EditPool", new { sortOrder = ViewBag.DeptSortParm })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Building.ParkName)
+             @Html.ActionLink("Park", "EditPool", new { sortOrder = ViewBag.ParkSortParm })
         </th>
        
     </tr>
@@ -45,13 +51,7 @@
             @Html.DisplayFor(modelItem => item.Capacity)
         </td>
         <td>
-            @*@if (item.Lab==0) {
-            @Html.DisplayText("NO");
-            }
-            else {
-                @Html.DisplayText("YES");
-                
-            }*@
+          
              @Html.DisplayFor(modelItem => item.Lab)
 
         </td>
@@ -61,12 +61,23 @@
         <td>
             @Html.DisplayFor(modelItem => item.Building.ParkName)
         </td>
- 
+ @if (@ViewBag.CurrentUserTitle=="CA - Central Admin"){
         <td>
-            @Html.ActionLink("Delete Room","Delete", new {id1=item.RoomName})|
-              @Html.ActionLink("Edit Room","EditRoom", new {id1=item.RoomName})|
+            @Html.ActionLink("Delete","Delete", new {id1=item.RoomName})|
+              @Html.ActionLink("Edit ","EditRoom", new {id1=item.RoomName})
  
         </td>
+ }
+
+        else {
+ 
+ 
+    <td>
+            
+              @Html.ActionLink("Edit Room","EditRoom", new {id1=item.RoomName})
+ 
+        </td>
+ }
     </tr>
 }
 

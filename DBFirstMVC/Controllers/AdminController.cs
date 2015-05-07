@@ -13,24 +13,154 @@ namespace DBFirstMVC.Controllers
     {
         private team16Entities db = new team16Entities();
 
-        //
-        // GET: /Admin/
-        //show all the requests
-        public ActionResult Index()
+ 
+        public ActionResult Index(string sortOrder)
         {
-            var requests = db.Requests.Include(r => r.Module);
-            var list = requests.OrderBy(z => z.Status).ToList();
-            return View(list);
+            if (sortOrder == null) //order by status as default
+                sortOrder = "status";
+            User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
+
+            //These alternate sort parameter for switch statement
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.UserSortParm = sortOrder == "user" ? "user_desc" : "user";
+            ViewBag.LengthSortParm = sortOrder == "length" ? "length_desc" : "length";
+            ViewBag.DaySortParm = sortOrder == "day" ? "day_desc" : "day";
+            ViewBag.SemesterSortParm = sortOrder == "semester" ? "semester_desc" : "semester";
+            ViewBag.StatusSortParm = sortOrder == "status" ? "status_desc" : "status";
+            ViewBag.RoundSortParm = sortOrder == "round" ? "round_desc" : "round";
+            ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
+            ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
+            ViewBag.AdhocSortParm = sortOrder == "adhoc" ? "adhoc_desc" : "adhoc";
+
+            var requests= from r in db.Requests
+                          //where r.UserID == userSession.UserID
+                           select r;
+
+            //requests = db.Requests.Include(r => r.Module);
+
+            //handles which sort method to use
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    requests = requests.OrderByDescending(r => r.Module.Title);
+                    break;
+                case "user":
+                    requests = requests.OrderBy(r => r.User.Username);
+                    break;
+                case "user_desc":
+                    requests = requests.OrderByDescending(r => r.User.Username);
+                    break;
+                case "length":
+                    requests = requests.OrderBy(r => r.SessionLength);
+                    break;
+                case "length_desc":
+                    requests = requests.OrderByDescending(r => r.SessionLength);
+                    break;
+                case "day":
+                    requests = requests.OrderBy(r => r.DayID);
+                    break;
+                case "day_desc":
+                    requests = requests.OrderByDescending(r => r.DayID);
+                    break;
+                case "semester":
+                    requests = requests.OrderBy(r => r.Semester);
+                    break;
+                case "semester_desc":
+                    requests = requests.OrderByDescending(r => r.Semester);
+                    break;
+                case "status":
+                    requests = requests.OrderBy(r => r.Status);
+                    break;
+                case "status_desc":
+                    requests = requests.OrderByDescending(r => r.Status);
+                    break;
+                case "round":
+                    requests = requests.OrderBy(r => r.RoundID);
+                    break;
+                case "round_desc":
+                    requests = requests.OrderByDescending(r => r.RoundID);
+                    break;
+                case "type":
+                    requests = requests.OrderBy(r => r.SessionType);
+                    break;
+                case "type_desc":
+                    requests = requests.OrderByDescending(r => r.SessionType);
+                    break;
+                case "adhoc":
+                    requests = requests.OrderBy(r => r.AdhocRequest);
+                    break;
+                case "adhoc_desc":
+                    requests = requests.OrderByDescending(r => r.AdhocRequest);
+                    break;
+                case "priority":
+                    requests = requests.OrderBy(r => r.PriorityRequest);
+                    break;
+                case "priority_desc":
+                    requests = requests.OrderByDescending(r => r.PriorityRequest);
+                    break;
+                default:
+                    requests = requests.OrderBy(r => r.Module.Title);
+                    break;
+            }
+
+
+           // var list = requests.OrderBy(z => z.Status).ToList();
+            return View(requests.ToList());
         }
 
-
-        //show the list of all rooms oreder in alpabetical order Building Name 
-        public ActionResult EditPool()
+      
+        //show the list of all rooms . filtered
+        public ActionResult EditPool(string sortOrder)
         {
-            var rooms= db.Rooms.Include(r=>r.Building);
-            var list=rooms.OrderBy(z=>z.Building.BuildingName).ToList();
-            
-            return View(list);
+     
+             ViewBag.RoomSortParm = sortOrder == "room" ? "room_desc" : "room";
+             ViewBag.BuildingSortParm = sortOrder == "building" ? "building_desc" : "building";
+             ViewBag.CapacitySortParm = sortOrder == "capacity" ? "capacity_desc" : "capacity";
+             ViewBag.LabSortParm = sortOrder == "lab" ? "lab_desc" : "lab";
+             ViewBag.DeptSortParm =sortOrder == "dept" ? "dept_desc" : "dept";
+             ViewBag.ParkSortParm = sortOrder == "park" ? "park_desc" : "park";
+             var rooms = db.Rooms.Include(r => r.Building);
+           
+           switch (sortOrder)
+           {
+               case "room_desc":
+                   rooms = rooms.OrderByDescending(r => r.RoomName);
+                   break;
+               case "room":
+                   rooms = rooms.OrderBy(r => r.RoomName);
+                   break;
+               case "building_desc":
+                   rooms = rooms.OrderByDescending(r => r.Building.BuildingName);
+                   break;
+               case "building":
+                   rooms = rooms.OrderBy(r => r.Building.BuildingName);
+                   break;
+               case "capacity_desc":
+                   rooms = rooms.OrderByDescending(r => r.Capacity);
+                   break;
+               case "capacity":
+                   rooms = rooms.OrderBy(r => r.Capacity);
+                   break;
+               case "lab_desc":
+                   rooms = rooms.OrderByDescending(r => r.Lab);
+                   break;
+               case "lab":
+                   rooms = rooms.OrderBy(r => r.Lab);
+                   break;
+               case "dept_desc":
+                   rooms = rooms.OrderByDescending(r => r.DeptCode);
+                   break;
+               case "dept":
+                   rooms = rooms.OrderBy(r => r.DeptCode);
+                   break;
+               case "park_desc":
+                   rooms = rooms.OrderByDescending(r => r.Building.ParkName);
+                   break;
+               case "park":
+                   rooms = rooms.OrderBy(r => r.Building.ParkName);
+                   break;
+           }
+            return View(rooms.ToList());
         }
 
         //show the list of all facilities
@@ -41,7 +171,6 @@ namespace DBFirstMVC.Controllers
         }
         //show facilities for a particular room (dynamically updated)
         public ActionResult ShowRoomFacility()
-           
         {
             ViewBag.CurrentUser = getCurrentUser();
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName");
@@ -50,6 +179,9 @@ namespace DBFirstMVC.Controllers
 
 
         //get rooms in a particular building 
+
+
+
         [HttpPost]
         public ActionResult GetRooms(string chosenBuilding)
         {
@@ -59,7 +191,7 @@ namespace DBFirstMVC.Controllers
 
             return Json(rm);
         }
-        
+
         //get facilities for a particular room
         [HttpPost]
         public ActionResult GetFacility(string chosenRoom)
@@ -76,7 +208,7 @@ namespace DBFirstMVC.Controllers
         public ActionResult GetAllFacility()
         {
             var rm = from d in db.Facilities
-                   
+
                      select d.FacilityName;
 
             return Json(rm);
@@ -96,7 +228,34 @@ namespace DBFirstMVC.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult CheckRooms(string id)
+        {
+            string[] Splittedwords = id.Split(new string[] { "?" }, System.StringSplitOptions.None);
 
+            List<string> list = new List<string>();
+            for (var i = 0; i < Splittedwords.Length; i = i + 2)
+            {
+                string temp = Splittedwords[i];
+                var temp1 = Convert.ToInt16(Splittedwords[i + 1]);
+                bool roomExit = db.Rooms.Any(o => o.RoomName == temp);
+                bool capacity = db.Rooms.Any(o => o.RoomName == temp && o.Capacity >= temp1);
+
+                if (!roomExit || !capacity)
+                {
+                    list.Add(Splittedwords[i]);
+                }
+
+            }
+
+            string[] result = list.ToArray();
+
+
+
+            return Json(result);
+
+            //this is where u finished 
+        }
         //assign room allocations for a particular room 
         [HttpPost]
         public ActionResult UpdateAllocations(int id1, string id2)
@@ -118,50 +277,51 @@ namespace DBFirstMVC.Controllers
                 {
 
 
-                  //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
-                  RoomRequest roomRequest = new RoomRequest();
-                  string room = Splittedwords[y];
-                  roomRequest.RoomRequestID = 0;
-                  roomRequest.GroupSize = Int16.Parse(Splittedwords[y + 1]);
-                  roomRequest.PriorityRoom = 0;
-                  roomRequest.RoomName = room;
-              
-                  db.RoomRequests.Add(roomRequest);
-                  db.SaveChanges();
-                  y++;
+                    //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
+                    RoomRequest roomRequest = new RoomRequest();
+                    string room = Splittedwords[y];
+                    roomRequest.RoomRequestID = 0;
+                    roomRequest.GroupSize = Int16.Parse(Splittedwords[y + 1]);
+                    roomRequest.PriorityRoom = 0;
+                    roomRequest.RoomName = room;
 
-                  newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
-                  requestToRoom.RequestID = id1;
-                  requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
-                    
-                  db.RequestToRooms.Add(requestToRoom); //add the roomFacility to the table
-                  db.SaveChanges();
+                    db.RoomRequests.Add(roomRequest);
+                    db.SaveChanges();
+                    y++;
+
+                    newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
+                    requestToRoom.RequestID = id1;
+                    requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
+
+                    db.RequestToRooms.Add(requestToRoom); //add the roomFacility to the table
+                    db.SaveChanges();
 
 
 
                 }
             }
 
-            else {//change/update room alocations 
+            else
+            {//change/update room alocations 
                 int i = 0;
                 foreach (var item in t)
                 {
 
-                    var roomRequest = new RoomRequest() { RoomRequestID = item, RoomName = Splittedwords[i] };
+                    var roomRequest = new RoomRequest() { RoomRequestID = item, RoomName = Splittedwords[i], GroupSize = Int16.Parse(Splittedwords[i + 1]) };
                     db.RoomRequests.Attach(roomRequest);
                     db.Entry(roomRequest).Property(x => x.RoomName).IsModified = true;
                     db.SaveChanges();
 
-                    i++;
+                    i = i + 2;
 
 
                 }
-            
-            
+
+
             }
-             
-                return Json(Url.Action("GetRequest", "Admin", new { id = "__id__" }));
-              
+
+            return Json(Url.Action("GetRequest", "Admin", new { id = "__id__" }));
+
 
 
         }
@@ -173,25 +333,26 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult DeleteRoomFac(string id1, string id2)
         {  //assigning RoomFacilityID to int t
-            int  t = (from d in db.RoomFacilities.Include("Facilities")
-                    where (d.RoomName == id2 &&
-                    d.Facility.FacilityName == id1)
-                    select d.RoomFacilityID).SingleOrDefault();
+            int t = (from d in db.RoomFacilities.Include("Facilities")
+                     where (d.RoomName == id2 &&
+                     d.Facility.FacilityName == id1)
+                     select d.RoomFacilityID).SingleOrDefault();
 
-      
 
-           RoomFacility roomFacility = db.RoomFacilities.Find(t);
+
+            RoomFacility roomFacility = db.RoomFacilities.Find(t);
             if (roomFacility == null)
             {
                 return HttpNotFound();
-           }
-
-           else {
-            
-               db.RoomFacilities.Remove(roomFacility);
-               db.SaveChanges();
             }
-           return Json(Url.Action("ShowRoomFacility", "Admin"));
+
+            else
+            {
+
+                db.RoomFacilities.Remove(roomFacility);
+                db.SaveChanges();
+            }
+            return Json(Url.Action("ShowRoomFacility", "Admin"));
         }
 
 
@@ -203,18 +364,18 @@ namespace DBFirstMVC.Controllers
         {
             //array with facilities 
             string[] Splittedwords = id2.Split(new string[] { "?" }, System.StringSplitOptions.None);
-    
+
 
             RoomFacility roomFacility = new RoomFacility();
             for (int i = 0; i < Splittedwords.Length; i++)
             {
-                var facility=Splittedwords[i];
+                var facility = Splittedwords[i];
 
-                int facId=(from d in db.Facilities 
-                       where (d.FacilityName==facility)
-                       select d.FacilityID).SingleOrDefault();
-              
-                
+                int facId = (from d in db.Facilities
+                             where (d.FacilityName == facility)
+                             select d.FacilityID).SingleOrDefault();
+
+
                 roomFacility.FacilityID = facId;
                 roomFacility.RoomName = id1;
                 db.RoomFacilities.Add(roomFacility); //add the roomFacility to the table
@@ -227,7 +388,7 @@ namespace DBFirstMVC.Controllers
 
         }
 
-         
+
         //show selected facility
         public ActionResult EditFacility(int id = 0)
         {
@@ -255,13 +416,13 @@ namespace DBFirstMVC.Controllers
         }
 
         //show facility
-        public ActionResult DeleteFacility(int id=0)
+        public ActionResult DeleteFacility(int id = 0)
         {
             Facility facility = db.Facilities.Find(id);
             if (facility == null)
             {
                 return HttpNotFound();
-                
+
             }
             return View(facility);
         }
@@ -270,13 +431,43 @@ namespace DBFirstMVC.Controllers
         [HttpPost, ActionName("DeleteFacility")]
         public ActionResult DeleteConfirmed1(int id)
         {
-            Facility facility = db.Facilities.Find(id);
-            db.Facilities.Remove(facility);
+
 
             var fcltDelete = db.RoomFacilities.Where(a => a.FacilityID == id).ToList();
-            foreach (var vp in fcltDelete)
-            db.RoomFacilities.Remove(vp);         
+            var facRequest = db.FacilityRequests.Where(a => a.FacilityID == id).ToList();
+
+            //foreach (var vp in fcltDelete)
+          //  {
+              //  db.RoomFacilities.Remove(vp);
+              //  db.SaveChanges();
+            //}
+            for (var i = 0; i < fcltDelete.Count; i++)
+            {
+                //find id of the row with the given requestID
+                var fID = fcltDelete[i].RoomFacilityID;
+               RoomFacility fac = db.RoomFacilities.Find(fID);
+                //delete the row
+                db.RoomFacilities.Remove(fac);
+                db.SaveChanges();
+            }
+            for (var i = 0; i < facRequest.Count; i++)
+            {
+                //find id of the row with the given requestID
+                var fID = facRequest[i].FacilityRequestID;
+                FacilityRequest fac = db.FacilityRequests.Find(fID);
+                //delete the row
+                db.FacilityRequests.Remove(fac);
+                db.SaveChanges();
+            }
+
+           
+           
+            
+            Facility facility = db.Facilities.Find(id);
+            db.Facilities.Remove(facility);
             db.SaveChanges();
+
+      
 
             return RedirectToAction("ShowFacility");
         }
@@ -303,13 +494,14 @@ namespace DBFirstMVC.Controllers
             return View(facility);
         }
 
-        
-        
+
+
         //create new room
         public ActionResult Create()
         {
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName");
-            
+            ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName");
+
             return View();
         }
 
@@ -321,14 +513,14 @@ namespace DBFirstMVC.Controllers
             {
                 db.Rooms.Add(room);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("EditPool");
             }
 
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName");
             return View(room);
         }
 
-          //get request deatails 
+        //get request deatails 
         public ActionResult GetRequest(int id = 0)
         {
             Request r = db.Requests.Find(id); //input id from chosen request
@@ -337,16 +529,20 @@ namespace DBFirstMVC.Controllers
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var wk = (from d in db.Weeks
+                      where d.WeekID == r.WeekID
+                      select d).FirstOrDefault();//added
             if (v != null)
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq,Week = wk }); //return view with the data filled model
             }
             return View();
         }
+        
+       
 
-     
         //change request status 
 
         public ActionResult AllocateRooms(int id = 0)
@@ -358,12 +554,29 @@ namespace DBFirstMVC.Controllers
 
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var wk = (from d in db.Weeks
+                      where d.WeekID == r.WeekID
+                      select d).FirstOrDefault();//added
             if (v != null)
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq }); //return view with the data filled model
+
+                var t = (from d in db.Requests.Include("Modules")
+                         where (d.RequestID == id)
+                         select d.Module.Students).FirstOrDefault(); ;
+
+                ViewBag.GroupSize = t;
+
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq, Week = wk }); //return view with the data filled model
+
+
             }
+
+
+
+
+
             return View();
         }
 
@@ -376,38 +589,155 @@ namespace DBFirstMVC.Controllers
                 return HttpNotFound();
             }
 
-            return View(request);
+            //return View(request);
+            return View(new RequestInfo() { Request = request });
         }
 
-     
+
         //save request status
         [HttpPost]
         public ActionResult Edit(Request request)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(request).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+            //if accepted request
+
+            if (request.Status == "1")
+            {//get the rooms associated with the request
+                var temp = request.RequestID;
+                var t = (from d in db.RequestToRooms.Include("RoomRequests")
+                         where (d.RequestID == temp)
+                         select d.RoomRequest.RoomName).ToList();
+
+
+
+                foreach (var item in t)
+                {
+
+                    var q = (from r in db.Requests
+                             join rtr in db.RequestToRooms on r.RequestID equals rtr.RequestID
+                             join roomR in db.RoomRequests on rtr.RoomRequestID equals roomR.RoomRequestID
+                             where (r.DayID == request.DayID && r.PeriodID == request.PeriodID
+                             && r.WeekID == request.WeekID && r.Status == "1" && roomR.RoomName == item)
+                             select r.RequestID).FirstOrDefault();
+
+
+                    if (q != 0)
+                    {
+
+
+                        var obj = db.Requests.Where(c => c.RequestID == q).First();
+                        obj.Status = "0";
+                        db.SaveChanges();
+                        break;
+
+
+
+                    }
+
+
+
+
+                }
             }
-   
+            
+                if (ModelState.IsValid)
+                {
+                    db.Entry(request).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
             return View(request);
         }
 
-      
-        //change room view
+
+        //change room ..view
         public ActionResult EditRoom(string id1)
         {
+
+
+            string selected = (from sub in db.Rooms
+                               where sub.RoomName == id1
+                               select sub.BuildingCode).First();
+
+            string selected1 = (from sub in db.Rooms
+                                where sub.RoomName == id1
+                                select sub.DeptCode).First();
+
+
             Room room = db.Rooms.Find(id1);
             if (room == null)
             {
                 return HttpNotFound();
                 // return RedirectToAction("Index");
             }
-           // ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingCode"+"-"+"BuildingName");
+            
+            ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName", selected);
+            ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", selected1);
             return View(room);
         }
-        
+
+
+        //Delete request
+        public ActionResult DeleteReq(int id = 0)
+        {
+            Request request = db.Requests.Find(id);
+            if (request == null)
+            {
+                return HttpNotFound();
+            }
+            return View(request);
+        }
+
+        //
+        // POST: /Request/Delete/5
+
+        [HttpPost, ActionName("DeleteReq")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            //Delete any associated room requests
+            var ReqToRooms = (from d in db.RequestToRooms
+                              where d.RequestID == id
+                              select d).ToList();
+
+            for (var i = 0; i < ReqToRooms.Count; i++)
+            {
+                //take each roomRequestID
+                var rID = ReqToRooms[i].RoomRequestID;
+                //find the row in the RequestToRoom table and delete it
+                RequestToRoom row = db.RequestToRooms.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RequestToRooms.Remove(row);
+                db.SaveChanges();
+                //find the row in the RooomRequest table and delete it
+                RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RoomRequests.Remove(RoomRow);
+                db.SaveChanges();
+            }
+
+            //Delete any associated facility requests
+            var FacilityRequests = (from d in db.FacilityRequests
+                                    where d.RequestID.Equals(id)
+                                    select d).ToList();
+
+            for (var i = 0; i < FacilityRequests.Count; i++)
+            {
+                //find id of the row with the given requestID
+                var fID = FacilityRequests[i].FacilityRequestID;
+                FacilityRequest fac = db.FacilityRequests.Find(fID);
+                //delete the row
+                db.FacilityRequests.Remove(fac);
+                db.SaveChanges();
+            }
+
+
+            //Remove the Request row
+            Request request = db.Requests.Find(id);
+            db.Requests.Remove(request);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         //update changes into room table
         [HttpPost]
         public ActionResult EditRoom(Room room)
@@ -422,37 +752,120 @@ namespace DBFirstMVC.Controllers
             return View(room);
         }
 
+        public ActionResult ChangeRoundDates()
+        {
+            var r = db.RoundAndSemesters.ToList();
 
-           //delete room view
+
+            return View(r);
+        }
+
+
+        public ActionResult EditRound(int id = 0)
+        {
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(id); 
+            return View(RandS);
+        }
+
+        [HttpPost]
+        public ActionResult EditRound(RoundAndSemester RandS, string startDate, string endDate)
+        {
+            if (ModelState.IsValid)
+            {
+                //save current row
+                RandS.StartDate = Convert.ToDateTime(startDate);
+                RandS.EndDate = Convert.ToDateTime(endDate);
+                db.Entry(RandS).State = EntityState.Modified;
+                db.SaveChanges();
+                
+                
+                //if this updated row is the new current round, then make all others false
+                if (RandS.CurrentRound == true)
+                {
+                    var allRounds = (from d in db.RoundAndSemesters
+                                     where d.RoundAndSemesterID != RandS.RoundAndSemesterID
+                                     select d).ToList();
+                    foreach (RoundAndSemester r in allRounds)
+                    {
+                        r.CurrentRound = false;
+                    }
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("ChangeRoundDates");
+            }
+
+
+            return View(RandS);
+        }
+
+
+
+
+
+        //delete room view
 
         public ActionResult Delete(string id1)
         {
             Room room = db.Rooms.Find(id1);
-            if (room== null)
+            if (room == null)
             {
                 return HttpNotFound();
-              // return RedirectToAction("Index");
+                // return RedirectToAction("Index");
             }
             return View(room);
         }
 
-      
+
         //delete room from the table 
-       [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(string id1)
         {
+
+            var RoomRequest = (from d in db.RoomRequests
+                              where d.RoomName == id1
+                              select d).ToList();
+
+            for (var i = 0; i < RoomRequest.Count; i++)
+            {
+                //take each roomRequestID
+                var rID = RoomRequest[i].RoomRequestID;
+                //find the row in the RequestToRoom table and delete it
+                RequestToRoom row = db.RequestToRooms.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RequestToRooms.Remove(row);
+                db.SaveChanges();
+                //find the row in the RooomRequest table and delete it
+                RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
+                db.RoomRequests.Remove(RoomRow);
+                db.SaveChanges();
+            }
+
+            var RoomFacility = (from d in db.RoomFacilities
+                                where d.RoomName == id1
+                                select d).ToList();
+            for (var i = 0; i < RoomFacility.Count; i++)
+            {
+                //take each roomRequestID
+                var rID = RoomFacility[i].RoomFacilityID;
+                //find the row in the RequestToRoom table and delete it
+                RoomFacility RoomRow = db.RoomFacilities.Where(a => a.RoomFacilityID.Equals(rID)).FirstOrDefault();
+                db.RoomFacilities.Remove(RoomRow);
+                db.SaveChanges();
+               
+            }
+            
             Room room = db.Rooms.Find(id1);
             db.Rooms.Remove(room);
             db.SaveChanges();
             return RedirectToAction("EditPool");
         }
 
-       private string getCurrentUser()
-       {
-           User userSession = (User)HttpContext.Session["User"];
-           var row = db.Depts.Find(userSession.Username);
-           return (row.FullDept);
-       }
+        private string getCurrentUser()
+        {
+            User userSession = (User)HttpContext.Session["User"];
+            var row = db.Depts.Find(userSession.Username);
+            return (row.FullDept);
+        }
 
         protected override void Dispose(bool disposing)
         {

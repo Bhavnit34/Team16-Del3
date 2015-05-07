@@ -136,6 +136,7 @@
           <Property Name="AllocatedRoomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RequestID" Type="int" />
           <Property Name="RoomName" Type="varchar" MaxLength="10" />
+          <Property Name="GroupSize" Type="smallint" />
           <Property Name="Comments" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Building">
@@ -1197,6 +1198,7 @@
           <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Request" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="AllocatedRoom" ToRole="Request" />
           <NavigationProperty Name="Room" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="AllocatedRoom" ToRole="Room" />
+          <Property Type="Int16" Name="GroupSize" />
         </EntityType>
         <Association Name="FK_AllocatedRoom_RequestID">
           <End Type="team16Model.Request" Role="Request" Multiplicity="0..1" />
@@ -1439,6 +1441,7 @@
           <EntitySetMapping Name="AllocatedRooms">
             <EntityTypeMapping TypeName="team16Model.AllocatedRoom">
               <MappingFragment StoreEntitySet="AllocatedRoom">
+                <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="RoomName" ColumnName="RoomName" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />

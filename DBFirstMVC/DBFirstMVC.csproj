@@ -196,6 +196,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\TimetableController.cs" />
     <Compile Include="Degree.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -218,9 +219,12 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateNewRequest.cs" />
     <Compile Include="Models\FacilityAndRoomFacility.cs" />
+    <Compile Include="Models\ModuleInfo.cs" />
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Models\RequestState.cs" />
     <Compile Include="Models\RoomInfo.cs" />
+    <Compile Include="Models\SampleRequestInfo.cs" />
+    <Compile Include="Models\TimetableModel.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -341,6 +345,8 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\luff1.png" />
     <Content Include="Images\luff2.png" />
+    <Content Include="Images\NextArrow.png" />
+    <Content Include="Images\PrevArrow.png" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -399,7 +405,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Request\Index.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
-    <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Request\Delete.cshtml" />
     <Content Include="Views\Request\GetRequest.cshtml" />
     <Content Include="Views\Request\CreateNew.cshtml" />
@@ -443,6 +448,21 @@
     <Content Include="Views\Login\Delete.cshtml" />
     <Content Include="Views\Message\TempMessage.cshtml" />
     <Content Include="Views\Request\DisplayRoomInfo.cshtml" />
+    <Content Include="Views\Request\Edit.cshtml" />
+    <Content Include="Views\Shared\adminView.cshtml" />
+    <Content Include="Views\Admin\DeleteReq.cshtml" />
+    <Content Include="Views\Request\Module.cshtml" />
+    <Content Include="Views\Request\CreateNewModule.cshtml" />
+    <Content Include="Views\Request\GetModuleInfo.cshtml" />
+    <Content Include="Views\Request\EditModule.cshtml" />
+    <Content Include="Views\Request\DeleteModule.cshtml" />
+    <Content Include="Views\Request\AddLecturer.cshtml" />
+    <Content Include="Views\Request\RemoveLecturer.cshtml" />
+    <Content Include="Views\Request\AddDegree.cshtml" />
+    <Content Include="Views\Request\RemoveDegree.cshtml" />
+    <Content Include="Views\Admin\ChangeRoundDates.cshtml" />
+    <Content Include="Views\Admin\EditRound.cshtml" />
+    <Content Include="Views\Timetable\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

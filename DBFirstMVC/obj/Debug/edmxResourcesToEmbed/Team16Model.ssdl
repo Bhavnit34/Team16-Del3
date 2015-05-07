@@ -131,6 +131,7 @@
     <Property Name="AllocatedRoomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="RequestID" Type="int" />
     <Property Name="RoomName" Type="varchar" MaxLength="10" />
+    <Property Name="GroupSize" Type="smallint" />
     <Property Name="Comments" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="Building">
