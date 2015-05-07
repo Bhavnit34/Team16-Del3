@@ -38,10 +38,18 @@ namespace DBFirstMVC.Controllers
             ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
             ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
             ViewBag.AdhocSortParm = sortOrder == "adhoc" ? "adhoc_desc" : "adhoc";
-
+            ViewBag.PeriodSortParm = sortOrder == "period" ? "period_desc" : "period";
+           
             var requests = from r in db.Requests
-                           where r.UserID == userSession.UserID
-                           select r;
+                          where r.UserID == userSession.UserID
+                          select r;
+
+            if (userSession.UserID == 0)
+            {
+                requests = from r in db.Requests
+                               select r;
+            }
+            
 
             //requests = db.Requests.Include(r => r.Module);
 
@@ -104,6 +112,12 @@ namespace DBFirstMVC.Controllers
                     break;
                 case "priority_desc":
                     requests = requests.OrderByDescending(r => r.PriorityRequest);
+                    break;
+                case "period":
+                    requests = requests.OrderBy(r => r.PeriodID);
+                    break;
+                case "period_desc":
+                    requests = requests.OrderByDescending(r => r.PeriodID);
                     break;
                 default:
                     requests = requests.OrderBy(r => r.Module.Title);
@@ -609,15 +623,167 @@ namespace DBFirstMVC.Controllers
             DisplayRoomInfo(SelectedRoom, caller);
         }
 
-        public ActionResult CheckAvailability(string rooms, string selectedWeeks, string day, string period, string length)
+        public ActionResult CheckAvailability(string buildingChosen, string selectedWeeks, int day, int period, int length)
         {
+            List<string> roomList = (from d in db.Rooms
+                     where (d.Building.BuildingName == buildingChosen)
+                     select d.RoomName).ToList();
             //turn inputted string arrays into lists
-            List<string> roomList = rooms.Split(',').ToList<string>();
+            //List<string> roomList = rooms.Split(',').ToList<string>();
             List<string> chosenWeeks = selectedWeeks.Split(',').ToList<string>();
-            List<string> availRooms = new List<string>(); //array of free rooms to return
+            List<string> notAvail = new List<string>();
+            List<string> availRooms = new List<string>(); //array of free rooms to return       
+
+            var end = period + length - 1;
+            int semester = ViewBag.CurrentSemester;
+
+            DateTime current = DateTime.Now;
+            int month = current.Month;
+
+            string year;
+
+            if (month >= 7)
+            {
+                year = current.Year + "/" + (current.Year - 1999);
+            }
+            else
+            {
+                year = (current.Year - 1) + "/" + (current.Year - 2000);
+            }
 
 
-            return Json(availRooms);
+            //get requests that match the allocated room which is in the list of rooms in given building
+            var request = (from r in db.AllocatedRooms
+                           join d in db.Requests on r.RequestID equals d.RequestID
+                           join w in db.Weeks on d.WeekID equals w.WeekID
+                           where d.Year == year
+                           && d.DayID == day
+                           && roomList.Contains(r.RoomName)
+                           select new
+                           {
+                               RoomID = r.RoomName,
+                               Start = d.PeriodID,
+                               Length = d.SessionLength,
+                               Semester = d.Semester,
+                               Week1 = w.Week1,
+                               Week2 = w.Week2,
+                               Week3 = w.Week3,
+                               Week4 = w.Week4,
+                               Week5 = w.Week5,
+                               Week6 = w.Week6,
+                               Week7 = w.Week7,
+                               Week8 = w.Week8,
+                               Week9 = w.Week9,
+                               Week10 = w.Week10,
+                               Week11 = w.Week11,
+                               Week12 = w.Week12,
+                               Week13 = w.Week13,
+                               Week14 = w.Week14,
+                               Week15 = w.Week15
+                           }).ToList();          
+
+            int req_start = 1;
+            int req_end = 2;
+            byte truth = 1;
+
+            for (var i = 0; i < request.Count(); i++) {
+                
+                try
+                {
+                    req_start = Convert.ToInt32(request[i].Start);
+                    req_end = Convert.ToInt32(request[i].Start + request[i].Length) - 1;
+
+                    bool passed = true;
+
+                    //if the request overlaps with the requested times and is for the current semester
+                    if (((req_start <= period && req_end <= end && req_end >= period) || (req_start > period && req_start <= end)) && Convert.ToInt32(request[i].Semester) == semester)
+                    {
+                        //checks weeks - if 1 of the weeks requested for the room is booked, room isnt available
+                        if (request[i].Week1 == truth && chosenWeeks.Contains("1") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week2 == truth && chosenWeeks.Contains("2") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week3 == truth && chosenWeeks.Contains("3") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week4 == truth && chosenWeeks.Contains("4") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week5 == truth && chosenWeeks.Contains("5") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week6 == truth && chosenWeeks.Contains("6") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week7 == truth && chosenWeeks.Contains("7") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week8 == truth && chosenWeeks.Contains("8") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week9 == truth && chosenWeeks.Contains("9") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week10 == truth && chosenWeeks.Contains("10") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week11 == truth && chosenWeeks.Contains("11") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week12 == truth && chosenWeeks.Contains("12") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week13 == truth && chosenWeeks.Contains("13") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week14 == truth && chosenWeeks.Contains("14") == true)
+                        {
+                            passed = false;
+                        }
+                        else if (request[i].Week15 == truth && chosenWeeks.Contains("15") == true)
+                        {
+                            passed = false;
+                        }
+                        
+                        //if passed = false i.e not available for one of the weeks and room not already in notAvail (avoids repitition)
+                        if (passed == false && notAvail.Contains(request[i].RoomID) == false)
+                        {                    
+                            notAvail.Add(request[i].RoomID);
+                        }
+                    }
+                }
+                catch (ArgumentOutOfRangeException outOfRange)
+                {
+                    Console.WriteLine("Error: {0}", outOfRange.Message);
+                }
+            }
+
+            for (var j = 0; j < roomList.Count(); j++)
+            {
+                //checks rooms inputted against results of room that aren't available
+                //if roomID isn't in notAvail add to availRooms
+                if (notAvail.Contains(roomList[j]) == false)
+                {
+                    availRooms.Add(roomList[j]);
+                }
+            }
+            
+            return Json(availRooms); //return the array of available rooms
         }
 
 

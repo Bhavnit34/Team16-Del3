@@ -226,9 +226,10 @@
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
-                        <input type="button" id="btnCheckAvail" value="Check Availability" />
                         <a id="studentsLeft" data-left="0" data-max="0"></a>
                         <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                        <input type="checkbox" id="btnCheckAvail" value="Show Free Rooms Only"/>
+                        <span id="txtCheckAvail">Show free rooms only</span>
                         <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
                         <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
                         <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
@@ -255,12 +256,16 @@
     <script type="text/javascript">
         var fac = [];
         var rms = [];
+        var AllRooms = []; //rooms that are in the building. Not checked
+        var FreeRooms = []; //rooms that are free at the given time and date
         $(document).ready(function () {
            
             //$('#siteTitle').append('<a style="color:gray; font-style:italic; font-size:0.6em;">  '+'@ViewBag.CurrentUser'+'</a>');
             $('#Building').hide();
             $('#Room').hide();
             $('#btnAddToRoom').hide();
+            $('#btnCheckAvail').hide();
+            $('#txtCheckAvail').hide();
             $('#matchedRooms').hide();
             $('#btnAddMatchedRoom').hide();
             $('#btnCreate').hide(); 
@@ -283,6 +288,8 @@
                 var park = $(this).val();
                 $('#Room').hide(200);
                 $('#btnAddToRoom').hide();
+                $('#btnCheckAvail').hide();
+                $('#txtCheckAvail').hide();
                 $('#RoomDiv').html("");
                 $('#BuildingDiv').html("");
                 if (park.substr(0, 1) == '') { //Check that the --Select Park-- hasnt been clicked
@@ -315,6 +322,8 @@
                 if (building.substr(0, 1) == "-") {
                     $('#Room').hide();
                     $('#btnAddToRoom').hide();
+                    $('#btnCheckAvail').hide();
+                    $('#txtCheckAvail').hide();
                     $('#RoomDiv').html("");
                     return;
                 }
@@ -339,6 +348,7 @@
                 $.post('@Url.Action("GetRooms", "Request")', { chosenBuilding: building }, function (data) {
                     // Postback response of rooms
                     var rooms = data;
+                    AllRooms = rooms; //assign the global variable of all rooms to be re used when the availability tickbox is unchecked
                     html = "";
                     //create a dropdown list of rooms
                     for (var i = 0; i < rooms.length; i++) {
@@ -348,27 +358,76 @@
                     $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
                     $('#Room').show(200);
                     $('#btnAddToRoom').show(200);
+                    $('#btnCheckAvail').show(200);
+                    $('#txtCheckAvail').show(200);
                 });  //end $.post
+                
             }); //end function
 
 
             //function to check which rooms are available at the given day, time and weeks
             $('#btnCheckAvail').click(function () {
-                var roomList = [];
-                var len = $('#Room').children().length;
-                for (var i = 0; i < len; i++) {
-                    roomList.push($('#Room').children().eq(i).val());
+                if ($(this).is(":checked") == false) {
+                    html = "";
+                    //create a dropdown list of rooms
+                    for (var i = 0; i < AllRooms.length; i++) {
+                        html += "<option id='" + AllRooms[i] + "' value='" + AllRooms[i] + "'>" + AllRooms[i] + "</option>";
+                    }
+                    $('#Room').html(html); //add this html to the tag
+                    $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                    $('#Room').show(200);
+
+                    return;
                 }
-                var dayID = $('#Request_DayID').val();
-                var periodID = $('#Request_PeriodID').val();
-                var seshLength = $('#Request_SessionLength').val();
-                //send the rooms and the request data to check if the room is available
-                $.post('@Url.Action("CheckAvailability", "Request")', { rooms: roomList.join(','), selectedWeeks: selectedItems.join(','), day: dayID, period:periodID, length:seshLength  }, function (data) {
+                else {   
+                    //get inputs needed to begin checking
+                    var building = $('#Building').val();
+                    var dayID = $('#Request_DayID').val();
+                    var periodID = $('#Request_PeriodID').val();
+                    var seshLength = $('#Request_SessionLength').val();
 
-                });
+                    //validate the essential inputs have been filled
+                    if (dayID == "") {
+                        alert("please specify the day");
+                        $('#btnCheckAvail').prop('checked', false);
+                        return;
+                    }
+                    if (periodID == "") {
+                        alert("please specify the period");
+                        $('#btnCheckAvail').prop('checked', false);
+                        return;
+                    }
+                    if (seshLength == "") {
+                        alert("please specify the session length");
+                        $('#btnCheckAvail').prop('checked', false);
+                        return;
+                    }
+                    if (building == "") {
+                        alert("please specify the building");
+                        $('#btnCheckAvail').prop('checked', false);
+                        return;
+                    }
 
+                    //send the rooms and the request data to check if the room is available rooms: roomList.join(',')
+                    $.post('@Url.Action("CheckAvailability", "Request")', { buildingChosen: building, selectedWeeks: selectedItems.join(','), day: parseInt(dayID), period: parseInt(periodID), length: parseInt(seshLength) }, function (data) {
+                        // Postback response of rooms
+                        var rooms = data;
+                        FreeRooms = rooms; //assign the global variable of rooms that are free given the day, time and weeks
 
-            });
+                        html = "";
+                        //create a dropdown list of rooms
+                        for (var i = 0; i < rooms.length; i++) {
+                            html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
+                        }
+                        $('#Room').html(html); //add this html to the tag
+                        $('#RoomDiv').html("<label for='Request_Room'>Room</label>").show(200);
+                        $('#Room').show(200);
+                        $('#btnAddToRoom').show(200);
+
+                    });
+
+                }
+              }); //end function
 
             //Function to add a room to the displayed list of chosen rooms
             $('#btnAddToRoom, #btnAddMatchedRoom').click(function(){

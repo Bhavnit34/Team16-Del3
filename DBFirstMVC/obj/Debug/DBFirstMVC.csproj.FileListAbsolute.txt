@@ -883,9 +883,11 @@ F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\ko\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\ru\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hans\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spatial.resources.dll
-F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
+<<<<<<< HEAD
+F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
+=======
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\DBFirstMVC.dll
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\DBFirstMVC.pdb
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\Antlr3.Runtime.dll
