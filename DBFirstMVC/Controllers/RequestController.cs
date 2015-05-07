@@ -1479,6 +1479,18 @@ namespace DBFirstMVC.Controllers
                 db.SaveChanges();
             } 
 
+            //Delete rows from AllocatedRooms table
+            var AR = from d in db.AllocatedRooms
+                     where d.RequestID == id
+                     select d;
+            foreach (AllocatedRoom ar in AR)
+            {
+                db.AllocatedRooms.Remove(ar);
+                db.SaveChanges();
+            }
+
+
+
             //Delete any associated facility requests
             var FacilityRequests = (from d in db.FacilityRequests
                                     where d.RequestID.Equals(id)
