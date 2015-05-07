@@ -17,17 +17,19 @@ Layout = "~/Views/Shared/adminView.cshtml";
     <legend>Request</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FacilityID)
+         @Html.LabelFor(model => model.FacilityID)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.FacilityID)
+      @Html.TextBoxFor(model => model.FacilityID, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.FacilityID)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FacilityName)
+         @Html.LabelFor(model => model.FacilityName, "Facility Name")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.FacilityName)
+    @Html.TextBoxFor(model => model.FacilityName, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.FacilityName)
     </div>
 
   

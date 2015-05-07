@@ -184,8 +184,8 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => modelItem.Request.Status)
         </td>
       <td>
-            @Html.ActionLink("Change Status", "Edit", new { id= @Model.Request.RequestID}) |
-          @Html.ActionLink("Allocate", "AllocateRooms", new { id= @Model.Request.RequestID}) |
+            @Html.ActionLink("Status", "Edit", new { id= @Model.Request.RequestID}) |
+          @Html.ActionLink("Allocate", "AllocateRooms", new { id= @Model.Request.RequestID}) 
         </td>
     </tr>
     
