@@ -13,8 +13,8 @@
     <tr><td class="approved"></td><td>APROVED</td></tr>
      <tr><td class="rejected"></td><td>REJETCED</td></tr>
        <tr><td class="pending"></td><td>PENDING</td></tr>
-
-</table>
+     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
+    </table>
 
 <table>
     <tr>
@@ -65,6 +65,13 @@
     else if (item.Status == 2.ToString())
     {
         statusClass = "rejected";
+
+
+
+    }
+    else if (item.Status == 3.ToString())
+    {
+        statusClass = "modified";
 
 
 
@@ -149,6 +156,9 @@
     }
     .pending {
         background-color:grey;
+    }
+    .modified {
+        background-color:lightyellow;
     }
 </style>
 @section Scripts {
