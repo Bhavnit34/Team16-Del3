@@ -226,10 +226,10 @@
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
-                        <a id="studentsLeft" data-left="0" data-max="0"></a>
-                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                        <a id="studentsLeft" data-left="0" data-max="0"></a><br />
                         <input type="checkbox" id="btnCheckAvail" value="Show Free Rooms Only"/>
                         <span id="txtCheckAvail">Show free rooms only</span>
+                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
                         <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
                         <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
                         <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
@@ -491,7 +491,7 @@
                     html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
                     html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
                     html += "<td><input type='button' id='info" + roomID + "' value='Info' name='Command' /></td>";
-                    html += "<td><img src='/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
+                    html += "<td><img src='/Images/delete.png' alt='~/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
                     html += "</tr>";
                     $('#listOfRooms').append(html);
                     $('#listOfRoomsDiv').show();
