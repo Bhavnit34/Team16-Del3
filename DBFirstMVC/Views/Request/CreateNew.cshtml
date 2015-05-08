@@ -17,9 +17,18 @@
 <script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
+@{
+    if(ViewBag.adhoc == 1){
+        <h2>Create a Ad-hoc Request</h2>
+    }
+    else
+    {
+     <h2>Create a Request</h2>   
+    }
+}
 
-<h2>Create a Request</h2>
- @using (Html.BeginForm("CreateRequest","Request",FormMethod.Post)) {
+ @using (Html.BeginForm("CreateRequest", "Request", FormMethod.Post))
+ {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
       
@@ -36,19 +45,36 @@
                         <div class="editor-field">
                             <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
                             <input type="button" id="btnModSearch" value="Filter" />
-                            @Html.DropDownListFor(model => model.Request.ModCode,new SelectList(ViewBag.Modules,"ModCode", "FullModule"), "-- Select Module --")
+                            @Html.DropDownListFor(model => model.Request.ModCode, new SelectList(ViewBag.Modules, "ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
                         
                         <br /> 
                     
                         <div id="studentsOnModuleDiv"></div>
+                        @{
+     if (ViewBag.adhoc == 1)
+     { 
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Request.Semester)
+                                </div>
+                        
+                                <div class="editor-field">     
+                                    <label>@Html.RadioButtonFor(model => model.Request.Semester, "1", true) 1</label>
+                                    <label>@Html.RadioButtonFor(model => model.Request.Semester, "2", false) 2</label> 
+    
+                                    @Html.ValidationMessageFor(model => model.Request.Semester)
+                                </div>
+     }
+                        }
+
+
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.SessionType, "Session Type")
                         </div>
                         
                         <div class="editor-field">     
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
                             <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
     
                             @Html.ValidationMessageFor(model => model.Request.SessionType)
@@ -62,12 +88,12 @@
 
                         <div class="editor-field">
                         @{
-                            List<SelectListItem> listItems= new List<SelectListItem>();
-                            listItems.Add(new SelectListItem{Text = "Monday", Value = "1"});
-                            listItems.Add(new SelectListItem{Text = "Tuesday", Value = "2"});
-                            listItems.Add(new SelectListItem{Text = "Wednesday", Value = "3"});
-                            listItems.Add(new SelectListItem{Text = "Thursday", Value = "4"});
-                            listItems.Add(new SelectListItem{Text = "Friday", Value = "5"});   
+     List<SelectListItem> listItems = new List<SelectListItem>();
+     listItems.Add(new SelectListItem { Text = "Monday", Value = "1" });
+     listItems.Add(new SelectListItem { Text = "Tuesday", Value = "2" });
+     listItems.Add(new SelectListItem { Text = "Wednesday", Value = "3" });
+     listItems.Add(new SelectListItem { Text = "Thursday", Value = "4" });
+     listItems.Add(new SelectListItem { Text = "Friday", Value = "5" });   
                         }
 
                         @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
@@ -82,7 +108,7 @@
                         </div>
 
                         <div class="editor-field">
-                            @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
+                            @Html.DropDownListFor(model => model.Request.PeriodID, ViewBag.Periods as IEnumerable<SelectListItem>, "--Select Period--", new { @class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.PeriodID)
                         </div>
 
@@ -95,8 +121,8 @@
                         
                         <div class="editor-field">
                             <input id="hiddenLength" type="hidden" value="@ViewBag.Length" />
-                            @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
-                            @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
+                            @{ List<SelectListItem> SeshLengths = new List<SelectListItem>();}
+                            @Html.DropDownListFor(model => model.Request.SessionLength, SeshLengths, "-- Select Length --", new { @class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
                         </div>
 
@@ -156,7 +182,8 @@
                         </div>
 
                         <div id="facListDiv">
-                            @foreach (var item in Model.Facilities) {
+                            @foreach (var item in Model.Facilities)
+                            {
                                 <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
                             }
                     <br />
@@ -184,12 +211,14 @@
                         <div class="editor-field">
                             <!--<input type="checkbox" id="cbPriorityRequest" /> -->
                             @{
-                                if(Model.Request.PriorityRequest == 1){
-                                    @Html.CheckBox("cbPriorityRequest",true)
-                                }
-                                if(Model.Request.PriorityRequest != 1){
-                                    @Html.CheckBox("cbPriorityRequest",false)
-                                }
+                            if (Model.Request.PriorityRequest == 1)
+                            {
+                                    @Html.CheckBox("cbPriorityRequest", true)
+                            }
+                            if (Model.Request.PriorityRequest != 1)
+                            {
+                                    @Html.CheckBox("cbPriorityRequest", false)
+                            }
 
                               
                             }
@@ -213,7 +242,7 @@
                             @Html.LabelFor(model => model.Parks, "Park")
                         </div>
                         <div class="editor-field">
-                            @Html.DropDownList("Park","--Select Park--")
+                            @Html.DropDownList("Park", "--Select Park--")
                             @Html.ValidationMessageFor(model => model.Parks)
                     
                         </div>
@@ -239,12 +268,20 @@
         </div>
          </div>
         <p>
-            <input type="button" id="btnCheck" value="Create" />
+            @{
+                 if (ViewBag.adhoc == 1)
+                 {
+                            <input type="button" id="btnCheck" value="Create Ad-hoc" />
+                 }
+                 else{
+                            <input type="button" id="btnCheck" value="Create" />
+                 }
+            }
             <input type="submit" value="Create" id="btnCreate"  name='Command' />
             <input type="button" id="btnReset" value="Reset Page" />
         </p>
 
-}
+ }
          
 
 
@@ -588,7 +625,7 @@
                         $.post('@Url.Action("SaveState", "Request")',values, function (data) {
 
                         }).success(function (returnData, returnStatus) {
-                            var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
+                            var url = '@Url.Action("DisplayRoomInfo", "Request", new { id = "text" })';
                             window.location.href = url.replace("text", "?id=" + room + "&caller=CreateNew");
                         });
 

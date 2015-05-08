@@ -37,6 +37,7 @@ namespace DBFirstMVC
         public Nullable<byte> PriorityRequest { get; set; }
         public Nullable<byte> AdhocRequest { get; set; }
         public string SpecialRequirements { get; set; }
+        [Required]
         public Nullable<byte> Semester { get; set; }
         public Nullable<int> WeekID { get; set; }
         public Nullable<byte> RoundID { get; set; }
