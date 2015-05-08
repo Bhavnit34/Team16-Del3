@@ -13,6 +13,7 @@
 <input type="button" id="btnFind" value="Find Timetable" style="float:right; margin-left:5px;" />
 <input type="radio" id="radSem2" name="Semester" value="2" style="float:right; margin-left:5px;" checked="checked"/> <span style="float:right; margin-left:5px;"> 2</span>
 <input type="radio" id="radSem1" name="Semester" value="1" style="float:right; margin-left:5px;" /> <span style="float:right; margin-left:5px;"> Semester 1</span>
+<h3 id="loaded">Timetable Loaded</h3>
 
 
 
@@ -53,6 +54,10 @@
     <script type="text/javascript">
         var res, res2;
         $(document).ready(function () {
+            $('#loaded').hide();
+
+
+
             //show and hide the dropdown list depending on which radio was clicked
             $('#Degree').hide();
             $('#radLecturer').click(function () {
@@ -67,12 +72,15 @@
 
             });
 
-            createTimetable();
+            createTimetable(); //populate the timetable with empty tiles
 
-
+            $('#Lecturer, #Degree').change(function () {
+                $('#loaded').hide(200);
+            });
 
             //function to populate the timetable from the given lecturer or course
-            $('#btnFind').click(function(){
+            $('#btnFind').click(function () {
+                $('#loaded').hide(200);
                 var name = "";
                 var lecturer = true;
                 if ($('#radLecturer').is(":checked")) {
@@ -137,7 +145,7 @@
 
    
                     } //end res[i] for loop
-
+                    $('#loaded').show(200);
                 }); //end AJAX post FindTimetable
 
             }); //end btnFind click
