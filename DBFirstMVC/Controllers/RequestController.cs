@@ -185,8 +185,8 @@ namespace DBFirstMVC.Controllers
             return View();
         }
 
-
-        public ActionResult CreateNew()
+        [HttpGet]
+        public ActionResult CreateNew(int adhoc = 0)
         {
             string s = "";
             if (Request.UrlReferrer != null)
@@ -217,8 +217,13 @@ namespace DBFirstMVC.Controllers
             Period.Add(new SelectListItem{Text = "p9 - 17:00", Value = "9"});
 
             ViewBag.Periods = Period; //This will be passed into the view for the dropdownlist
-            
-            
+
+            //set adhoc to 1 so we can display the semester info
+            if (adhoc == 1)
+            {
+                TempData["Message"] = "Please be aware ad-hoc requests are only taken into account after rounds have ended";
+                ViewBag.adhoc = 1;
+            }
             
             
             
@@ -255,7 +260,6 @@ namespace DBFirstMVC.Controllers
 
             return View(new CreateNewRequest() {Rooms = allRooms, Facilities = allFacilities, Request = r});
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -389,11 +393,32 @@ namespace DBFirstMVC.Controllers
                                       select d).FirstOrDefault();
 
             myRequest.Request.RoundID = RandS.RoundID;
-            myRequest.Request.Semester = RandS.Semester;
+            bool adhoc = false;
+            if (myRequest.Request.Semester == null)
+                myRequest.Request.Semester = RandS.Semester;
+            else
+                adhoc = true;
+                
+
 
 
               db.Requests.Add(myRequest.Request); //add the request to the table
               db.SaveChanges();
+
+              //make request successful and auto allocate if its available
+              if (adhoc)
+              {
+                  CreateNewRequest newMyRequest = AllocateAdhoc(myRequest, chosenRooms, groupSizes);
+                  if (newMyRequest != myRequest)
+                  {
+                      Request req = db.Requests.Find(myRequest.Request.RequestID);
+                      req = newMyRequest.Request;
+                      db.SaveChanges();
+                  }
+                      
+
+              }
+
               int newRequestID = myRequest.Request.RequestID; //get the newly created key made for the new request
 
                 //Add facility requests
@@ -487,6 +512,89 @@ namespace DBFirstMVC.Controllers
                Session.Remove("State"); //remove current saved request
                return RedirectToAction("Index"); //redirect to the list of requests
         }
+
+        //function to auto allocate adhoc requests if it is available
+        public CreateNewRequest AllocateAdhoc(CreateNewRequest myRequest, string[] chosenRooms, string[] groupSizes)
+        {
+
+            Request Request = db.Requests.Find(myRequest.Request.RequestID); //find request that was just made
+            var requestToRooms = db.RequestToRooms.Where(a => a.RequestID.Equals(Request.RequestID)); //check if it had room requests
+            if (requestToRooms == null)
+            {
+                //if there were no room requests, then make request successful
+                myRequest.Request.Status = "1";
+                myRequest.Request.AdhocRequest = 1;
+                return myRequest;
+            }
+            else
+            {
+                //else check rooms are free and make request successful if they are
+                var ar = db.AllocatedRooms.Where(a => chosenRooms.Contains(a.RoomName)); //check if the room has been allocated
+                if (ar == null)
+                {
+                    //if it hasnt been allocated then allocate the given rooms
+                    for (var i = 0; i < chosenRooms.Length; i++)
+                    {
+                        AllocatedRoom AR = new AllocatedRoom();
+                        AR.RoomName = chosenRooms[i];
+                        AR.GroupSize = Convert.ToInt16(groupSizes[i]);
+                        AR.RequestID = Request.RequestID;
+                        db.SaveChanges();
+                    }
+                    myRequest.Request.Status = "1";
+                    myRequest.Request.AdhocRequest = 1;
+                    return myRequest;
+                }
+                else
+                {
+                    foreach (AllocatedRoom AR in ar)
+                    {
+
+                        var day = myRequest.Request.DayID;
+
+                        if (day != AR.Request.DayID)
+                            continue;
+
+                        var end = myRequest.Request.PeriodID + myRequest.Request.SessionLength - 1;
+                        var period = myRequest.Request.PeriodID;
+                        var semester = myRequest.Request.Semester;
+                        int req_start = Convert.ToInt32(AR.Request.PeriodID);
+                        int req_end = Convert.ToInt32(AR.Request.PeriodID + AR.Request.SessionLength) - 1;
+
+
+                        //if the request overlaps with the requested times and is for the current semester
+                        if (((req_start <= Request.PeriodID && req_end <= end && req_end >= period) || (req_start > period && req_start <= end)) && Convert.ToInt32(AR.Request.Semester) == semester)
+                        {
+                            //one of the rooms isnt free, so reject the request
+                            myRequest.Request.Status = "2";
+                            myRequest.Request.AdhocRequest = 1;
+                            return myRequest;
+                        }
+
+
+                    }
+
+                }
+                //if we got to here, then any rooms that were the same didnt clash, so accept request
+
+                //accept rooms
+                for (var i = 0; i < chosenRooms.Length; i++)
+                {
+                    AllocatedRoom AR = new AllocatedRoom();
+                    AR.RoomName = chosenRooms[i];
+                    AR.GroupSize = Convert.ToInt16(groupSizes[i]);
+                    AR.RequestID = Request.RequestID;
+                    db.SaveChanges();
+                }
+
+                myRequest.Request.Status = "1";
+                myRequest.Request.AdhocRequest = 1;
+                return myRequest;
+
+
+            }
+        } //end function
+
 
 
 
