@@ -284,8 +284,8 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Name="RoundAndSemesterID" Type="int" Nullable="false" />
-          <Property Name="RoundID" Type="tinyint" />
           <Property Name="Semester" Type="tinyint" />
+          <Property Name="RoundID" Type="tinyint" />
           <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
           <Property Name="CurrentRound" Type="bit" />
@@ -1229,8 +1229,8 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-          <Property Type="Byte" Name="RoundID" />
           <Property Type="Byte" Name="Semester" />
+          <Property Type="Byte" Name="RoundID" />
           <Property Type="DateTime" Name="StartDate" Precision="0" />
           <Property Type="DateTime" Name="EndDate" Precision="0" />
           <Property Type="Boolean" Name="CurrentRound" />
@@ -1455,8 +1455,8 @@
                 <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="Semester" ColumnName="Semester" />
                 <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
                 <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
               </MappingFragment>
             </EntityTypeMapping>

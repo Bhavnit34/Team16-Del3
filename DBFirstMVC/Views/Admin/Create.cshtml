@@ -22,7 +22,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         <legend>Request</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RoomName)
+            @Html.Label("Room Name")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.RoomName)
@@ -64,7 +64,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.DeptCode, "DeptName")
+            @Html.LabelFor(model => model.DeptCode, "Department")
         </div>
         <div class="editor-field">
             @Html.DropDownList("DeptCode", "-------- Select --------")

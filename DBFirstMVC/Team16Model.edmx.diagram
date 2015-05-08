@@ -47,7 +47,7 @@
         <EntityTypeShape EntityType="team16Model.AllocatedRoom" Width="1.5" PointX="11.375" PointY="17.625" />
         <AssociationConnector Association="team16Model.FK_AllocatedRoom_RequestID" />
         <AssociationConnector Association="team16Model.FK_AllocatedRoom_RoomName" />
-        <EntityTypeShape EntityType="team16Model.RoundAndSemester" Width="1.5" PointX="8.75" PointY="19" />
+        <EntityTypeShape EntityType="team16Model.RoundAndSemester" Width="1.5" PointX="9.125" PointY="19.625" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -218,10 +218,32 @@ namespace DBFirstMVC.Controllers
 
             ViewBag.Periods = Period; //This will be passed into the view for the dropdownlist
 
+            //get current round and semester
+            RoundAndSemester RandS = (from d in db.RoundAndSemesters
+                                      where d.CurrentRound == true
+                                      select d).FirstOrDefault();
+            if (RandS.RoundID == 6)
+            {
+                if (adhoc == 0)
+                {
+                    adhoc = 1;
+                    TempData["Message"] = "You can only make adhoc requests until the end of the semester. You have been redirected to the adhoc page";
+                }
+            }
+            else
+            {
+                if (adhoc == 1)
+                {
+                    adhoc = 0;
+                    TempData["Message"] = "You can only make adhoc requests once rounds have finished. You have been redirected to the 'Create Request' page";
+                }
+                
+            }
+
             //set adhoc to 1 so we can display the semester info
             if (adhoc == 1)
             {
-                TempData["Message"] = "Please be aware ad-hoc requests are only taken into account after rounds have ended";
+                
                 ViewBag.adhoc = 1;
             }
             
@@ -945,14 +967,14 @@ namespace DBFirstMVC.Controllers
             //increment the roundID and save to the table
             byte? newRoundID = Convert.ToByte(CurrentRound.RoundID + 1);
             byte? newSemester = CurrentRound.Semester;
-            if (newRoundID > 5)
+            if (newRoundID > 6)
             {
                 //reset the round to 1 and change the semester
                 newRoundID = 1;
                 if (newSemester == 1) { newSemester = 2; } else { newSemester = 1; };
             }
             RoundAndSemester RandSNew = (from d in db.RoundAndSemesters
-                                     where d.RoundID == newRoundID && d.Semester == newSemester
+                                         where d.RoundID == newRoundID && d.Semester == newSemester
                                      select d).FirstOrDefault();
             RandSNew.CurrentRound = true;
             db.SaveChanges();

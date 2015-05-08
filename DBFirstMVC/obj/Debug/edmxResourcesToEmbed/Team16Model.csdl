@@ -630,8 +630,8 @@
       <PropertyRef Name="RoundAndSemesterID" />
     </Key>
     <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-    <Property Type="Byte" Name="RoundID" />
     <Property Type="Byte" Name="Semester" />
+    <Property Type="Byte" Name="RoundID" />
     <Property Type="DateTime" Name="StartDate" Precision="0" />
     <Property Type="DateTime" Name="EndDate" Precision="0" />
     <Property Type="Boolean" Name="CurrentRound" />

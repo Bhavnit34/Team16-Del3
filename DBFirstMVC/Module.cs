@@ -21,6 +21,7 @@ namespace DBFirstMVC
             this.ModuleLecturers = new HashSet<ModuleLecturer>();
             this.Requests = new HashSet<Request>();
         }
+
         [Required]
         public string ModCode { get; set; }
         [Required]
@@ -31,8 +32,7 @@ namespace DBFirstMVC
         public Nullable<byte> Weight { get; set; }
         public string DeptCode { get; set; }
         public string FullModule { get { return ModCode + " - " + Title; } }
-
-
+    
         public virtual Dept Dept { get; set; }
         public virtual ICollection<ModuleDegree> ModuleDegrees { get; set; }
         public virtual ICollection<ModuleLecturer> ModuleLecturers { get; set; }

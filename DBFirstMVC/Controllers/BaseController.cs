@@ -22,7 +22,15 @@ namespace DBFirstMVC.Controllers
                 RoundAndSemester RandS = (from d in db.RoundAndSemesters
                                           where d.CurrentRound == true
                                           select d).FirstOrDefault();
-                ViewBag.CurrentRound = RandS.RoundID;
+                if (RandS.RoundID > 5)
+                {
+                    ViewBag.CurrentRound = RandS.RoundID + " (adhoc)";
+                }
+                else
+                {
+                    ViewBag.CurrentRound = RandS.RoundID;
+                }
+                
                 ViewBag.CurrentSemester = RandS.Semester;
 
                 base.OnActionExecuting(filterContext); //Continue as normal

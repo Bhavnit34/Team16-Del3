@@ -215,8 +215,8 @@
           <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
           <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-          <ScalarProperty Name="Semester" ColumnName="Semester" />
           <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
           <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
         </MappingFragment>
       </EntityTypeMapping>
