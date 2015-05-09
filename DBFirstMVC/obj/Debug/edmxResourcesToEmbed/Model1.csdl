@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityContainer Name="team16Entities" p1:LazyLoadingEnabled="true">
+<Schema Namespace="team16Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="team16Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="team16Model.sysdiagram" />
+    <EntitySet Name="AllocatedRooms" EntityType="team16Model.AllocatedRoom" />
     <EntitySet Name="Buildings" EntityType="team16Model.Building" />
     <EntitySet Name="Degrees" EntityType="team16Model.Degree" />
     <EntitySet Name="Depts" EntityType="team16Model.Dept" />
@@ -9,14 +11,24 @@
     <EntitySet Name="Lecturers" EntityType="team16Model.Lecturer" />
     <EntitySet Name="Modules" EntityType="team16Model.Module" />
     <EntitySet Name="ModuleDegrees" EntityType="team16Model.ModuleDegree" />
+    <EntitySet Name="ModuleLecturers" EntityType="team16Model.ModuleLecturer" />
     <EntitySet Name="Parks" EntityType="team16Model.Park" />
     <EntitySet Name="Requests" EntityType="team16Model.Request" />
     <EntitySet Name="RequestToRooms" EntityType="team16Model.RequestToRoom" />
     <EntitySet Name="Rooms" EntityType="team16Model.Room" />
     <EntitySet Name="RoomFacilities" EntityType="team16Model.RoomFacility" />
     <EntitySet Name="RoomRequests" EntityType="team16Model.RoomRequest" />
+    <EntitySet Name="RoundAndSemesters" EntityType="team16Model.RoundAndSemester" />
     <EntitySet Name="Users" EntityType="team16Model.User" />
     <EntitySet Name="Weeks" EntityType="team16Model.Week" />
+    <AssociationSet Name="FK_AllocatedRoom_RequestID" Association="team16Model.FK_AllocatedRoom_RequestID">
+      <End Role="Request" EntitySet="Requests" />
+      <End Role="AllocatedRoom" EntitySet="AllocatedRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AllocatedRoom_RoomName" Association="team16Model.FK_AllocatedRoom_RoomName">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="AllocatedRoom" EntitySet="AllocatedRooms" />
+    </AssociationSet>
     <AssociationSet Name="FK_Building_Park" Association="team16Model.FK_Building_Park">
       <End Role="Park" EntitySet="Parks" />
       <End Role="Building" EntitySet="Buildings" />
@@ -28,6 +40,14 @@
     <AssociationSet Name="FK_Degree_Dept" Association="team16Model.FK_Degree_Dept">
       <End Role="Dept" EntitySet="Depts" />
       <End Role="Degree" EntitySet="Degrees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ModuleDegree_DegreeID" Association="team16Model.FK_ModuleDegree_DegreeID">
+      <End Role="Degree" EntitySet="Degrees" />
+      <End Role="ModuleDegree" EntitySet="ModuleDegrees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lecturer_DeptCode" Association="team16Model.FK_Lecturer_DeptCode">
+      <End Role="Dept" EntitySet="Depts" />
+      <End Role="Lecturer" EntitySet="Lecturers" />
     </AssociationSet>
     <AssociationSet Name="FK_Module_DeptCode" Association="team16Model.FK_Module_DeptCode">
       <End Role="Dept" EntitySet="Depts" />
@@ -49,46 +69,93 @@
       <End Role="Facility" EntitySet="Facilities" />
       <End Role="RoomFacility" EntitySet="RoomFacilities" />
     </AssociationSet>
+    <AssociationSet Name="FK_FacilityRequest_Request" Association="team16Model.FK_FacilityRequest_Request">
+      <End Role="Request" EntitySet="Requests" />
+      <End Role="FacilityRequest" EntitySet="FacilityRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ModuleLecturer_LecturerID" Association="team16Model.FK_ModuleLecturer_LecturerID">
+      <End Role="Lecturer" EntitySet="Lecturers" />
+      <End Role="ModuleLecturer" EntitySet="ModuleLecturers" />
+    </AssociationSet>
     <AssociationSet Name="FK_ModuleDegree_ModCode" Association="team16Model.FK_ModuleDegree_ModCode">
       <End Role="Module" EntitySet="Modules" />
       <End Role="ModuleDegree" EntitySet="ModuleDegrees" />
     </AssociationSet>
+    <AssociationSet Name="FK_ModuleLecturer_ModCode" Association="team16Model.FK_ModuleLecturer_ModCode">
+      <End Role="Module" EntitySet="Modules" />
+      <End Role="ModuleLecturer" EntitySet="ModuleLecturers" />
+    </AssociationSet>
     <AssociationSet Name="FK_Request_ModCode" Association="team16Model.FK_Request_ModCode">
       <End Role="Module" EntitySet="Modules" />
+      <End Role="Request" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Request_UserID" Association="team16Model.FK_Request_UserID">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Request" EntitySet="Requests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Request_WeekID" Association="team16Model.FK_Request_WeekID">
+      <End Role="Week" EntitySet="Weeks" />
       <End Role="Request" EntitySet="Requests" />
     </AssociationSet>
     <AssociationSet Name="FK_RequestToRoom_RequestID" Association="team16Model.FK_RequestToRoom_RequestID">
       <End Role="Request" EntitySet="Requests" />
       <End Role="RequestToRoom" EntitySet="RequestToRooms" />
     </AssociationSet>
-    <AssociationSet Name="FK_RoomRequest_Room" Association="team16Model.FK_RoomRequest_Room">
+    <AssociationSet Name="FK_RequestToRoom_RoomRequestID" Association="team16Model.FK_RequestToRoom_RoomRequestID">
+      <End Role="RoomRequest" EntitySet="RoomRequests" />
+      <End Role="RequestToRoom" EntitySet="RequestToRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomFacility_Room" Association="team16Model.FK_RoomFacility_Room">
+      <End Role="Room" EntitySet="Rooms" />
+      <End Role="RoomFacility" EntitySet="RoomFacilities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomRequest_RoomName" Association="team16Model.FK_RoomRequest_RoomName">
       <End Role="Room" EntitySet="Rooms" />
       <End Role="RoomRequest" EntitySet="RoomRequests" />
     </AssociationSet>
-    <AssociationSet Name="ModuleLecturer" Association="team16Model.ModuleLecturer">
-      <End Role="Lecturer" EntitySet="Lecturers" />
-      <End Role="Module" EntitySet="Modules" />
-    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="AllocatedRoom">
+    <Key>
+      <PropertyRef Name="AllocatedRoomID" />
+    </Key>
+    <Property Name="AllocatedRoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RequestID" Type="Int32" />
+    <Property Name="RoomName" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="GroupSize" Type="Int16" />
+    <Property Name="Comments" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Request" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="AllocatedRoom" ToRole="Request" />
+    <NavigationProperty Name="Room" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="AllocatedRoom" ToRole="Room" />
+  </EntityType>
   <EntityType Name="Building">
     <Key>
       <PropertyRef Name="BuildingCode" />
     </Key>
     <Property Name="BuildingCode" Type="String" Nullable="false" MaxLength="7" Unicode="false" FixedLength="false" />
-    <Property Name="Building1" Type="String" MaxLength="60" Unicode="false" FixedLength="false" />
-    <Property Name="Park" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="Park1" Relationship="team16Model.FK_Building_Park" FromRole="Building" ToRole="Park" />
+    <Property Name="BuildingName" Type="String" MaxLength="60" Unicode="false" FixedLength="false" />
+    <Property Name="ParkName" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Park" Relationship="team16Model.FK_Building_Park" FromRole="Building" ToRole="Park" />
     <NavigationProperty Name="Rooms" Relationship="team16Model.FK_Room_BuildingCode" FromRole="Building" ToRole="Room" />
   </EntityType>
   <EntityType Name="Degree">
     <Key>
       <PropertyRef Name="DegreeID" />
     </Key>
-    <Property Name="DegreeID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="DegreeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="DegreeName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <Property Name="Part" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_Degree_Dept" FromRole="Degree" ToRole="Dept" />
+    <NavigationProperty Name="ModuleDegrees" Relationship="team16Model.FK_ModuleDegree_DegreeID" FromRole="Degree" ToRole="ModuleDegree" />
   </EntityType>
   <EntityType Name="Dept">
     <Key>
@@ -97,6 +164,7 @@
     <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="7" Unicode="false" FixedLength="false" />
     <Property Name="DeptName" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Degrees" Relationship="team16Model.FK_Degree_Dept" FromRole="Dept" ToRole="Degree" />
+    <NavigationProperty Name="Lecturers" Relationship="team16Model.FK_Lecturer_DeptCode" FromRole="Dept" ToRole="Lecturer" />
     <NavigationProperty Name="Modules" Relationship="team16Model.FK_Module_DeptCode" FromRole="Dept" ToRole="Module" />
     <NavigationProperty Name="Rooms" Relationship="team16Model.FK_Room_DeptCode" FromRole="Dept" ToRole="Room" />
     <NavigationProperty Name="Users" Relationship="team16Model.FK_User_Username" FromRole="Dept" ToRole="User" />
@@ -105,29 +173,32 @@
     <Key>
       <PropertyRef Name="FacilityID" />
     </Key>
-    <Property Name="FacilityID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="Facility1" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="FacilityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FacilityName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="FacilityRequests" Relationship="team16Model.FK_FacilityRequest_FacilityID" FromRole="Facility" ToRole="FacilityRequest" />
     <NavigationProperty Name="RoomFacilities" Relationship="team16Model.FK_RoomFacility_FacilityID" FromRole="Facility" ToRole="RoomFacility" />
   </EntityType>
   <EntityType Name="FacilityRequest">
     <Key>
-      <PropertyRef Name="RequestID" />
-      <PropertyRef Name="FacilityID" />
+      <PropertyRef Name="FacilityRequestID" />
     </Key>
+    <Property Name="FacilityRequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RequestID" Type="Int32" Nullable="false" />
     <Property Name="FacilityID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Facility" Relationship="team16Model.FK_FacilityRequest_FacilityID" FromRole="FacilityRequest" ToRole="Facility" />
+    <NavigationProperty Name="Request" Relationship="team16Model.FK_FacilityRequest_Request" FromRole="FacilityRequest" ToRole="Request" />
   </EntityType>
   <EntityType Name="Lecturer">
     <Key>
       <PropertyRef Name="LecturerID" />
     </Key>
-    <Property Name="LecturerID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="LecturerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="FirstName" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
     <Property Name="LastName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
-    <NavigationProperty Name="Modules" Relationship="team16Model.ModuleLecturer" FromRole="Lecturer" ToRole="Module" />
+    <Property Name="Email" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Dept" Relationship="team16Model.FK_Lecturer_DeptCode" FromRole="Lecturer" ToRole="Dept" />
+    <NavigationProperty Name="ModuleLecturers" Relationship="team16Model.FK_ModuleLecturer_LecturerID" FromRole="Lecturer" ToRole="ModuleLecturer" />
   </EntityType>
   <EntityType Name="Module">
     <Key>
@@ -142,31 +213,42 @@
     <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_Module_DeptCode" FromRole="Module" ToRole="Dept" />
     <NavigationProperty Name="ModuleDegrees" Relationship="team16Model.FK_ModuleDegree_ModCode" FromRole="Module" ToRole="ModuleDegree" />
+    <NavigationProperty Name="ModuleLecturers" Relationship="team16Model.FK_ModuleLecturer_ModCode" FromRole="Module" ToRole="ModuleLecturer" />
     <NavigationProperty Name="Requests" Relationship="team16Model.FK_Request_ModCode" FromRole="Module" ToRole="Request" />
-    <NavigationProperty Name="Lecturers" Relationship="team16Model.ModuleLecturer" FromRole="Module" ToRole="Lecturer" />
   </EntityType>
   <EntityType Name="ModuleDegree">
     <Key>
-      <PropertyRef Name="DegreeID" />
-      <PropertyRef Name="ModCode" />
+      <PropertyRef Name="ModuleDegreeID" />
     </Key>
+    <Property Name="ModuleDegreeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="DegreeID" Type="Int32" Nullable="false" />
     <Property Name="ModCode" Type="String" Nullable="false" MaxLength="6" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Degree" Relationship="team16Model.FK_ModuleDegree_DegreeID" FromRole="ModuleDegree" ToRole="Degree" />
     <NavigationProperty Name="Module" Relationship="team16Model.FK_ModuleDegree_ModCode" FromRole="ModuleDegree" ToRole="Module" />
+  </EntityType>
+  <EntityType Name="ModuleLecturer">
+    <Key>
+      <PropertyRef Name="ModuleLecturerID" />
+    </Key>
+    <Property Name="ModuleLecturerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ModCode" Type="String" Nullable="false" MaxLength="6" Unicode="false" FixedLength="false" />
+    <Property Name="LecturerID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Lecturer" Relationship="team16Model.FK_ModuleLecturer_LecturerID" FromRole="ModuleLecturer" ToRole="Lecturer" />
+    <NavigationProperty Name="Module" Relationship="team16Model.FK_ModuleLecturer_ModCode" FromRole="ModuleLecturer" ToRole="Module" />
   </EntityType>
   <EntityType Name="Park">
     <Key>
       <PropertyRef Name="ParkID" />
     </Key>
     <Property Name="ParkID" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
-    <Property Name="Park1" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+    <Property Name="ParkName" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Buildings" Relationship="team16Model.FK_Building_Park" FromRole="Park" ToRole="Building" />
   </EntityType>
   <EntityType Name="Request">
     <Key>
       <PropertyRef Name="RequestID" />
     </Key>
-    <Property Name="RequestID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="RequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserID" Type="Int16" />
     <Property Name="ModCode" Type="String" MaxLength="6" Unicode="false" FixedLength="false" />
     <Property Name="SessionType" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
@@ -177,67 +259,90 @@
     <Property Name="AdhocRequest" Type="Byte" />
     <Property Name="SpecialRequirements" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
     <Property Name="Semester" Type="Byte" />
+    <Property Name="WeekID" Type="Int32" />
     <Property Name="RoundID" Type="Byte" />
+    <Property Name="Year" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <Property Name="Status" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="Request" ToRole="AllocatedRoom" />
+    <NavigationProperty Name="FacilityRequests" Relationship="team16Model.FK_FacilityRequest_Request" FromRole="Request" ToRole="FacilityRequest" />
     <NavigationProperty Name="Module" Relationship="team16Model.FK_Request_ModCode" FromRole="Request" ToRole="Module" />
+    <NavigationProperty Name="User" Relationship="team16Model.FK_Request_UserID" FromRole="Request" ToRole="User" />
+    <NavigationProperty Name="Week" Relationship="team16Model.FK_Request_WeekID" FromRole="Request" ToRole="Week" />
     <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="Request" ToRole="RequestToRoom" />
   </EntityType>
   <EntityType Name="RequestToRoom">
     <Key>
-      <PropertyRef Name="RequestID" />
-      <PropertyRef Name="RoomRequestID" />
+      <PropertyRef Name="RequestToRoomID" />
     </Key>
+    <Property Name="RequestToRoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="RequestID" Type="Int32" Nullable="false" />
     <Property Name="RoomRequestID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Request" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="RequestToRoom" ToRole="Request" />
+    <NavigationProperty Name="RoomRequest" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RequestToRoom" ToRole="RoomRequest" />
   </EntityType>
   <EntityType Name="Room">
     <Key>
-      <PropertyRef Name="Room1" />
+      <PropertyRef Name="RoomName" />
     </Key>
-    <Property Name="Room1" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="RoomName" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
     <Property Name="BuildingCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <Property Name="Capacity" Type="Int16" />
     <Property Name="Lab" Type="Byte" />
     <Property Name="URL" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
     <Property Name="DeptCode" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="AllocatedRooms" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="Room" ToRole="AllocatedRoom" />
     <NavigationProperty Name="Building" Relationship="team16Model.FK_Room_BuildingCode" FromRole="Room" ToRole="Building" />
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_Room_DeptCode" FromRole="Room" ToRole="Dept" />
-    <NavigationProperty Name="RoomRequests" Relationship="team16Model.FK_RoomRequest_Room" FromRole="Room" ToRole="RoomRequest" />
+    <NavigationProperty Name="RoomFacilities" Relationship="team16Model.FK_RoomFacility_Room" FromRole="Room" ToRole="RoomFacility" />
+    <NavigationProperty Name="RoomRequests" Relationship="team16Model.FK_RoomRequest_RoomName" FromRole="Room" ToRole="RoomRequest" />
   </EntityType>
   <EntityType Name="RoomFacility">
     <Key>
-      <PropertyRef Name="Room" />
-      <PropertyRef Name="FacilityID" />
+      <PropertyRef Name="RoomFacilityID" />
     </Key>
-    <Property Name="Room" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="RoomFacilityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoomName" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
     <Property Name="FacilityID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Facility" Relationship="team16Model.FK_RoomFacility_FacilityID" FromRole="RoomFacility" ToRole="Facility" />
+    <NavigationProperty Name="Room" Relationship="team16Model.FK_RoomFacility_Room" FromRole="RoomFacility" ToRole="Room" />
   </EntityType>
   <EntityType Name="RoomRequest">
     <Key>
       <PropertyRef Name="RoomRequestID" />
     </Key>
-    <Property Name="RoomRequestID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-    <Property Name="Room" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="RoomRequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoomName" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
     <Property Name="GroupSize" Type="Int16" />
     <Property Name="PriorityRoom" Type="Byte" />
-    <NavigationProperty Name="Room1" Relationship="team16Model.FK_RoomRequest_Room" FromRole="RoomRequest" ToRole="Room" />
+    <NavigationProperty Name="RequestToRooms" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RoomRequest" ToRole="RequestToRoom" />
+    <NavigationProperty Name="Room" Relationship="team16Model.FK_RoomRequest_RoomName" FromRole="RoomRequest" ToRole="Room" />
+  </EntityType>
+  <EntityType Name="RoundAndSemester">
+    <Key>
+      <PropertyRef Name="RoundAndSemesterID" />
+    </Key>
+    <Property Name="RoundAndSemesterID" Type="Int32" Nullable="false" />
+    <Property Name="Semester" Type="Byte" />
+    <Property Name="RoundID" Type="Byte" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Precision="0" />
+    <Property Name="CurrentRound" Type="Boolean" />
   </EntityType>
   <EntityType Name="User">
     <Key>
       <PropertyRef Name="UserID" />
     </Key>
-    <Property Name="UserID" Type="Int16" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Username" Type="String" MaxLength="7" Unicode="false" FixedLength="false" />
     <Property Name="Password" Type="String" MaxLength="16" Unicode="false" FixedLength="false" />
     <NavigationProperty Name="Dept" Relationship="team16Model.FK_User_Username" FromRole="User" ToRole="Dept" />
+    <NavigationProperty Name="Requests" Relationship="team16Model.FK_Request_UserID" FromRole="User" ToRole="Request" />
   </EntityType>
   <EntityType Name="Week">
     <Key>
       <PropertyRef Name="WeekID" />
     </Key>
-    <Property Name="WeekID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="WeekID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Week1" Type="Byte" />
     <Property Name="Week2" Type="Byte" />
     <Property Name="Week3" Type="Byte" />
@@ -253,7 +358,32 @@
     <Property Name="Week13" Type="Byte" />
     <Property Name="Week14" Type="Byte" />
     <Property Name="Week15" Type="Byte" />
+    <NavigationProperty Name="Requests" Relationship="team16Model.FK_Request_WeekID" FromRole="Week" ToRole="Request" />
   </EntityType>
+  <Association Name="FK_AllocatedRoom_RequestID">
+    <End Role="Request" Type="team16Model.Request" Multiplicity="0..1" />
+    <End Role="AllocatedRoom" Type="team16Model.AllocatedRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Request">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="AllocatedRoom">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AllocatedRoom_RoomName">
+    <End Role="Room" Type="team16Model.Room" Multiplicity="0..1" />
+    <End Role="AllocatedRoom" Type="team16Model.AllocatedRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomName" />
+      </Principal>
+      <Dependent Role="AllocatedRoom">
+        <PropertyRef Name="RoomName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Building_Park">
     <End Role="Park" Type="team16Model.Park" Multiplicity="0..1" />
     <End Role="Building" Type="team16Model.Building" Multiplicity="*" />
@@ -262,7 +392,7 @@
         <PropertyRef Name="ParkID" />
       </Principal>
       <Dependent Role="Building">
-        <PropertyRef Name="Park" />
+        <PropertyRef Name="ParkName" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -286,6 +416,30 @@
         <PropertyRef Name="DeptCode" />
       </Principal>
       <Dependent Role="Degree">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ModuleDegree_DegreeID">
+    <End Role="Degree" Type="team16Model.Degree" Multiplicity="1" />
+    <End Role="ModuleDegree" Type="team16Model.ModuleDegree" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Degree">
+        <PropertyRef Name="DegreeID" />
+      </Principal>
+      <Dependent Role="ModuleDegree">
+        <PropertyRef Name="DegreeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lecturer_DeptCode">
+    <End Role="Dept" Type="team16Model.Dept" Multiplicity="0..1" />
+    <End Role="Lecturer" Type="team16Model.Lecturer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dept">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="Lecturer">
         <PropertyRef Name="DeptCode" />
       </Dependent>
     </ReferentialConstraint>
@@ -350,6 +504,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_FacilityRequest_Request">
+    <End Role="Request" Type="team16Model.Request" Multiplicity="1" />
+    <End Role="FacilityRequest" Type="team16Model.FacilityRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Request">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="FacilityRequest">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ModuleLecturer_LecturerID">
+    <End Role="Lecturer" Type="team16Model.Lecturer" Multiplicity="1" />
+    <End Role="ModuleLecturer" Type="team16Model.ModuleLecturer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lecturer">
+        <PropertyRef Name="LecturerID" />
+      </Principal>
+      <Dependent Role="ModuleLecturer">
+        <PropertyRef Name="LecturerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ModuleDegree_ModCode">
     <End Role="Module" Type="team16Model.Module" Multiplicity="1" />
     <End Role="ModuleDegree" Type="team16Model.ModuleDegree" Multiplicity="*" />
@@ -358,6 +536,18 @@
         <PropertyRef Name="ModCode" />
       </Principal>
       <Dependent Role="ModuleDegree">
+        <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ModuleLecturer_ModCode">
+    <End Role="Module" Type="team16Model.Module" Multiplicity="1" />
+    <End Role="ModuleLecturer" Type="team16Model.ModuleLecturer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Module">
+        <PropertyRef Name="ModCode" />
+      </Principal>
+      <Dependent Role="ModuleLecturer">
         <PropertyRef Name="ModCode" />
       </Dependent>
     </ReferentialConstraint>
@@ -374,6 +564,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Request_UserID">
+    <End Role="User" Type="team16Model.User" Multiplicity="0..1" />
+    <End Role="Request" Type="team16Model.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Request">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Request_WeekID">
+    <End Role="Week" Type="team16Model.Week" Multiplicity="0..1" />
+    <End Role="Request" Type="team16Model.Request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Week">
+        <PropertyRef Name="WeekID" />
+      </Principal>
+      <Dependent Role="Request">
+        <PropertyRef Name="WeekID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_RequestToRoom_RequestID">
     <End Role="Request" Type="team16Model.Request" Multiplicity="1" />
     <End Role="RequestToRoom" Type="team16Model.RequestToRoom" Multiplicity="*" />
@@ -386,20 +600,40 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_RoomRequest_Room">
+  <Association Name="FK_RequestToRoom_RoomRequestID">
+    <End Role="RoomRequest" Type="team16Model.RoomRequest" Multiplicity="1" />
+    <End Role="RequestToRoom" Type="team16Model.RequestToRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomRequest">
+        <PropertyRef Name="RoomRequestID" />
+      </Principal>
+      <Dependent Role="RequestToRoom">
+        <PropertyRef Name="RoomRequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomFacility_Room">
+    <End Role="Room" Type="team16Model.Room" Multiplicity="1" />
+    <End Role="RoomFacility" Type="team16Model.RoomFacility" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomName" />
+      </Principal>
+      <Dependent Role="RoomFacility">
+        <PropertyRef Name="RoomName" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomRequest_RoomName">
     <End Role="Room" Type="team16Model.Room" Multiplicity="0..1" />
     <End Role="RoomRequest" Type="team16Model.RoomRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Room">
-        <PropertyRef Name="Room1" />
+        <PropertyRef Name="RoomName" />
       </Principal>
       <Dependent Role="RoomRequest">
-        <PropertyRef Name="Room" />
+        <PropertyRef Name="RoomName" />
       </Dependent>
     </ReferentialConstraint>
-  </Association>
-  <Association Name="ModuleLecturer">
-    <End Role="Lecturer" Type="team16Model.Lecturer" Multiplicity="*" />
-    <End Role="Module" Type="team16Model.Module" Multiplicity="*" />
   </Association>
 </Schema>

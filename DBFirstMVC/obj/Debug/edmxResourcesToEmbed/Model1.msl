@@ -1,12 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="team16ModelStoreContainer" CdmEntityContainer="team16Entities">
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="team16Model.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AllocatedRooms">
+      <EntityTypeMapping TypeName="team16Model.AllocatedRoom">
+        <MappingFragment StoreEntitySet="AllocatedRoom">
+          <ScalarProperty Name="AllocatedRoomID" ColumnName="AllocatedRoomID" />
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+          <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Buildings">
       <EntityTypeMapping TypeName="team16Model.Building">
         <MappingFragment StoreEntitySet="Building">
           <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
-          <ScalarProperty Name="Building1" ColumnName="Building" />
-          <ScalarProperty Name="Park" ColumnName="Park" />
+          <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+          <ScalarProperty Name="ParkName" ColumnName="ParkName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -32,13 +54,14 @@
       <EntityTypeMapping TypeName="team16Model.Facility">
         <MappingFragment StoreEntitySet="Facility">
           <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
-          <ScalarProperty Name="Facility1" ColumnName="Facility" />
+          <ScalarProperty Name="FacilityName" ColumnName="FacilityName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="FacilityRequests">
       <EntityTypeMapping TypeName="team16Model.FacilityRequest">
         <MappingFragment StoreEntitySet="FacilityRequest">
+          <ScalarProperty Name="FacilityRequestID" ColumnName="FacilityRequestID" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
           <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
         </MappingFragment>
@@ -51,6 +74,7 @@
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -70,8 +94,18 @@
     <EntitySetMapping Name="ModuleDegrees">
       <EntityTypeMapping TypeName="team16Model.ModuleDegree">
         <MappingFragment StoreEntitySet="ModuleDegree">
+          <ScalarProperty Name="ModuleDegreeID" ColumnName="ModuleDegreeID" />
           <ScalarProperty Name="DegreeID" ColumnName="DegreeID" />
           <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ModuleLecturers">
+      <EntityTypeMapping TypeName="team16Model.ModuleLecturer">
+        <MappingFragment StoreEntitySet="ModuleLecturer">
+          <ScalarProperty Name="ModuleLecturerID" ColumnName="ModuleLecturerID" />
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+          <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -79,7 +113,7 @@
       <EntityTypeMapping TypeName="team16Model.Park">
         <MappingFragment StoreEntitySet="Park">
           <ScalarProperty Name="ParkID" ColumnName="ParkID" />
-          <ScalarProperty Name="Park1" ColumnName="Park" />
+          <ScalarProperty Name="ParkName" ColumnName="ParkName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -97,7 +131,9 @@
           <ScalarProperty Name="AdhocRequest" ColumnName="AdhocRequest" />
           <ScalarProperty Name="SpecialRequirements" ColumnName="SpecialRequirements" />
           <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="WeekID" ColumnName="WeekID" />
           <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -105,6 +141,7 @@
     <EntitySetMapping Name="RequestToRooms">
       <EntityTypeMapping TypeName="team16Model.RequestToRoom">
         <MappingFragment StoreEntitySet="RequestToRoom">
+          <ScalarProperty Name="RequestToRoomID" ColumnName="RequestToRoomID" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
           <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
         </MappingFragment>
@@ -113,7 +150,7 @@
     <EntitySetMapping Name="Rooms">
       <EntityTypeMapping TypeName="team16Model.Room">
         <MappingFragment StoreEntitySet="Room">
-          <ScalarProperty Name="Room1" ColumnName="Room" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
           <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
           <ScalarProperty Name="Capacity" ColumnName="Capacity" />
           <ScalarProperty Name="Lab" ColumnName="Lab" />
@@ -125,7 +162,8 @@
     <EntitySetMapping Name="RoomFacilities">
       <EntityTypeMapping TypeName="team16Model.RoomFacility">
         <MappingFragment StoreEntitySet="RoomFacility">
-          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="RoomFacilityID" ColumnName="RoomFacilityID" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
           <ScalarProperty Name="FacilityID" ColumnName="FacilityID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -134,9 +172,21 @@
       <EntityTypeMapping TypeName="team16Model.RoomRequest">
         <MappingFragment StoreEntitySet="RoomRequest">
           <ScalarProperty Name="RoomRequestID" ColumnName="RoomRequestID" />
-          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
           <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
           <ScalarProperty Name="PriorityRoom" ColumnName="PriorityRoom" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoundAndSemesters">
+      <EntityTypeMapping TypeName="team16Model.RoundAndSemester">
+        <MappingFragment StoreEntitySet="RoundAndSemester">
+          <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="RoundID" ColumnName="RoundID" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -171,13 +221,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ModuleLecturer" TypeName="team16Model.ModuleLecturer" StoreEntitySet="ModuleLecturer">
-      <EndProperty Name="Lecturer">
-        <ScalarProperty Name="LecturerID" ColumnName="LecturerID" />
-      </EndProperty>
-      <EndProperty Name="Module">
-        <ScalarProperty Name="ModCode" ColumnName="ModCode" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

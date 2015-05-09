@@ -25,6 +25,8 @@ namespace DBFirstMVC
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
+        public DbSet<AllocatedRoom> AllocatedRooms { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Degree> Degrees { get; set; }
         public DbSet<Dept> Depts { get; set; }
@@ -40,10 +42,8 @@ namespace DBFirstMVC
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomFacility> RoomFacilities { get; set; }
         public DbSet<RoomRequest> RoomRequests { get; set; }
+        public DbSet<RoundAndSemester> RoundAndSemesters { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Week> Weeks { get; set; }
-        public DbSet<sysdiagram> sysdiagrams { get; set; }
-        public DbSet<AllocatedRoom> AllocatedRooms { get; set; }
-        public DbSet<RoundAndSemester> RoundAndSemesters { get; set; }
     }
 }

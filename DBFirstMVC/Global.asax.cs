@@ -23,13 +23,6 @@ namespace DBFirstMVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-            GlobalConfiguration.Configuration.Filters.Add(new System.Web.Http.AuthorizeAttribute());
-        }
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-            filters.Add(new HandleErrorAttribute());
-            filters.Add(new System.Web.Mvc.AuthorizeAttribute());
-            filters.Add(new RequireHttpsAttribute());
         }
     }
 }
