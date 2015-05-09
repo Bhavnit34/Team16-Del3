@@ -17,8 +17,8 @@ namespace DBFirstMVC
         public int AllocatedRoomID { get; set; }
         public Nullable<int> RequestID { get; set; }
         public string RoomName { get; set; }
-        public string Comments { get; set; }
         public Nullable<short> GroupSize { get; set; }
+        public string Comments { get; set; }
     
         public virtual Request Request { get; set; }
         public virtual Room Room { get; set; }

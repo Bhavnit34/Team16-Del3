@@ -16,9 +16,9 @@ namespace DBFirstMVC
     {
         public Room()
         {
+            this.AllocatedRooms = new HashSet<AllocatedRoom>();
             this.RoomFacilities = new HashSet<RoomFacility>();
             this.RoomRequests = new HashSet<RoomRequest>();
-            this.AllocatedRooms = new HashSet<AllocatedRoom>();
         }
     
         public string RoomName { get; set; }
@@ -28,10 +28,10 @@ namespace DBFirstMVC
         public string URL { get; set; }
         public string DeptCode { get; set; }
     
+        public virtual ICollection<AllocatedRoom> AllocatedRooms { get; set; }
         public virtual Building Building { get; set; }
         public virtual Dept Dept { get; set; }
         public virtual ICollection<RoomFacility> RoomFacilities { get; set; }
         public virtual ICollection<RoomRequest> RoomRequests { get; set; }
-        public virtual ICollection<AllocatedRoom> AllocatedRooms { get; set; }
     }
 }

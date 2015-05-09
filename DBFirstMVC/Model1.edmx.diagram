@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a84b53c412dc4a95a715cc5324859472" Name="Diagram1">
+        <EntityTypeShape EntityType="team16Model.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.AllocatedRoom" Width="1.5" PointX="10.25" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Building" Width="1.5" PointX="5.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Degree" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Dept" Width="1.5" PointX="0.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Facility" Width="1.5" PointX="8" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.FacilityRequest" Width="1.5" PointX="7.5" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Lecturer" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Module" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.ModuleDegree" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.ModuleLecturer" Width="1.5" PointX="5.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Park" Width="1.5" PointX="3.5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Request" Width="1.5" PointX="5.25" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.RequestToRoom" Width="1.5" PointX="12.5" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Room" Width="1.5" PointX="8" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.RoomFacility" Width="1.5" PointX="10.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.RoomRequest" Width="1.5" PointX="10.25" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.RoundAndSemester" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.User" Width="1.5" PointX="3" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="team16Model.Week" Width="1.5" PointX="3" PointY="23.875" IsExpanded="true" />
+        <AssociationConnector Association="team16Model.FK_AllocatedRoom_RequestID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_AllocatedRoom_RoomName" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Building_Park" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Room_BuildingCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Degree_Dept" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_ModuleDegree_DegreeID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Lecturer_DeptCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Module_DeptCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Room_DeptCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_User_Username" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_FacilityRequest_FacilityID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_RoomFacility_FacilityID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_FacilityRequest_Request" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_ModuleLecturer_LecturerID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_ModuleDegree_ModCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_ModuleLecturer_ModCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Request_ModCode" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Request_UserID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_Request_WeekID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_RequestToRoom_RequestID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_RequestToRoom_RoomRequestID" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_RoomFacility_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="team16Model.FK_RoomRequest_RoomName" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
