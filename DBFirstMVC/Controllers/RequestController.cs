@@ -1284,10 +1284,12 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(int id = 0)
         {
             Request request = db.Requests.Find(id);
+            /*
             if(Convert.ToInt64(request.Status)> 0){
                 TempData["Message"] = "You cannot edit this request, it already has been processed";
                 return RedirectToAction("GetRequest", new { id = request.RequestID });
             }
+            */
                 
             RequestState state = new RequestState(); //This will be the model for the session
             if (request == null)
@@ -1624,6 +1626,16 @@ namespace DBFirstMVC.Controllers
             User user = (User)Session["User"];
             request.UserID = user.UserID;
 
+            //get current round and semester
+            RoundAndSemester RandS = (from d in db.RoundAndSemesters
+                                      where d.CurrentRound == true
+                                      select d).FirstOrDefault();
+
+            request.RoundID = RandS.RoundID;
+            request.Semester = RandS.Semester;
+
+
+
             //This needs to be calculated when we do ad hoc requests
             request.AdhocRequest = 0;
 
@@ -1783,6 +1795,7 @@ namespace DBFirstMVC.Controllers
                 
             } //end validFacilities
 
+
             //Edit room requests
             int newRoomRequestID = 0;
             if (validRooms)
@@ -1853,6 +1866,21 @@ namespace DBFirstMVC.Controllers
                     db.SaveChanges();
                 }
             }
+
+            //Release rooms from allocated rooms table if they are there
+            var AR = from d in db.AllocatedRooms
+                     where d.RequestID == request.RequestID
+                     select d;
+
+            if (AR != null)
+            {
+                foreach (AllocatedRoom ar in AR)
+                {
+                    db.AllocatedRooms.Remove(ar);
+                    
+                }
+            }
+            db.SaveChanges();
             TempData["Message"] = "Request " + newRequestID + " has been successfully edited.";
             Session.Remove("State"); //remove current saved request
             return RedirectToAction("GetRequest", new { id = request.RequestID }); //redirect to the updated request info page
