@@ -1,31 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="team16Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="team16Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="team16ModelStoreContainer">
-          <EntitySet Name="sysdiagrams" EntityType="team16Model.Store.sysdiagrams" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="AllocatedRoom" EntityType="team16Model.Store.AllocatedRoom" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Building" EntityType="team16Model.Store.Building" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Degree" EntityType="team16Model.Store.Degree" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Dept" EntityType="team16Model.Store.Dept" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Facility" EntityType="team16Model.Store.Facility" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="FacilityRequest" EntityType="team16Model.Store.FacilityRequest" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Lecturer" EntityType="team16Model.Store.Lecturer" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Module" EntityType="team16Model.Store.Module" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="ModuleDegree" EntityType="team16Model.Store.ModuleDegree" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="ModuleLecturer" EntityType="team16Model.Store.ModuleLecturer" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Park" EntityType="team16Model.Store.Park" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Request" EntityType="team16Model.Store.Request" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="RequestToRoom" EntityType="team16Model.Store.RequestToRoom" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Room" EntityType="team16Model.Store.Room" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="RoomFacility" EntityType="team16Model.Store.RoomFacility" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="RoomRequest" EntityType="team16Model.Store.RoomRequest" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="RoundAndSemester" EntityType="team16Model.Store.RoundAndSemester" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="User" EntityType="team16Model.Store.User" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Week" EntityType="team16Model.Store.Week" store:Type="Tables" Schema="team16" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="sysdiagrams" EntityType="team16Model.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AllocatedRoom" EntityType="team16Model.Store.AllocatedRoom" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Building" EntityType="team16Model.Store.Building" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Degree" EntityType="team16Model.Store.Degree" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Dept" EntityType="team16Model.Store.Dept" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Facility" EntityType="team16Model.Store.Facility" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="FacilityRequest" EntityType="team16Model.Store.FacilityRequest" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Lecturer" EntityType="team16Model.Store.Lecturer" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Module" EntityType="team16Model.Store.Module" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="ModuleDegree" EntityType="team16Model.Store.ModuleDegree" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="ModuleLecturer" EntityType="team16Model.Store.ModuleLecturer" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Park" EntityType="team16Model.Store.Park" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Request" EntityType="team16Model.Store.Request" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="RequestToRoom" EntityType="team16Model.Store.RequestToRoom" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Room" EntityType="team16Model.Store.Room" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="RoomFacility" EntityType="team16Model.Store.RoomFacility" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="RoomRequest" EntityType="team16Model.Store.RoomRequest" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="RoundAndSemester" EntityType="team16Model.Store.RoundAndSemester" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="User" EntityType="team16Model.Store.User" store:Type="Tables" Schema="team16" />
+          <EntitySet Name="Week" EntityType="team16Model.Store.Week" store:Type="Tables" Schema="team16" />
           <AssociationSet Name="FK_AllocatedRoom_RequestID" Association="team16Model.Store.FK_AllocatedRoom_RequestID">
             <End Role="Request" EntitySet="Request" />
             <End Role="AllocatedRoom" EntitySet="AllocatedRoom" />
@@ -598,7 +598,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+      <Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="team16Entities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Buildings" EntityType="team16Model.Building" />
           <EntitySet Name="Degrees" EntityType="team16Model.Degree" />
@@ -855,7 +855,7 @@
           <Property Name="RoomRequestID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Request" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="RequestToRoom" ToRole="Request" />
           <NavigationProperty Name="RoomRequest" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RequestToRoom" ToRole="RoomRequest" />
-          <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -1172,7 +1172,7 @@
           </Key>
           <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="principal_id" Nullable="false" />
-          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="version" />
           <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
         </EntityType>
@@ -1192,7 +1192,7 @@
           <Key>
             <PropertyRef Name="AllocatedRoomID" />
           </Key>
-          <Property Type="Int32" Name="AllocatedRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="AllocatedRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="RequestID" />
           <Property Type="String" Name="RoomName" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -1239,7 +1239,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="team16ModelStoreContainer" CdmEntityContainer="team16Entities">
           <EntitySetMapping Name="Buildings">
             <EntityTypeMapping TypeName="team16Model.Building">
@@ -1466,7 +1466,7 @@
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
@@ -1481,6 +1481,6 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams />
+    <Diagrams></Diagrams>
   </Designer>
 </edmx:Edmx>
