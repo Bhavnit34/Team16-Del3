@@ -12,14 +12,6 @@ Layout = "~/Views/Shared/adminView.cshtml";
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 
-
-<table style="float:right;"> 
-    <tr><td class="approved"></td><td>APROVED</td></tr>
-     <tr><td class="rejected"></td><td>REJETCED</td></tr>
-       <tr><td class="pending"></td><td>PENDING</td></tr>
-     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
-    </table>
-
 <h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
 
 
@@ -34,7 +26,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
     
 }
 </ol>
-               <h2>Requsted Rooms</h2>
+               <h2>Rooms</h2>
 <ol id="roomList">
 @foreach(var item in Model.RequestToRooms){
 
@@ -94,12 +86,12 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
       <h3>Group Size: @ViewBag.GroupSize</h3><br>
   
-<div></div>
+
 
 <div id="AddNewRoom">
 
 
-  @if( !Model.AllocatedRooms.Any() ){
+  @if( !Model.RequestToRooms.Any() ){
       
       
       
@@ -121,23 +113,20 @@ Layout = "~/Views/Shared/adminView.cshtml";
       else {
       
       
-   
-    int x=0;
-      foreach(var item in Model.AllocatedRooms){
+      foreach(var item in Model.RequestToRooms){
 
    <label>Room:</label>
-       @Html.DisplayFor(modelItem => item.RoomName)<br> <!-- Display the room name -->       
-       @Html.EditorFor(modelItem => item.RoomName)<br>
+       @Html.DisplayFor(modelItem => item.RoomRequest.RoomName)<br> <!-- Display the room name -->       
+       @Html.EditorFor(modelItem => item.RoomRequest.RoomName)<br>
       <label>Capacity:</label>
-      @Html.DisplayFor(modelItem => item.GroupSize)<br> <!-- Display group size  -->       
-       @Html.EditorFor(modelItem => item.GroupSize)<br>
+      @Html.DisplayFor(modelItem => item.RoomRequest.GroupSize)<br> <!-- Display group size  -->       
+       @Html.EditorFor(modelItem => item.RoomRequest.GroupSize)<br>
       
-          x++;
+    
       }
-          int y = 3 - x;
-            for (var i=0; i<y; i++){
-             <label>Room:</label><input type ="text"><label>Capacity:</label> <input type ="text"><br>
-            }
+
+
+
       }
      
     </div>
@@ -147,34 +136,6 @@ Layout = "~/Views/Shared/adminView.cshtml";
        
          </div>
 <table>
-         @{ var statusClass = "";
-
-        if (Model.Request.Status == 1.ToString())
-        {
-            statusClass = "approved";
-
-        }
-
-        else if (Model.Request.Status == 2.ToString())
-        {
-            statusClass = "rejected";
-
-
-
-        }
-        else if (Model.Request.Status == 3.ToString())
-        {
-            statusClass = "modified";
-
-
-
-        }
-
-        else
-        {
-            statusClass = "pending";
-
-        }}
     <tr>
         <td>
             <h2>Information </h2>
@@ -253,28 +214,14 @@ Layout = "~/Views/Shared/adminView.cshtml";
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
         </td>
-        <td class ="@statusClass">
+        <td>
             @Html.DisplayFor(modelItem => modelItem.Request.Status)
         </td>
     </tr>
     
 
 </table>
-<style type="text/css">
 
-    .approved {
-        background-color:green;
-    }
-    .rejected {
-        background-color:#C80000;
-    }
-    .pending {
-        background-color:grey;
-    }
-      .modified {
-        background-color:lightyellow;
-    }
-    </style>
 
 
 @section Scripts {
@@ -282,33 +229,33 @@ Layout = "~/Views/Shared/adminView.cshtml";
 }
 @section MyScripts{
     <script type="text/javascript">
-
+      
         $(document).ready(function () {
-
+          
             //loop through the weeks passed in and check if any have been selected, change the class of the circle if so
             for (var i = 0; i < 15; i++) {
-
+             
                 if ($('#hiddenWeeks').children().eq(i).val() == "1") {
-
+                    
                     $('#popupWeeks').children().eq(i).addClass("ui-selected");
                 }
 
             }
 
-        });
-        function showRoomInfo(room) {
-            $.post('@Url.Action("ShowRoomInfo", "Request")',
+       });
+            function showRoomInfo(room) {
+                $.post('@Url.Action("ShowRoomInfo", "Request")',
                 {
                     room: room
                 },
                 function (data, status) {
                 });
 
-                var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
-                window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");
+             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
+             window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");
 
 
-            }
+         }
 
             $('#Allocate').click(function () {
 
@@ -351,7 +298,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
                 if (flag == 0) {
                     if (size == '@ViewBag.GroupSize') {
-                        // alert(checkArray);
+                       // alert(checkArray);
                         var strArr = checkArray.join("?");
                         $.post('@Url.Action("CheckRooms", "Admin")', { id: strArr }, function (data) {
 
@@ -404,8 +351,8 @@ Layout = "~/Views/Shared/adminView.cshtml";
                     alert("Please check your input")
                 }
             });
-            //  });
-
+      //  });
+        
     </script>
 
 }

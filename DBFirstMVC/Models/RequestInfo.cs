@@ -12,7 +12,6 @@ namespace DBFirstMVC.Models
         public IEnumerable<FacilityRequest> FacilityRequests{get;set;} //IEnumerable as there may be multple facility requests
         public IEnumerable<RequestToRoom> RequestToRooms { get; set; }
         public Room room { get; set; }
-        public IEnumerable<AllocatedRoom> AllocatedRooms { get; set; }
         public IEnumerable<Park> Parks { get; set; }
         public Week Week { get; set; }
 
