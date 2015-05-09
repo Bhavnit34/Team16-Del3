@@ -26,15 +26,10 @@ namespace DBFirstMVC
         public string ModCode { get; set; }
         [Required]
         public string Title { get; set; }
-        [Required]
         public string Part { get; set; }
-        [Required]
         public Nullable<short> Students { get; set; }
-         [Required]
         public Nullable<byte> Hours { get; set; }
-         [Required]
         public Nullable<byte> Weight { get; set; }
-         [Required]
         public string DeptCode { get; set; }
         public string FullModule { get { return ModCode + " - " + Title; } }
     

@@ -11,7 +11,6 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     
     public partial class Room
     {
@@ -21,18 +20,14 @@ namespace DBFirstMVC
             this.RoomRequests = new HashSet<RoomRequest>();
             this.AllocatedRooms = new HashSet<AllocatedRoom>();
         }
-        [Required]
+    
         public string RoomName { get; set; }
-        [Required]
         public string BuildingCode { get; set; }
-        [Required]
         public Nullable<short> Capacity { get; set; }
-        [Required]
         public Nullable<byte> Lab { get; set; }
-      
         public string URL { get; set; }
         public string DeptCode { get; set; }
-        [Required]
+    
         public virtual Building Building { get; set; }
         public virtual Dept Dept { get; set; }
         public virtual ICollection<RoomFacility> RoomFacilities { get; set; }
