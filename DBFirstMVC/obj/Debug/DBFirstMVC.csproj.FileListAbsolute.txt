@@ -883,9 +883,9 @@ F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\ko\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\ru\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hans\System.Spatial.resources.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spatial.resources.dll
-F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
+F:\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\DBFirstMVC.dll
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\DBFirstMVC.pdb
 C:\Users\colt\Desktop\GitHub\Team16-Del3\DBFirstMVC\bin\Antlr3.Runtime.dll
@@ -1141,13 +1141,3 @@ C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spatial.resource
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
-D:\Team16-Del3\DBFirstMVC\bin\System.Net.Http.Formatting.dll
-D:\Team16-Del3\DBFirstMVC\bin\System.Web.Http.dll
-D:\Team16-Del3\DBFirstMVC\bin\System.Web.Http.WebHost.dll
-D:\Team16-Del3\DBFirstMVC\bin\System.Net.Http.Formatting.xml
-D:\Team16-Del3\DBFirstMVC\bin\System.Web.Http.xml
-D:\Team16-Del3\DBFirstMVC\bin\System.Web.Http.WebHost.xml
-D:\Team16-Del3\DBFirstMVC\bin\PagedList.dll
-D:\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.dll
-D:\Team16-Del3\DBFirstMVC\bin\PagedList.xml
-D:\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.xml

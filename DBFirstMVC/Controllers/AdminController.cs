@@ -6,8 +6,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PagedList;
-using PagedList.Mvc;
 
 namespace DBFirstMVC.Controllers
 {
@@ -15,29 +13,11 @@ namespace DBFirstMVC.Controllers
     {
         private team16Entities db = new team16Entities();
 
-        //
-        // GET: /Admin/
-        //show all the requests
-      //  public ActionResult Index1()
-       // {
 
-            //get current round and semester
-            //RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            // ViewBag.CurrentRound = RandS.CurrentRoundID;
-
-            // ViewBag.CurrentSemester = RandS.CurrentSemester;
-            //var requests = db.Requests.Include(r => r.Module);
-            //var list = requests.OrderBy(z => z.Status).ToList();
-            //return View(requests);
-       // }
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page)
+        public ActionResult Index(string sortOrder)
         {
             if (sortOrder == null) //order by status as default
                 sortOrder = "status";
-
-            int pageIndex = 1;
-            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
@@ -51,48 +31,12 @@ namespace DBFirstMVC.Controllers
             ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
             ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
             ViewBag.AdhocSortParm = sortOrder == "adhoc" ? "adhoc_desc" : "adhoc";
-            ViewBag.PeriodSortParm = sortOrder == "period" ? "period_desc" : "period";
-
-            //alternates year parameter for switch statement
-            ViewBag.YearFilter = String.IsNullOrEmpty(yearSelect) ? "past" : "";
 
             var requests = from r in db.Requests
-                           where r.UserID == userSession.UserID
-                           select r; ;
+                           //where r.UserID == userSession.UserID
+                           select r;
 
-            //if central admin
-            if (userSession.UserID == 0)
-            {
-                requests = (from r in db.Requests
-                            select r); ;
-            }
-
-            //add the search string to the query
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                requests = requests.Where(s => s.Module.Title.Contains(searchString)
-                                       || s.Module.ModCode.Contains(searchString));
-            }
-
-            //finds the current academic year
-            DateTime current = DateTime.Now;
-            string year = current.Year + "/" + (current.Year - 1999);
-
-            if (current.Month >= 1 && current.Month <= 6)
-            {
-                year = (current.Year - 1) + "/" + (current.Year - 2000);
-            }
-
-            //alternates year between current academic year and all past years
-            switch (yearSelect)
-            {
-                case "past":
-                    requests = requests.Where(r => r.Year != year);
-                    break;
-                default:
-                    requests = requests.Where(r => r.Year == year);
-                    break;
-            }
+            //requests = db.Requests.Include(r => r.Module);
 
             //handles which sort method to use
             switch (sortOrder)
@@ -154,37 +98,69 @@ namespace DBFirstMVC.Controllers
                 case "priority_desc":
                     requests = requests.OrderByDescending(r => r.PriorityRequest);
                     break;
-                case "period":
-                    requests = requests.OrderBy(r => r.PeriodID);
-                    break;
-                case "period_desc":
-                    requests = requests.OrderByDescending(r => r.PeriodID);
-                    break;
                 default:
                     requests = requests.OrderBy(r => r.Module.Title);
                     break;
             }
 
-            //creates the page for the view
-            var requestPage = requests.ToPagedList(pageIndex, 10);
-            ViewBag.Page = requestPage;
 
-            return View();
+            // var list = requests.OrderBy(z => z.Status).ToList();
+            return View(requests.ToList());
         }
 
-      
-        //show the list of all rooms oreder in alpabetical order Building Name 
-        public ActionResult EditPool()
+
+        //show the list of all rooms . filtered
+        public ActionResult EditPool(string sortOrder)
         {
-            //get current round and semester
-            // RoundAndSemester RandS = db.RoundAndSemesters.Find(1);
-            //  ViewBag.CurrentRound = RandS.CurrentRoundID;
-            //ViewBag.CurrentSemester = RandS.CurrentSemester;
 
+            ViewBag.RoomSortParm = sortOrder == "room" ? "room_desc" : "room";
+            ViewBag.BuildingSortParm = sortOrder == "building" ? "building_desc" : "building";
+            ViewBag.CapacitySortParm = sortOrder == "capacity" ? "capacity_desc" : "capacity";
+            ViewBag.LabSortParm = sortOrder == "lab" ? "lab_desc" : "lab";
+            ViewBag.DeptSortParm = sortOrder == "dept" ? "dept_desc" : "dept";
+            ViewBag.ParkSortParm = sortOrder == "park" ? "park_desc" : "park";
             var rooms = db.Rooms.Include(r => r.Building);
-            var list = rooms.OrderBy(z => z.Building.BuildingName).ToList();
 
-            return View(list);
+            switch (sortOrder)
+            {
+                case "room_desc":
+                    rooms = rooms.OrderByDescending(r => r.RoomName);
+                    break;
+                case "room":
+                    rooms = rooms.OrderBy(r => r.RoomName);
+                    break;
+                case "building_desc":
+                    rooms = rooms.OrderByDescending(r => r.Building.BuildingName);
+                    break;
+                case "building":
+                    rooms = rooms.OrderBy(r => r.Building.BuildingName);
+                    break;
+                case "capacity_desc":
+                    rooms = rooms.OrderByDescending(r => r.Capacity);
+                    break;
+                case "capacity":
+                    rooms = rooms.OrderBy(r => r.Capacity);
+                    break;
+                case "lab_desc":
+                    rooms = rooms.OrderByDescending(r => r.Lab);
+                    break;
+                case "lab":
+                    rooms = rooms.OrderBy(r => r.Lab);
+                    break;
+                case "dept_desc":
+                    rooms = rooms.OrderByDescending(r => r.DeptCode);
+                    break;
+                case "dept":
+                    rooms = rooms.OrderBy(r => r.DeptCode);
+                    break;
+                case "park_desc":
+                    rooms = rooms.OrderByDescending(r => r.Building.ParkName);
+                    break;
+                case "park":
+                    rooms = rooms.OrderBy(r => r.Building.ParkName);
+                    break;
+            }
+            return View(rooms.ToList());
         }
 
         //show the list of all facilities
@@ -287,62 +263,328 @@ namespace DBFirstMVC.Controllers
             //array with assigned rooms 
             string[] Splittedwords = id2.Split(new string[] { "?" }, System.StringSplitOptions.None);
             // find RoomRequestID 
-            var t = (from d in db.RequestToRooms
+            var t = (from d in db.AllocatedRooms
                      where (d.RequestID == id1)
-                     select d.RoomRequestID).ToList();
+                     select d.AllocatedRoomID).ToList();
+
+            var numberOfRooms = 0;//how many rooms are already allocated
+            foreach (var item in t)
+            {
+                numberOfRooms++;
+            }
+
+            Request isModified = db.Requests.Find(id1);
 
 
-            // If RoomRequestID  does not exists => new allocation
+
+
+
+            // If AllocatedRoomID  does not exists => new allocation
             if (!t.Any())
             {
-                RequestToRoom requestToRoom = new RequestToRoom();
-                int newRoomRequestID = 0;
+
+                // int newRoomRequestID = 0;
                 for (var y = 0; y < Splittedwords.Length; y++)
                 {
 
 
                     //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
-                    RoomRequest roomRequest = new RoomRequest();
+                    AllocatedRoom roomRequest = new AllocatedRoom();
                     string room = Splittedwords[y];
-                    roomRequest.RoomRequestID = 0;
+                    roomRequest.AllocatedRoomID = 0;
+                    roomRequest.RequestID = id1;
                     roomRequest.GroupSize = Int16.Parse(Splittedwords[y + 1]);
-                    roomRequest.PriorityRoom = 0;
+                    roomRequest.Comments = "";
                     roomRequest.RoomName = room;
 
-                    db.RoomRequests.Add(roomRequest);
+                    db.AllocatedRooms.Add(roomRequest);
                     db.SaveChanges();
                     y++;
 
-                    newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
-                    requestToRoom.RequestID = id1;
-                    requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
 
-                    db.RequestToRooms.Add(requestToRoom); //add the roomFacility to the table
-                    db.SaveChanges();
+                    //find clashes.is room free? if not then change the status of the request (with that room) to pending
+                    //systems assumes there can be only one clash at particular time make sure there are no more than one clashes..
+                    var findClashes = (from clash in db.Requests
+                                       join aloc in db.AllocatedRooms on clash.RequestID equals aloc.RequestID
+                                       where clash.DayID == isModified.DayID && clash.PeriodID == isModified.PeriodID && clash.WeekID == isModified.WeekID &&
+                                           aloc.RoomName == room && (clash.Status == "3" || clash.Status == "1")
+
+                                       select clash.RequestID).FirstOrDefault();
+
+
+
+                    if (findClashes != 0)
+                    {
+
+
+                        var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
+                        obj.Status = "0";
+                        db.SaveChanges();
+                        //break;
+
+
+
+                    }
+
 
 
 
                 }
             }
 
-            else
+            else if (numberOfRooms == (Splittedwords.Length) / 2)// if number of allocated rooms is equal to these that are going to be allocated
             {//change/update room alocations 
                 int i = 0;
                 foreach (var item in t)
                 {
+                    var temp = Splittedwords[i];
 
-                    var roomRequest = new RoomRequest() { RoomRequestID = item, RoomName = Splittedwords[i], GroupSize = Int16.Parse(Splittedwords[i + 1]) };
-                    db.RoomRequests.Attach(roomRequest);
+                    var findClashes = (from clash in db.Requests
+                                       join aloc in db.AllocatedRooms on clash.RequestID equals aloc.RequestID
+                                       where clash.DayID == isModified.DayID && clash.PeriodID == isModified.PeriodID && clash.WeekID == isModified.WeekID &&
+                                           aloc.RoomName == temp && (clash.Status == "3" || clash.Status == "1")
+
+                                       select clash.RequestID).FirstOrDefault();
+
+
+
+
+                    if (findClashes != 0)
+                    {
+
+
+                        var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
+                        obj.Status = "0";
+                        db.SaveChanges();
+                        // break;
+
+
+
+                    }
+
+                    var roomRequest = new AllocatedRoom() { AllocatedRoomID = item, RoomName = Splittedwords[i], GroupSize = Int16.Parse(Splittedwords[i + 1]) };
+                    db.AllocatedRooms.Attach(roomRequest);
                     db.Entry(roomRequest).Property(x => x.RoomName).IsModified = true;
+                    db.Entry(roomRequest).Property(x => x.GroupSize).IsModified = true;
                     db.SaveChanges();
 
+
+
                     i = i + 2;
+
+                }
+                //change request status to modified
+
+
+            }
+            else
+            {
+                if ((numberOfRooms > (Splittedwords.Length) / 2))
+                { //the number allocated rooms > than these that are going to be allocated
+
+
+
+                    int check = 0;
+                    int i = 0;
+                    int deleteRequest = 0;
+                    foreach (var item in t)
+                    {
+                        var temp = Splittedwords[i];
+
+                        var findClashes = (from clash in db.Requests
+                                           join aloc in db.AllocatedRooms on clash.RequestID equals aloc.RequestID
+                                           where clash.DayID == isModified.DayID && clash.PeriodID == isModified.PeriodID && clash.WeekID == isModified.WeekID &&
+                                               aloc.RoomName == temp && (clash.Status == "3" || clash.Status == "1")
+
+                                           select clash.RequestID).FirstOrDefault();
+
+
+
+
+                        if (findClashes != 0)
+                        {
+
+
+                            var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
+                            obj.Status = "0";
+                            db.SaveChanges();
+                            // break;
+
+
+
+                        }
+
+
+                        //update changes 
+                        var roomRequest = new AllocatedRoom() { AllocatedRoomID = item, RoomName = Splittedwords[i], GroupSize = Int16.Parse(Splittedwords[i + 1]) };
+                        db.AllocatedRooms.Attach(roomRequest);
+                        db.Entry(roomRequest).Property(x => x.RoomName).IsModified = true;
+                        db.Entry(roomRequest).Property(x => x.GroupSize).IsModified = true;
+                        db.SaveChanges();
+
+                        i = i + 2;
+                        check++;
+                        if (check == (Splittedwords.Length) / 2)
+                            deleteRequest = item;//assign AllocatedRoomID to deleteRequest this is the last updated Room we need to delete the  AllocatedRoomID
+                        break;
+
+
+
+                    }
+
+
+
+                    //remove outstanding requests from AllocateRoom table with same RequestID
+                    var query = db.AllocatedRooms.Where(a => a.RequestID == id1 && a.AllocatedRoomID > deleteRequest).ToList();
+
+                    for (var s = 0; s < query.Count; s++)
+                    {
+                        //find id of the row with the given requestID
+                        var myId = query[s].AllocatedRoomID;
+                        AllocatedRoom myRoom = db.AllocatedRooms.Find(myId);
+                        //delete the row
+                        db.AllocatedRooms.Remove(myRoom);
+                        db.SaveChanges();
+                    }
+
+
 
 
                 }
 
+                else
+                { //if number of rooms that are being allocated is bigger than the number of allocated rooms in AllocatedRooms table
+
+                    int i = 0;//update the rooms in the table if needed
+                    int indexToRemove = 0;
+                    foreach (var item in t)
+                    {
+
+                        var temp = Splittedwords[i];
+
+                        var findClashes = (from clash in db.Requests
+                                           join aloc in db.AllocatedRooms on clash.RequestID equals aloc.RequestID
+                                           where clash.DayID == isModified.DayID && clash.PeriodID == isModified.PeriodID && clash.WeekID == isModified.WeekID &&
+                                               aloc.RoomName == temp && (clash.Status == "3" || clash.Status == "1")
+
+                                           select clash.RequestID).FirstOrDefault();
+
+
+
+
+                        if (findClashes != 0)
+                        {
+
+
+                            var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
+                            obj.Status = "0";
+                            db.SaveChanges();
+                            // break;
+
+
+
+                        }
+
+                        var roomRequest = new AllocatedRoom() { AllocatedRoomID = item, RoomName = Splittedwords[i], GroupSize = Int16.Parse(Splittedwords[i + 1]) };
+                        db.AllocatedRooms.Attach(roomRequest);
+                        db.Entry(roomRequest).Property(x => x.RoomName).IsModified = true;
+                        db.Entry(roomRequest).Property(x => x.GroupSize).IsModified = true;
+                        db.SaveChanges();
+
+                        i = i + 2;
+
+                        Splittedwords = Splittedwords.Where((source, index) => index != indexToRemove).ToArray();//take out the room from array that has been already updated
+                        //indexToRemove++;
+                        Splittedwords = Splittedwords.Where((source, index) => index != indexToRemove).ToArray();//take out the groupSize from array that has been already updated
+                        // indexToRemove = 0;
+                    }
+
+                    for (var y = 0; y < Splittedwords.Length; y++)//add new rooms AllocatedRoom table
+                    {
+
+
+                        AllocatedRoom roomRequest = new AllocatedRoom();
+                        string room = Splittedwords[y];
+                        roomRequest.AllocatedRoomID = 0;
+                        roomRequest.RequestID = id1;
+                        roomRequest.GroupSize = Int16.Parse(Splittedwords[y + 1]);
+                        roomRequest.Comments = "";
+                        roomRequest.RoomName = room;
+
+                        db.AllocatedRooms.Add(roomRequest);
+                        db.SaveChanges();
+                        y++;
+
+                    }
+                }
+
+
 
             }
+            int RoomsAreSame = 0; //chceck if rooms allocated are the same as requested
+            var roomPreference = (from a in db.RequestToRooms where a.RequestID == id1 select a.RoomRequestID).ToList();
+            if (!roomPreference.Any())
+            {//igf there are no rooms requested request status is accepted
+
+                Request req = db.Requests.First(p => p.RequestID == id1);
+                req.Status = "1";
+                db.SaveChanges();
+
+
+            }
+
+
+
+
+
+            else
+            {//checking for room matches if they are not the same as requested 
+                for (var z = 0; z < Splittedwords.Length; z++)
+                {
+
+
+                    var temp1 = Splittedwords[z];
+
+                    var compareRooms = (from a in db.RequestToRooms.Include("RoomRequests") where a.RequestID == id1 && a.RoomRequest.RoomName == temp1 select a.RoomRequestID).ToList();
+                    z++;
+                    if (!compareRooms.Any())
+                    {//if there are not room matches change status to 3 **what if same roms are added but in different order
+
+
+
+                        Request req = db.Requests.First(p => p.RequestID == id1);
+                        req.Status = "3";
+                        db.SaveChanges();
+                    }
+                    else { RoomsAreSame++; }//check how many rooms are the same 
+                }
+            }
+
+
+
+
+            //check if status oF request is 3-modified but accepted 
+            //if the status is not modified or rooms the same as requested tehn status  is accpeted
+            // Request isModified = db.Requests.Find(id1);
+            if (isModified.Status != "3" || RoomsAreSame == (Splittedwords.Length) / 2)
+            {
+
+
+                Request req = db.Requests.First(p => p.RequestID == id1);
+                req.Status = "1";
+                db.SaveChanges();
+
+
+
+
+            }
+
+
+
+
+            //}
+
+            //}
 
             return Json(Url.Action("GetRequest", "Admin", new { id = "__id__" }));
 
@@ -461,15 +703,15 @@ namespace DBFirstMVC.Controllers
             var facRequest = db.FacilityRequests.Where(a => a.FacilityID == id).ToList();
 
             //foreach (var vp in fcltDelete)
-          //  {
-              //  db.RoomFacilities.Remove(vp);
-              //  db.SaveChanges();
+            //  {
+            //  db.RoomFacilities.Remove(vp);
+            //  db.SaveChanges();
             //}
             for (var i = 0; i < fcltDelete.Count; i++)
             {
                 //find id of the row with the given requestID
                 var fID = fcltDelete[i].RoomFacilityID;
-               RoomFacility fac = db.RoomFacilities.Find(fID);
+                RoomFacility fac = db.RoomFacilities.Find(fID);
                 //delete the row
                 db.RoomFacilities.Remove(fac);
                 db.SaveChanges();
@@ -484,14 +726,14 @@ namespace DBFirstMVC.Controllers
                 db.SaveChanges();
             }
 
-           
-           
-            
+
+
+
             Facility facility = db.Facilities.Find(id);
             db.Facilities.Remove(facility);
             db.SaveChanges();
 
-      
+
 
             return RedirectToAction("ShowFacility");
         }
@@ -547,12 +789,24 @@ namespace DBFirstMVC.Controllers
         //get request deatails 
         public ActionResult GetRequest(int id = 0)
         {
-            Request r = db.Requests.Find(id); //input id from chosen request
-            if (r == null)
-                return RedirectToAction("Index"); //back to home page if request doesnt exist
 
+            Request r = db.Requests.Find(id); //input id from chosen request
+
+            if (r == null)
+                return RedirectToAction("Index"); //back to home page if request does not exist
+
+
+
+
+            //if (r.Status == "0" || r.Status == "2")//If request is pending or rejected (therefore not allocated get info form tables bellow)
+            // {
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var alo = (db.AllocatedRooms.Where(a => a.RequestID == r.RequestID));
+            //   var alo = (from q in db.AllocatedRooms
+            //  where q.AllocatedRoomID == r.RequestID
+            //  select  q.RoomName).ToList();
+
             var wk = (from d in db.Weeks
                       where d.WeekID == r.WeekID
                       select d).FirstOrDefault();//added
@@ -560,12 +814,25 @@ namespace DBFirstMVC.Controllers
             {
                 var facReq = v.Include(b => b.Facility); //add foreign key for facilityID
                 var roomReq = res.Include(c => c.RoomRequest);
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq,Week = wk }); //return view with the data filled model
+                // var alo1 = alo.Include(c => c.Room);
+                var t = (from d in db.Requests.Include("Modules")
+                         where (d.RequestID == id)
+                         select d.Module.Students).FirstOrDefault(); ;
+
+                ViewBag.GroupSize = t;
+
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq, Week = wk, AllocatedRooms = alo }); //return view with the data filled model
+
+
             }
+
+
+
+
             return View();
         }
-        
-       
+
+
 
         //change request status 
 
@@ -573,11 +840,18 @@ namespace DBFirstMVC.Controllers
         {
 
             Request r = db.Requests.Find(id); //input id from chosen request
+
             if (r == null)
                 return RedirectToAction("Index"); //back to home page if request does not exist
 
+
+
+
+            //if (r.Status == "0" || r.Status == "2")//If request is pending or rejected (therefore not allocated get info form tables bellow)
+            // {
             var v = (db.FacilityRequests.Where(a => a.RequestID.Equals(r.RequestID)));
             var res = (db.RequestToRooms.Where(a => a.RequestID.Equals(r.RequestID)));
+            var alo = (db.AllocatedRooms.Where(a => a.RequestID == r.RequestID));
             var wk = (from d in db.Weeks
                       where d.WeekID == r.WeekID
                       select d).FirstOrDefault();//added
@@ -592,13 +866,21 @@ namespace DBFirstMVC.Controllers
 
                 ViewBag.GroupSize = t;
 
-                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq, Week = wk }); //return view with the data filled model
+                return View(new RequestInfo() { Request = r, FacilityRequests = facReq, RequestToRooms = roomReq, Week = wk, AllocatedRooms = alo }); //return view with the data filled model
 
 
             }
 
+            //   }
+            // else { //if status accepted or accepted but modified 
 
 
+
+
+
+
+
+            //  }
 
 
             return View();
@@ -623,53 +905,16 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(Request request)
         {
 
-            //if accepted request
-
-            if (request.Status == "1")
-            {//get the rooms associated with the request
-                var temp = request.RequestID;
-                var t = (from d in db.RequestToRooms.Include("RoomRequests")
-                         where (d.RequestID == temp)
-                         select d.RoomRequest.RoomName).ToList();
-
-
-
-                foreach (var item in t)
-                {
-
-                    var q = (from r in db.Requests
-                             join rtr in db.RequestToRooms on r.RequestID equals rtr.RequestID
-                             join roomR in db.RoomRequests on rtr.RoomRequestID equals roomR.RoomRequestID
-                             where (r.DayID == request.DayID && r.PeriodID == request.PeriodID
-                             && r.WeekID == request.WeekID && r.Status == "1" && roomR.RoomName == item)
-                             select r.RequestID).FirstOrDefault();
-
-
-                    if (q != 0)
-                    {
-
-
-                        var obj = db.Requests.Where(c => c.RequestID == q).First();
-                        obj.Status = "0";
-                        db.SaveChanges();
-                        break;
-
-
-
-                    }
 
 
 
 
-                }
+            if (ModelState.IsValid)
+            {
+                db.Entry(request).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            
-                if (ModelState.IsValid)
-                {
-                    db.Entry(request).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
 
             return View(request);
         }
@@ -695,7 +940,7 @@ namespace DBFirstMVC.Controllers
                 return HttpNotFound();
                 // return RedirectToAction("Index");
             }
-            
+
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName", selected);
             ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", selected1);
             return View(room);
@@ -787,7 +1032,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult EditRound(int id = 0)
         {
-            RoundAndSemester RandS = db.RoundAndSemesters.Find(id); 
+            RoundAndSemester RandS = db.RoundAndSemesters.Find(id);
             return View(RandS);
         }
 
@@ -801,8 +1046,8 @@ namespace DBFirstMVC.Controllers
                 RandS.EndDate = Convert.ToDateTime(endDate);
                 db.Entry(RandS).State = EntityState.Modified;
                 db.SaveChanges();
-                
-                
+
+
                 //if this updated row is the new current round, then make all others false
                 if (RandS.CurrentRound == true)
                 {
@@ -847,8 +1092,8 @@ namespace DBFirstMVC.Controllers
         {
 
             var RoomRequest = (from d in db.RoomRequests
-                              where d.RoomName == id1
-                              select d).ToList();
+                               where d.RoomName == id1
+                               select d).ToList();
 
             for (var i = 0; i < RoomRequest.Count; i++)
             {
@@ -875,9 +1120,9 @@ namespace DBFirstMVC.Controllers
                 RoomFacility RoomRow = db.RoomFacilities.Where(a => a.RoomFacilityID.Equals(rID)).FirstOrDefault();
                 db.RoomFacilities.Remove(RoomRow);
                 db.SaveChanges();
-               
+
             }
-            
+
             Room room = db.Rooms.Find(id1);
             db.Rooms.Remove(room);
             db.SaveChanges();
