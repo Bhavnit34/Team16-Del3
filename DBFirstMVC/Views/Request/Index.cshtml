@@ -129,8 +129,8 @@
     {
         day = "Friday";
     }
-
-    switch (item.PeriodID)
+    int x = item.PeriodID;
+    switch (x)
     {
         case 1: time = "9:00";
             break;
@@ -210,11 +210,9 @@
             @status
         </td>
         <td class ="@statusClass">
-            @{
-                if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
-            }
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequestID })|
             @Html.ActionLink("Delete", "Delete", new { id = item.RequestID }) |
-            @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
+            @Html.ActionLink("View", "GetRequest", new { id = item.RequestID }) |
             @Html.ActionLink("Copy", "Copy", new { id = item.RequestID })
         </td>
     </tr>

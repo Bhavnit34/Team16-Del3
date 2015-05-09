@@ -71,7 +71,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         </th>
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in ViewBag.Page) {
         var statusClass = "";
         var status = "";
         var day = "";
@@ -132,8 +132,8 @@ Layout = "~/Views/Shared/adminView.cshtml";
     {
         day = "Friday";
     }
-
-    switch (item.PeriodID)
+        int x = item.PeriodID;
+    switch (x)
     {
         case 1: time = "9:00";
             break;
@@ -156,7 +156,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
     }
      <tr >
         <td class ="@statusClass">
-            @Html.DisplayFor(modelItem => item.User.Username)
+           @item.User.Username
         </td>
         <td>
             <b>@item.ModCode</b><br />

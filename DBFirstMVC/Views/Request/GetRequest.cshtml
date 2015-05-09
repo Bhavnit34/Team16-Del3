@@ -8,11 +8,8 @@
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
 @Html.ActionLink("Back", "Index") |
-@{ 
-    if(Convert.ToInt16(Model.Request.Status) == 0){
-       @Html.ActionLink("Edit", "Edit", new { id=Model.Request.RequestID })  <span>|</span>
-    }
-}
+@Html.ActionLink("Edit", "Edit", new { id=Model.Request.RequestID }) |
+@Html.ActionLink("Copy", "Copy", new { id = Model.Request.RequestID }) |
 @Html.ActionLink("Delete", "Delete", new { id=Model.Request.RequestID })
 
 
