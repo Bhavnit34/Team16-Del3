@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="team16Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
   <EntityContainer Name="team16Entities" p1:LazyLoadingEnabled="true">
     <EntitySet Name="Buildings" EntityType="team16Model.Building" />
     <EntitySet Name="Degrees" EntityType="team16Model.Degree" />
@@ -256,7 +256,7 @@
     <Property Name="RoomRequestID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Request" Relationship="team16Model.FK_RequestToRoom_RequestID" FromRole="RequestToRoom" ToRole="Request" />
     <NavigationProperty Name="RoomRequest" Relationship="team16Model.FK_RequestToRoom_RoomRequestID" FromRole="RequestToRoom" ToRole="RoomRequest" />
-    <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RequestToRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
   </EntityType>
   <EntityType Name="Room">
     <Key>
@@ -573,7 +573,7 @@
     </Key>
     <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Type="Int32" Name="principal_id" Nullable="false" />
-    <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
     <Property Type="Int32" Name="version" />
     <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
   </EntityType>
@@ -593,7 +593,7 @@
     <Key>
       <PropertyRef Name="AllocatedRoomID" />
     </Key>
-    <Property Type="Int32" Name="AllocatedRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="AllocatedRoomID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
     <Property Type="Int32" Name="RequestID" />
     <Property Type="String" Name="RoomName" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
