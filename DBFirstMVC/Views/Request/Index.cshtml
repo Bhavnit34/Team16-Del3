@@ -1,13 +1,23 @@
-﻿@model IEnumerable<DBFirstMVC.Request>
+﻿@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <h2>Requests</h2>
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
 <a id="scrollToBottom">Bottom of Page</a>
+@using (Html.BeginForm())
+            {
+                <p>
+                    Find by module name/code: @Html.TextBox("SearchString")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+@Html.ActionLink("Past/Present", "Index", new { yearSelect = ViewBag.YearFilter })
 
 <table style="float:right;"> 
     <tr><td class="approved"></td><td>APROVED</td></tr>
@@ -15,6 +25,10 @@
        <tr><td class="pending"></td><td>PENDING</td></tr>
      <tr><td class="modified"></td><td>APPROVED BUT MODIFIED</td></tr>
     </table>
+
+<div id='Paging' style="text-align:center">
+    @Html.PagedListPager( (IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }) )
+</div>
 
 <table>
     <tr>
@@ -28,13 +42,13 @@
             @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm })
         </th>
         <th>
+            @Html.ActionLink("Length", "Index", new { sortOrder = ViewBag.LengthSortParm })
+        </th>
+        <th>
             @Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })
         </th>
         <th>
             @Html.ActionLink("Period", "Index", new { sortOrder = ViewBag.PeriodSortParm })
-        </th>
-        <th>
-            @Html.ActionLink("Length", "Index", new { sortOrder = ViewBag.LengthSortParm })
         </th>
         <th>
             @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.PrioritySortParm })
@@ -53,7 +67,7 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in ViewBag.Page) {
     var statusClass = "";
     var status = "";
     var day = "";
@@ -70,16 +84,11 @@
     {
         statusClass = "rejected";
         status = "Rejected";
-
-
-
     }
     else if (item.Status == 3.ToString())
     {
         statusClass = "modified";
         status = "Approved But Successful";
-
-
 
     }
 
@@ -144,25 +153,27 @@
     }
     <tr>
         <td  class ="@statusClass">
-            @Html.DisplayFor(modelItem => item.User.Username)
+            @item.User.Username
         </td>
         <td>
-            <b>@Html.DisplayFor(modelItem => item.ModCode)</b><br />
-            @Html.DisplayFor(modelItem => item.Module.Title)
+            <b>@item.ModCode</b><br />
+            @item.Module.Title
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SessionType)
+            @item.SessionType
+        </td>
+        <td>
+            @item.SessionLength
         </td>
         <td>
             @day
            
         </td>
         <td>
-          
             @time
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SessionLength)
+            @item.PeriodID
         </td>
         <td>
              @{
@@ -173,12 +184,12 @@
                         @Html.CheckBox("Priority",false, new{@onclick = "return false;"})
                     }
         
-              }
-           <!-- @Html.DisplayFor(modelItem => item.PriorityRequest) -->
+              }          
         </td>
         <td>
             @{
-                if(item.AdhocRequest == 1){
+    if (item.AdhocRequest == 1)
+    {
                     @Html.CheckBox("AdHoc",true, new{@onclick = "return false;"})
                 }
                 else{
@@ -186,16 +197,16 @@
                 }
         
             }
+
            
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Semester)
+            @item.Semester
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.RoundID)
+            @item.RoundID
         </td>
         <td>
-           
             @status
         </td>
         <td class ="@statusClass">
@@ -204,11 +215,10 @@
             }
             @Html.ActionLink("Delete", "Delete", new { id = item.RequestID }) |
             @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
+            @Html.ActionLink("Copy", "Copy", new { id = item.RequestID })
         </td>
     </tr>
 }
-
-</table>
 <style type="text/css">
 
     .approved {
