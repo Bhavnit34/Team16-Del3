@@ -11,6 +11,7 @@ namespace DBFirstMVC
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Facility
     {
@@ -21,6 +22,7 @@ namespace DBFirstMVC
         }
     
         public int FacilityID { get; set; }
+        [Required]
         public string FacilityName { get; set; }
     
         public virtual ICollection<FacilityRequest> FacilityRequests { get; set; }
