@@ -23,7 +23,7 @@ namespace DBFirstMVC.Controllers
             {
                 ViewBag.CurrentRound = RandS.RoundID;
             }
-
+            ViewBag.RoundEnd = RandS.EndDate.ToString().Substring(0, 10);
             ViewBag.CurrentSemester = RandS.Semester;
             return View();
         }

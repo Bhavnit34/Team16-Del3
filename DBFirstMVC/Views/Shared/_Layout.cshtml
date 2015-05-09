@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Team 16 Timetabling System</title>
  
-        <img src ="../Images/logo.png" alt="~/Images/logo.png"/>
+        <img src ="/Images/logo.png"/>
 
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
@@ -31,7 +31,8 @@
 
                 <div>
                     <span style="float: right; text-decoration: none;">Current Round: @ViewBag.CurrentRound</span><br />
-                    <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span>
+                    <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span><br />
+                    <span style="float: right; text-decoration: none; font-weight:bold;">Round Ends: @ViewBag.RoundEnd</span>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -47,6 +48,9 @@
                             <li>@Html.ActionLink("Module","Module","Request")</li>
                              <li>@Html.ActionLink("Room","EditPool","Admin")</li>
                             @{
+                                if(ViewBag.Admin == true){
+                                    <li>@Html.ActionLink("Admin Mode","Index","Admin")</li>
+                                }
                                 if(ViewBag.LogOut == true){
                                     <li>@Html.ActionLink("Log out","Logout","Login")</li>
                                 }

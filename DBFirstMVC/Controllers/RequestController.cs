@@ -602,7 +602,7 @@ namespace DBFirstMVC.Controllers
                 }
 
 
-               
+               TempData["Message"] = "Request " + newRequestID + " has been successfully created.";
                Session.Remove("State"); //remove current saved request
                return RedirectToAction("Index"); //redirect to the list of requests
         }
@@ -1816,7 +1816,7 @@ namespace DBFirstMVC.Controllers
                     db.SaveChanges();
                 }
             }
-
+            TempData["Message"] = "Request " + newRequestID + " has been successfully edited.";
             Session.Remove("State"); //remove current saved request
             return RedirectToAction("GetRequest", new { id = request.RequestID }); //redirect to the updated request info page
             
