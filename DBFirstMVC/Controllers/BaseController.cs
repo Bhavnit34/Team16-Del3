@@ -28,9 +28,10 @@ namespace DBFirstMVC.Controllers
                 }
                 else
                 {
-                    ViewBag.CurrentRound = RandS.RoundID;
+                    ViewBag.CurrentRound = RandS.RoundID + " ";
+                    
                 }
-                
+                ViewBag.RoundEnd = RandS.EndDate.ToString().Substring(0,10);
                 ViewBag.CurrentSemester = RandS.Semester;
 
                 base.OnActionExecuting(filterContext); //Continue as normal
