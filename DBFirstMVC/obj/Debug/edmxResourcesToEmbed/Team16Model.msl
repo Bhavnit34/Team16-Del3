@@ -201,7 +201,6 @@
     <EntitySetMapping Name="AllocatedRooms">
       <EntityTypeMapping TypeName="team16Model.AllocatedRoom">
         <MappingFragment StoreEntitySet="AllocatedRoom">
-          <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
           <ScalarProperty Name="Comments" ColumnName="Comments" />
           <ScalarProperty Name="RoomName" ColumnName="RoomName" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
@@ -215,8 +214,8 @@
           <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
           <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-          <ScalarProperty Name="RoundID" ColumnName="RoundID" />
           <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="RoundID" ColumnName="RoundID" />
           <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
         </MappingFragment>
       </EntityTypeMapping>

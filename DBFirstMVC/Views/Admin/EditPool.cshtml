@@ -1,47 +1,40 @@
 ﻿@model IEnumerable<DBFirstMVC.Room>
 
+@{
 
+Layout = "~/Views/Shared/adminView.cshtml";
+
+}
 
 @{
     ViewBag.Title = "Edit-Room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
- @{
-     if (ViewBag.CurrentUserTitle=="CA - Central Admin"){
-    
-         <h2>Edit pool Room</h2>
-        Layout = "~/Views/Shared/adminView.cshtml";
 
-     <p>
+<h2>Edit pool Room</h2>
+
+<p>
     @Html.ActionLink("Create New", "Create")
 </p>
-     
-     }
-     
-     else {<h2>Add Private Room</h2>}
-     }
-
-
-
 <table>
     <tr>
         <th>
-              @Html.ActionLink("Room", "EditPool", new { sortOrder = ViewBag.RoomSortParm })
+            @Html.DisplayNameFor(model => model.RoomName)
         </th>
         <th>
-           @Html.ActionLink("Building", "EditPool", new { sortOrder = ViewBag.BuildingSortParm })
+            @Html.DisplayNameFor(model => model.Building.BuildingName)
         </th>
         <th>
-           @Html.ActionLink("Capacity", "EditPool", new { sortOrder = ViewBag.CapacitySortParm })
+            @Html.DisplayNameFor(model => model.Capacity)
         </th>
         <th>
-             @Html.ActionLink("Lab", "EditPool", new { sortOrder = ViewBag.LabSortParm })
+            @Html.DisplayNameFor(model => model.Lab)
         </th>
         <th>
-           @Html.ActionLink("Dept", "EditPool", new { sortOrder = ViewBag.DeptSortParm })
+            @Html.DisplayNameFor(model => model.DeptCode)
         </th>
         <th>
-             @Html.ActionLink("Park", "EditPool", new { sortOrder = ViewBag.ParkSortParm })
+            @Html.DisplayNameFor(model => model.Building.ParkName)
         </th>
        
     </tr>

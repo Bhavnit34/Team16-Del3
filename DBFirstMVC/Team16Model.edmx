@@ -136,7 +136,6 @@
           <Property Name="AllocatedRoomID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RequestID" Type="int" />
           <Property Name="RoomName" Type="varchar" MaxLength="10" />
-          <Property Name="GroupSize" Type="smallint" />
           <Property Name="Comments" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Building">
@@ -284,8 +283,8 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Name="RoundAndSemesterID" Type="int" Nullable="false" />
-          <Property Name="Semester" Type="tinyint" />
           <Property Name="RoundID" Type="tinyint" />
+          <Property Name="Semester" Type="tinyint" />
           <Property Name="StartDate" Type="date" />
           <Property Name="EndDate" Type="date" />
           <Property Name="CurrentRound" Type="bit" />
@@ -1198,7 +1197,6 @@
           <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Request" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="AllocatedRoom" ToRole="Request" />
           <NavigationProperty Name="Room" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="AllocatedRoom" ToRole="Room" />
-          <Property Type="Int16" Name="GroupSize" />
         </EntityType>
         <Association Name="FK_AllocatedRoom_RequestID">
           <End Type="team16Model.Request" Role="Request" Multiplicity="0..1" />
@@ -1229,8 +1227,8 @@
             <PropertyRef Name="RoundAndSemesterID" />
           </Key>
           <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-          <Property Type="Byte" Name="Semester" />
           <Property Type="Byte" Name="RoundID" />
+          <Property Type="Byte" Name="Semester" />
           <Property Type="DateTime" Name="StartDate" Precision="0" />
           <Property Type="DateTime" Name="EndDate" Precision="0" />
           <Property Type="Boolean" Name="CurrentRound" />
@@ -1441,7 +1439,6 @@
           <EntitySetMapping Name="AllocatedRooms">
             <EntityTypeMapping TypeName="team16Model.AllocatedRoom">
               <MappingFragment StoreEntitySet="AllocatedRoom">
-                <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="RoomName" ColumnName="RoomName" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
@@ -1455,8 +1452,8 @@
                 <ScalarProperty Name="CurrentRound" ColumnName="CurrentRound" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="RoundID" ColumnName="RoundID" />
                 <ScalarProperty Name="RoundAndSemesterID" ColumnName="RoundAndSemesterID" />
               </MappingFragment>
             </EntityTypeMapping>

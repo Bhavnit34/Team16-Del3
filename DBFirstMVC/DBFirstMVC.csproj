@@ -40,6 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -196,7 +202,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
-    <Compile Include="Controllers\TimetableController.cs" />
     <Compile Include="Degree.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -223,8 +228,6 @@
     <Compile Include="Models\RequestInfo.cs" />
     <Compile Include="Models\RequestState.cs" />
     <Compile Include="Models\RoomInfo.cs" />
-    <Compile Include="Models\SampleRequestInfo.cs" />
-    <Compile Include="Models\TimetableModel.cs" />
     <Compile Include="Module.cs">
       <DependentUpon>Team16Model.tt</DependentUpon>
     </Compile>
@@ -284,6 +287,7 @@
   <ItemGroup>
     <Content Include="Content\BhavStyle.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -345,8 +349,6 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\luff1.png" />
     <Content Include="Images\luff2.png" />
-    <Content Include="Images\NextArrow.png" />
-    <Content Include="Images\PrevArrow.png" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -462,7 +464,7 @@
     <Content Include="Views\Request\RemoveDegree.cshtml" />
     <Content Include="Views\Admin\ChangeRoundDates.cshtml" />
     <Content Include="Views\Admin\EditRound.cshtml" />
-    <Content Include="Views\Timetable\Index.cshtml" />
+    <Content Include="Views\Request\Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

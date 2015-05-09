@@ -135,7 +135,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
                      @{
                             List<SelectListItem> listItems= new List<SelectListItem>();
                             listItems.Add(new SelectListItem { Text = "Pending", Value = "0" });
-                          
+                            listItems.Add(new SelectListItem{Text = "Approved", Value = "1"});
                             listItems.Add(new SelectListItem{Text = "Rejected", Value = "2"});
                       
                         }

@@ -216,23 +216,6 @@ footer {
         list-style: none;
     }
 
-/* Timetable page
-----------------------------------------------------------*/
-.takenTile {
-    background-color:rgba(51, 0, 102, 1);
-    color:white;
-    border:1px solid white;
-}
-
-.freeTile {
-    background-color:none;
-    color:black;
-}
-
-
-
-
-
 
 /* menu
 ----------------------------------------------------------*/

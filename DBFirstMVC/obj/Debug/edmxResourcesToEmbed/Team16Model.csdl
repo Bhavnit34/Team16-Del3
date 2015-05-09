@@ -599,7 +599,6 @@
     <Property Type="String" Name="Comments" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Request" Relationship="team16Model.FK_AllocatedRoom_RequestID" FromRole="AllocatedRoom" ToRole="Request" />
     <NavigationProperty Name="Room" Relationship="team16Model.FK_AllocatedRoom_RoomName" FromRole="AllocatedRoom" ToRole="Room" />
-    <Property Type="Int16" Name="GroupSize" />
   </EntityType>
   <Association Name="FK_AllocatedRoom_RequestID">
     <End Type="team16Model.Request" Role="Request" Multiplicity="0..1" />
@@ -630,8 +629,8 @@
       <PropertyRef Name="RoundAndSemesterID" />
     </Key>
     <Property Type="Int32" Name="RoundAndSemesterID" Nullable="false" />
-    <Property Type="Byte" Name="Semester" />
     <Property Type="Byte" Name="RoundID" />
+    <Property Type="Byte" Name="Semester" />
     <Property Type="DateTime" Name="StartDate" Precision="0" />
     <Property Type="DateTime" Name="EndDate" Precision="0" />
     <Property Type="Boolean" Name="CurrentRound" />

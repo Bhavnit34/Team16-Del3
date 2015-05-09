@@ -15,14 +15,8 @@
 }
 @Html.ActionLink("Delete", "Delete", new { id=Model.Request.RequestID })
 
-
 <h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
-<table style="float:right;"> 
-    <tr><td class="approved"></td><td>APROVED</td></tr>
-     <tr><td class="rejected"></td><td>REJETCED</td></tr>
-       <tr><td class="pending"></td><td>PENDING</td></tr>
-     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
-    </table>
+
 
             <h2> Facilities</h2>
 <ol>
@@ -34,7 +28,7 @@
     
 }
 </ol>
-        <h2>Requested Rooms</h2>
+        <h2>Rooms</h2>
 <ol id="roomList">
 @foreach(var item in Model.RequestToRooms){
 
@@ -44,22 +38,6 @@
                 {
                     <span><u>   Priority</u></span>
                 }
-                   
-           }
-           
-       </li><!-- Display the room name -->
-  
-
-}
-</ol>
-<h2 >Allocated Rooms</h2>     
-<ol id="roomList1" style="background-color:lightyellow;">
-  
-@foreach(var item in Model.AllocatedRooms){
-
-       <li><a style="cursor:pointer;" onclick="showRoomInfo(this.text);">@Html.DisplayFor(modelItem => item.RoomName)</a>  (@Html.DisplayFor(modelItem => item.GroupSize) students)   
-           @{
-              
                    
            }
            
@@ -106,34 +84,6 @@
 </div>
 
 <table>
-      @{ var statusClass = "";
-
-        if (Model.Request.Status == 1.ToString())
-        {
-            statusClass = "approved";
-
-        }
-
-        else if (Model.Request.Status == 2.ToString())
-        {
-            statusClass = "rejected";
-
-
-
-        }
-        else if (Model.Request.Status == 3.ToString())
-        {
-            statusClass = "modified";
-
-
-
-        }
-
-        else
-        {
-            statusClass = "pending";
-
-        }}
     <tr>
         <td>
             <h2>Information </h2>
@@ -230,28 +180,13 @@
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
         </td>
-        <td class ="@statusClass">
+        <td>
             @Html.DisplayFor(modelItem => modelItem.Request.Status)
         </td>
     </tr>
     
 
 </table>
-<style type="text/css">
-
-    .approved {
-        background-color:green;
-    }
-    .rejected {
-        background-color:#C80000;
-    }
-    .pending {
-        background-color:grey;
-    }
-      .modified {
-        background-color:lightyellow;
-    }
-    </style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -272,6 +207,13 @@
 
         //function to show room info of selected room
         function showRoomInfo(room) {
+           // $.post('@Url.Action("ShowRoomInfo")',
+             //  {
+            //       room: room
+             //  },
+            //   function (data, status) {
+             //  });
+        
 
             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
             window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");

@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - Team 16 Timetabling System</title>
  
-        <img src ="/Images/logo.png"/>
+        <img src ="../Images/logo.png" alt="Images/logo.png"/>
 
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
@@ -31,8 +31,7 @@
 
                 <div>
                     <span style="float: right; text-decoration: none;">Current Round: @ViewBag.CurrentRound</span><br />
-                    <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span><br />
-                    <span style="float: right; text-decoration: none; font-weight:bold;">Round Ends: @ViewBag.RoundEnd</span>
+                    <span style="float: right; text-decoration: none;">Current Semester: @ViewBag.CurrentSemester</span>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -41,16 +40,12 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Create Request", "CreateNew", new { controller = "Request", adhoc = 0 })</li>
+                            <li>@Html.ActionLink("Create Request", "CreateNew", "Request")</li>
                             <li>@Html.ActionLink("History","Index","Request")</li>
-                            <li>@Html.ActionLink("Timetable","Index","Timetable")</li>
-                            <li>@Html.ActionLink("Ad-Hoc","CreateNew", new { controller = "Request", adhoc = 1 })</li>
+                            <li>@Html.ActionLink("Ad-Hoc","CreateNew","Request")</li>
                             <li>@Html.ActionLink("Module","Module","Request")</li>
                              <li>@Html.ActionLink("Room","EditPool","Admin")</li>
                             @{
-                                if(ViewBag.Admin == true){
-                                    <li>@Html.ActionLink("Admin Mode","Index","Admin")</li>
-                                }
                                 if(ViewBag.LogOut == true){
                                     <li>@Html.ActionLink("Log out","Logout","Login")</li>
                                 }
