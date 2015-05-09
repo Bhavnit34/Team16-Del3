@@ -21,7 +21,7 @@
     <tr><td class="approved"></td><td>APROVED</td></tr>
      <tr><td class="rejected"></td><td>REJETCED</td></tr>
        <tr><td class="pending"></td><td>PENDING</td></tr>
-     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
+     <tr><td class="modified"></td><td>APPROVED BUT MODIFIED</td></tr>
     </table>
 
             <h2> Facilities</h2>
@@ -108,22 +108,28 @@
 <table>
       @{ var statusClass = "";
 
+      var status = "";
+        var day = "";
+        var time = "";
+
         if (Model.Request.Status == 1.ToString())
         {
             statusClass = "approved";
-
+            status = "Approved";
+     
         }
 
         else if (Model.Request.Status == 2.ToString())
         {
             statusClass = "rejected";
-
+            status = "Rejected";
 
 
         }
         else if (Model.Request.Status == 3.ToString())
         {
             statusClass = "modified";
+            status = "Approved But Modified";
 
 
 
@@ -132,7 +138,62 @@
         else
         {
             statusClass = "pending";
+            status = "Pending";
+        }
+       
+        
+        
+        
+        
+        
+        if (Model.Request.DayID == 1)
+        {
+            day = "Monday";
 
+        }
+
+        else if (Model.Request.DayID == 2)
+        {
+            day = "Tuesday";
+
+
+        }
+        else if (Model.Request.DayID == 3)
+        {
+         day="Wednesday";
+
+
+
+        }
+
+        else if (Model.Request.DayID == 4)
+        {
+            day = "Thursday";
+        }
+        else {
+            day = "Friday";
+        }
+         
+        switch (Model.Request.PeriodID)
+        {
+            case 1: time = "9:00";
+                break;
+            case 2: time = "10:00";
+                break;
+            case 3: time = "11:00";
+                break;
+            case 4: time = "12:00";
+                break;
+            case 5: time = "13:00";
+                break;
+            case 6: time = "14:00";
+                break;
+            case 7: time = "15:00";
+                break;
+            case 8: time = "16:00";
+                break;
+            case 9: time = "17:00";
+                break;
         }}
     <tr>
         <td>
@@ -192,10 +253,10 @@
             @Html.DisplayFor(modelItem => modelItem.Request.SessionLength)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.DayID)
+           @day
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
+            @time
         </td>
         <td>
             <!--@Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)-->
@@ -231,7 +292,7 @@
             @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
         </td>
         <td class ="@statusClass">
-            @Html.DisplayFor(modelItem => modelItem.Request.Status)
+            @status
         </td>
     </tr>
     

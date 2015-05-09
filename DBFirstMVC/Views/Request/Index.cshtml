@@ -23,7 +23,7 @@
     <tr><td class="approved"></td><td>APROVED</td></tr>
      <tr><td class="rejected"></td><td>REJETCED</td></tr>
        <tr><td class="pending"></td><td>PENDING</td></tr>
-     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
+     <tr><td class="modified"></td><td>APPROVED BUT MODIFIED</td></tr>
     </table>
 
 <div id='Paging' style="text-align:center">
@@ -69,20 +69,87 @@
 
 @foreach (var item in ViewBag.Page) {
     var statusClass = "";
+    var status = "";
+    var day = "";
+    var time = "";
 
     if (item.Status == 1.ToString())
     {
         statusClass = "approved";
+        status = "Approved";
+
     }
 
     else if (item.Status == 2.ToString())
     {
         statusClass = "rejected";
+        status = "Rejected";
+    }
+    else if (item.Status == 3.ToString())
+    {
+        statusClass = "modified";
+        status = "Approved But Successful";
+
     }
 
     else
     {
         statusClass = "pending";
+        status = "Pending";
+        
+
+    }
+
+
+    if (item.DayID == 1)
+    {
+        day = "Monday";
+
+    }
+
+    else if (item.DayID == 2)
+    {
+        day = "Tuesday";
+
+
+    }
+    else if (item.DayID == 3)
+    {
+        day = "Wednesday";
+
+
+
+    }
+
+    else if (item.DayID == 4)
+    {
+        day = "Thursday";
+    }
+    else
+    {
+        day = "Friday";
+    }
+
+    switch (item.PeriodID)
+    {
+        case 1: time = "9:00";
+            break;
+        case 2: time = "10:00";
+            break;
+        case 3: time = "11:00";
+            break;
+        case 4: time = "12:00";
+            break;
+        case 5: time = "13:00";
+            break;
+        case 6: time = "14:00";
+            break;
+        case 7: time = "15:00";
+            break;
+        case 8: time = "16:00";
+            break;
+        case 9: time = "17:00";
+            break;
     }
     <tr>
         <td  class ="@statusClass">
@@ -99,7 +166,11 @@
             @item.SessionLength
         </td>
         <td>
-            @item.DayID
+            @day
+           
+        </td>
+        <td>
+            @time
         </td>
         <td>
             @item.PeriodID
@@ -126,6 +197,8 @@
                 }
         
             }
+
+           
         </td>
         <td>
             @item.Semester
@@ -134,7 +207,7 @@
             @item.RoundID
         </td>
         <td>
-            @item.Status
+            @status
         </td>
         <td class ="@statusClass">
             @{

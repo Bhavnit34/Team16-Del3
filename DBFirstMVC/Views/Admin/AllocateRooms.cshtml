@@ -17,7 +17,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
     <tr><td class="approved"></td><td>APROVED</td></tr>
      <tr><td class="rejected"></td><td>REJETCED</td></tr>
        <tr><td class="pending"></td><td>PENDING</td></tr>
-     <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
+     <tr><td class="modified"></td><td>APPROVED BUT MODIFIED</td></tr>
     </table>
 
 <h2 style="float:right;"> <u>Request @Model.Request.RequestID</u></h2>
@@ -148,23 +148,28 @@ Layout = "~/Views/Shared/adminView.cshtml";
          </div>
 <table>
          @{ var statusClass = "";
+        var status = "";
+        var day = "";
+        var time = "";
 
         if (Model.Request.Status == 1.ToString())
         {
             statusClass = "approved";
-
+            status = "Approved";
+     
         }
 
         else if (Model.Request.Status == 2.ToString())
         {
             statusClass = "rejected";
-
+            status = "Rejected";
 
 
         }
         else if (Model.Request.Status == 3.ToString())
         {
             statusClass = "modified";
+            status = "Approved But Modified";
 
 
 
@@ -173,7 +178,62 @@ Layout = "~/Views/Shared/adminView.cshtml";
         else
         {
             statusClass = "pending";
+            status = "Pending";
+        }
+       
+        
+        
+        
+        
+        
+        if (Model.Request.DayID == 1)
+        {
+            day = "Monday";
 
+        }
+
+        else if (Model.Request.DayID == 2)
+        {
+            day = "Tuesday";
+
+
+        }
+        else if (Model.Request.DayID == 3)
+        {
+         day="Wednesday";
+
+
+
+        }
+
+        else if (Model.Request.DayID == 4)
+        {
+            day = "Thursday";
+        }
+        else {
+            day = "Friday";
+        }
+         
+        switch (Model.Request.PeriodID)
+        {
+            case 1: time = "9:00";
+                break;
+            case 2: time = "10:00";
+                break;
+            case 3: time = "11:00";
+                break;
+            case 4: time = "12:00";
+                break;
+            case 5: time = "13:00";
+                break;
+            case 6: time = "14:00";
+                break;
+            case 7: time = "15:00";
+                break;
+            case 8: time = "16:00";
+                break;
+            case 9: time = "17:00";
+                break;
         }}
     <tr>
         <td>
@@ -233,10 +293,10 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => modelItem.Request.SessionLength)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.DayID)
+           @day
         </td>
         <td>
-            @Html.DisplayFor(modelItem => modelItem.Request.PeriodID)
+            @time
         </td>
         <td>
             @Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)
@@ -254,7 +314,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.DisplayFor(modelItem => modelItem.Request.RoundID)
         </td>
         <td class ="@statusClass">
-            @Html.DisplayFor(modelItem => modelItem.Request.Status)
+            @status
         </td>
     </tr>
     
@@ -359,26 +419,20 @@ Layout = "~/Views/Shared/adminView.cshtml";
                                 var showError = "";
                                 for (var i = 0; i < data.length; i++) {
 
-                                    showError += data[i] + "and";
+                                    showError += data[i] + "\n";
                                 }
 
-                                alert("Room number :" + showError + "does not exist or you exceeded capacity for this rooms");
+                                alert("Room number/s :" + "\n" + showError + "do/does not exist or you exceeded capacity for the room/rooms");
 
                             }
                                 //****************check rooms 
                             else {
                                 var reqId = '@Model.Request.RequestID';
-                                // alert(reqId);
-                                //alert(strArr);
-                                // here u put one post which takes an array with rooms an chceck them if they are valid if not return array with wrong rooms and display them 
-                                // if they exist then procced to to post
+                    
 
                                 $.post('@Url.Action("UpdateAllocations", "Admin")', { id1: reqId, id2: strArr }, function (data) { //update allocations 
 
-                                    //var test = data.rep alert(data);
-                                    //JSON.stringify(data);
-                                    /// alert(JSON.stringify(data).replace('__id__', reqId));
-                                    // window.location.href = JSON.stringify(data).replace('__id__', reqId); 
+                            
 
                                     window.location.href = '/Admin/GetRequest/' + reqId;// redirect 
 

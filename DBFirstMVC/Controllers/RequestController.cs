@@ -525,39 +525,110 @@ namespace DBFirstMVC.Controllers
                             continue;
 
                     }
-                    //here pRoomsNew is now the correct array of bool values
-                  
+                    int reqID= myRequest.Request.RequestID;
+                    var flag = 0;
+                    //find if the room is private
                     for (int i = 0; i < chosenRooms.Length; i++)
-                    {//******************************************************************
-                        //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
-                        RoomRequest roomRequest = new RoomRequest();
+                    {
                         string room = chosenRooms[i];
+                        var c = (from x in db.Rooms where x.RoomName==room select x.DeptCode).FirstOrDefault();
 
-                        if (room.IndexOf("ANY") > -1)
+                        if (c == user.Username) {
+
+                            flag++;
+                        }
+                       
+
+                    }
+
+                    if (flag == 0)//if rooms are not private
+                    {
+                        //here pRoomsNew is now the correct array of bool values
+                        for (int i = 0; i < chosenRooms.Length; i++)
                         {
-                            room = room.Substring(4, room.Length-4);
-                            room = room.First().ToString().ToUpper() + room.Substring(1).ToLower();
+                            //we must re-instantiate the roomRequest for each iteration to stop errors with the auto-primary-key function
+                            RoomRequest roomRequest = new RoomRequest();
+                            string room = chosenRooms[i];
+
+                            if (room.IndexOf("ANY") > -1)
+                            {
+                                room = room.Substring(4, room.Length - 4);
+                                room = room.First().ToString().ToUpper() + room.Substring(1).ToLower();
+                            }
+
+
+
+                            short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
+
+                            roomRequest.RoomRequestID = 0;
+                            roomRequest.GroupSize = size;
+                            roomRequest.PriorityRoom = Convert.ToByte(pRoomsNew[i]);
+                            roomRequest.RoomName = room;
+
+                            //create RoomRequest row and add to table
+                            db.RoomRequests.Add(roomRequest);
+                            db.SaveChanges();
+                            newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
+
+                            //create RequestToRoom row and add to table
+                            requestToRoom.RequestID = newRequestID;
+                            requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
+                            db.RequestToRooms.Add(requestToRoom);
+                            db.SaveChanges();
+                        }
+                    }
+
+
+                    else { //if rooms are private
+
+
+                        for (int i = 0; i < chosenRooms.Length; i++)
+                        {
+                            //save room to AlloctaedRooms
+                            short size = Int16.Parse(groupSizes[i]);
+                            AllocatedRoom roomRequest = new AllocatedRoom();
+                            string room = chosenRooms[i];
+                            roomRequest.AllocatedRoomID = 0;
+                            roomRequest.RequestID = reqID;
+                            roomRequest.GroupSize = size;
+                            roomRequest.Comments = "";
+                            roomRequest.RoomName = room;
+
+                            db.AllocatedRooms.Add(roomRequest);
+                            db.SaveChanges();
+
+
+                            
+                            var findClashes = (from clash in db.Requests
+                                               join aloc in db.AllocatedRooms on clash.RequestID equals aloc.RequestID
+                                               where clash.DayID == myRequest.Request.DayID && clash.PeriodID == myRequest.Request.PeriodID && clash.WeekID == myRequest.Request.WeekID &&
+                                                   aloc.RoomName == room && (clash.Status == "3" || clash.Status == "1")
+
+                                               select clash.RequestID).FirstOrDefault();
+
+
+                            //If room is taken change teh status of the request that requested the room previously to rejected
+                            if (findClashes != 0)
+                            {
+                                var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
+                                obj.Status = "0";
+                                db.SaveChanges();
+                              
+                            }
+
+
+
                         }
 
 
-
-                        short size = Int16.Parse(groupSizes[i]); //groupSize is declared short in the table                       
-
-                        roomRequest.RoomRequestID = 0;
-                        roomRequest.GroupSize = size;
-                        roomRequest.PriorityRoom = Convert.ToByte(pRoomsNew[i]);
-                        roomRequest.RoomName = room;
-
-                        //create RoomRequest row and add to table
-                        db.RoomRequests.Add(roomRequest);
+                        
+                        //change the status to accepted 
+                        Request req = db.Requests.First(p => p.RequestID == reqID);
+                        req.Status = "1";
                         db.SaveChanges();
-                        newRoomRequestID = roomRequest.RoomRequestID; //take the newly created ID
 
-                        //create RequestToRoom row and add to table
-                        requestToRoom.RequestID = newRequestID;
-                        requestToRoom.RoomRequestID = newRoomRequestID; //this is the newly created ID from above
-                        db.RequestToRooms.Add(requestToRoom);
-                        db.SaveChanges();
+                    
+                    
                     }
                 }
                 if (myRequest.Request.UserID == 0)
@@ -1113,6 +1184,30 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult EditModule(Module module)
         {
+
+
+            //Delete rows with the ModCode that is going to be deleted from tables ModuleDegree and ModuleLecturer
+            var modDegree = db.ModuleDegrees.Where(a => a.ModCode == module.DeptCode).ToList();
+            var modLecturer = db.ModuleLecturers.Where(a => a.ModCode == module.DeptCode).ToList();
+
+            for (var i = 0; i < modDegree.Count; i++)
+            {
+                //find id of the row with the given modCode
+                var mID = modDegree[i].ModuleDegreeID;
+               ModuleDegree deg = db.ModuleDegrees.Find(mID);
+                //delete the row
+                db.ModuleDegrees.Remove(deg);
+                db.SaveChanges();
+            }
+            for (var i = 0; i < modLecturer.Count; i++)
+            {
+                //find id of the row with the given modCode
+                var lID = modLecturer[i].ModuleLecturerID;
+                ModuleLecturer lec = db.ModuleLecturers.Find(lID);
+                //delete the row
+                db.ModuleLecturers.Remove(lec);
+                db.SaveChanges();
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(module).State = EntityState.Modified;
