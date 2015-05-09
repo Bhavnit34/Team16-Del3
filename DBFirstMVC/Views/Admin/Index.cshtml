@@ -1,4 +1,6 @@
-﻿@model IEnumerable<DBFirstMVC.Request>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
 @{
 
 Layout = "~/Views/Shared/adminView.cshtml";
@@ -8,7 +10,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
     ViewBag.Title = "Index";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
-
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <h2>Requests</h2>
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
@@ -19,6 +21,18 @@ Layout = "~/Views/Shared/adminView.cshtml";
        <tr><td class="pending"></td><td>PENDING</td></tr>
      <tr><td class="modified"></td><td>MODIFIED BUT SUCCESSFUL</td></tr>
     </table>
+@using (Html.BeginForm())
+            {
+                <p>
+                    Find by module name/code: @Html.TextBox("SearchString")
+                    <input type="submit" value="Search" />
+                </p>
+            }
+@Html.ActionLink("Past/Present", "Index", new { yearSelect = ViewBag.YearFilter })
+
+<div id='Paging' style="text-align:center">
+    @Html.PagedListPager( (IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }) )
+</div>
 
 <table>
     <tr>
@@ -38,7 +52,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })
         </th>
         <th>
-            @Html.Label("Period")
+            @Html.ActionLink("Period", "Index", new { sortOrder = ViewBag.PeriodSortParm })
         </th>
         <th>
             @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.PrioritySortParm })
@@ -56,95 +70,87 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm })
         </th>
     </tr>
-    @foreach (var item in Model) {
-        var statusClass = "";
 
-        if (item.Status == 1.ToString())
-        {
-            statusClass = "approved";
+@foreach (var item in ViewBag.Page) {
+    var statusClass = "";
 
-        }
+    if (item.Status == 1.ToString())
+    {
+        statusClass = "approved";
+    }
 
-        else if (item.Status == 2.ToString())
-        {
-            statusClass = "rejected";
+    else if (item.Status == 2.ToString())
+    {
+        statusClass = "rejected";
+    }
 
-
-
-        }
-        else if (item.Status == 3.ToString())
-        {
-            statusClass = "modified";
-
-
-
-        }
-
-        else
-        {
-            statusClass = "pending";
-
-        }
-     <tr >
-        <td class ="@statusClass">
-            @Html.DisplayFor(modelItem => item.User.Username)
+    else
+    {
+        statusClass = "pending";
+    }
+    <tr>
+        <td  class ="@statusClass">
+            @item.User.Username
         </td>
         <td>
-            <b>@Html.DisplayFor(modelItem => item.ModCode)</b><br />
-            @Html.DisplayFor(modelItem => item.Module.Title)
+            <b>@item.ModCode</b><br />
+            @item.Module.Title
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SessionType)
+            @item.SessionType
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.SessionLength)
+            @item.SessionLength
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DayID)
+            @item.DayID
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PeriodID)
+            @item.PeriodID
         </td>
         <td>
              @{
                     if(item.PriorityRequest == 1){
-                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                        @Html.CheckBox("Priority",true, new{@onclick = "return false;"})
                     }
                     else{
-                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                        @Html.CheckBox("Priority",false, new{@onclick = "return false;"})
                     }
         
-              }
-           <!-- @Html.DisplayFor(modelItem => item.PriorityRequest) -->
+              }          
         </td>
         <td>
             @{
-                if(item.AdhocRequest == 1){
-                    @Html.CheckBox("AdHoc",true, new{@disabled = "disabled"})
+    if (item.AdhocRequest == 1)
+    {
+                    @Html.CheckBox("AdHoc",true, new{@onclick = "return false;"})
                 }
                 else{
-                    @Html.CheckBox("AdHoc",false, new{@disabled = "disabled"})
+                    @Html.CheckBox("AdHoc",false, new{@onclick = "return false;"})
                 }
         
             }
-            <!--@Html.DisplayFor(modelItem => item.AdhocRequest)-->
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Semester)
+            @item.Semester
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.RoundID)
+            @item.RoundID
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
+            @item.Status
         </td>
         <td class ="@statusClass">
-          @Html.ActionLink("Get Request", "GetRequest", new { id=item.RequestID})
+            @{
+                if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
+            }
+            @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
         </td>
     </tr>
 }
 
 </table>
+
 <style type="text/css">
 
     .approved {

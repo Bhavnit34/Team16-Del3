@@ -6,6 +6,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
+using PagedList.Mvc;
 
 namespace DBFirstMVC.Controllers
 {
@@ -14,10 +16,14 @@ namespace DBFirstMVC.Controllers
         private team16Entities db = new team16Entities();
 
 
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page)
         {
             if (sortOrder == null) //order by status as default
                 sortOrder = "status";
+
+            int pageIndex = 1;
+            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
@@ -31,12 +37,48 @@ namespace DBFirstMVC.Controllers
             ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
             ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
             ViewBag.AdhocSortParm = sortOrder == "adhoc" ? "adhoc_desc" : "adhoc";
+            ViewBag.PeriodSortParm = sortOrder == "period" ? "period_desc" : "period";
+
+            //alternates year parameter for switch statement
+            ViewBag.YearFilter = String.IsNullOrEmpty(yearSelect) ? "past" : "";
 
             var requests = from r in db.Requests
-                           //where r.UserID == userSession.UserID
-                           select r;
+                           where r.UserID == userSession.UserID
+                           select r; ;
 
-            //requests = db.Requests.Include(r => r.Module);
+            //if central admin
+            if (userSession.UserID == 0)
+            {
+                requests = (from r in db.Requests
+                            select r); ;
+            }
+
+            //add the search string to the query
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                requests = requests.Where(s => s.Module.Title.Contains(searchString)
+                                       || s.Module.ModCode.Contains(searchString));
+            }
+
+            //finds the current academic year
+            DateTime current = DateTime.Now;
+            string year = current.Year + "/" + (current.Year - 1999);
+
+            if (current.Month >= 1 && current.Month <= 6)
+            {
+                year = (current.Year - 1) + "/" + (current.Year - 2000);
+            }
+
+            //alternates year between current academic year and all past years
+            switch (yearSelect)
+            {
+                case "past":
+                    requests = requests.Where(r => r.Year != year);
+                    break;
+                default:
+                    requests = requests.Where(r => r.Year == year);
+                    break;
+            }
 
             //handles which sort method to use
             switch (sortOrder)
@@ -98,14 +140,22 @@ namespace DBFirstMVC.Controllers
                 case "priority_desc":
                     requests = requests.OrderByDescending(r => r.PriorityRequest);
                     break;
+                case "period":
+                    requests = requests.OrderBy(r => r.PeriodID);
+                    break;
+                case "period_desc":
+                    requests = requests.OrderByDescending(r => r.PeriodID);
+                    break;
                 default:
                     requests = requests.OrderBy(r => r.Module.Title);
                     break;
             }
 
+            //creates the page for the view
+            var requestPage = requests.ToPagedList(pageIndex, 10);
+            ViewBag.Page = requestPage;
 
-            // var list = requests.OrderBy(z => z.Status).ToList();
-            return View(requests.ToList());
+            return View();
         }
 
 

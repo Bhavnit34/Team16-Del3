@@ -1141,3 +1141,7 @@ C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.Spatial.resource
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 C:\Users\colt\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
+C:\Users\cobp\Desktop\Team16-Del3\DBFirstMVC\bin\PagedList.dll
+C:\Users\cobp\Desktop\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.dll
+C:\Users\cobp\Desktop\Team16-Del3\DBFirstMVC\bin\PagedList.xml
+C:\Users\cobp\Desktop\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.xml
