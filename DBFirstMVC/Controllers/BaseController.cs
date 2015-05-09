@@ -14,10 +14,12 @@ namespace DBFirstMVC.Controllers
         private team16Entities db = new team16Entities();
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            bool valid = false; //bool to check if the url request was valid
             if (Session["User"] != null)
             {
                 ViewBag.CurrentUser = getCurrentUser(); // get user logged in
-                ViewBag.LogOut = true; //set button to logout, not login
+                ViewBag.LogOut = true; //set button to 'logout', instead of 'login'
+
                 //get current round and semester
                 RoundAndSemester RandS = (from d in db.RoundAndSemesters
                                           where d.CurrentRound == true
@@ -34,9 +36,19 @@ namespace DBFirstMVC.Controllers
                 ViewBag.RoundEnd = RandS.EndDate.ToString().Substring(0,10);
                 ViewBag.CurrentSemester = RandS.Semester;
 
+                //check a regular user isnt accessing an admin page
+                string controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+                if (controllerName == "Admin")
+                {
+                    valid = false;
+                    TempData["Message"] = "You do not have admin right to access this page"; //This message will show once
+                    filterContext.Result = new RedirectResult("~/Login/Index");
+                }
+
+
                 base.OnActionExecuting(filterContext); //Continue as normal
             }
-            else
+            if(valid)
             {
                 TempData["Message"] = "Please log in to use the timetabling system"; //This message will show once
                 filterContext.Result = new RedirectResult("~/Login/Index");
@@ -45,6 +57,9 @@ namespace DBFirstMVC.Controllers
         private string getCurrentUser()
         {
             User userSession = (User)HttpContext.Session["User"];
+            if (userSession.Username == "CA")
+                ViewBag.Admin = true;
+
             var row = db.Depts.Find(userSession.Username);
             return (row.FullDept);
         }
