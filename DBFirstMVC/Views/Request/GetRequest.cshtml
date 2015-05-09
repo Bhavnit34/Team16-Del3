@@ -53,7 +53,7 @@
 }
 </ol>
 <h2 >Allocated Rooms</h2>     
-<ol id="roomList1">
+<ol id="roomList1" style="background-color:lightyellow;">
   
 @foreach(var item in Model.AllocatedRooms){
 
@@ -272,13 +272,6 @@
 
         //function to show room info of selected room
         function showRoomInfo(room) {
-           // $.post('@Url.Action("ShowRoomInfo")',
-             //  {
-            //       room: room
-             //  },
-            //   function (data, status) {
-             //  });
-        
 
             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
             window.location.href = url.replace("text", "?id=" + room + "&caller=GetRequest");

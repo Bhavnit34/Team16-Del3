@@ -387,6 +387,13 @@
                     var rooms = data;
                     AllRooms = rooms; //assign the global variable of all rooms to be re used when the availability tickbox is unchecked
                     html = "";
+
+                    //check if any rooms have been returned
+                    if (rooms.length == 0) {
+                        alert("All rooms in this building have been taken by another department as a pool room");
+                        return;
+                    }
+
                     //create a dropdown list of rooms
                     for (var i = 0; i < rooms.length; i++) {
                             html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
