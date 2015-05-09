@@ -320,7 +320,7 @@ namespace DBFirstMVC.Controllers
                         var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
                         obj.Status = "0";
                         db.SaveChanges();
-                        break;
+                        //break;
 
 
 

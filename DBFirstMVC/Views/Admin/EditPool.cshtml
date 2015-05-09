@@ -1,21 +1,28 @@
 ﻿@model IEnumerable<DBFirstMVC.Room>
 
-@{
 
-Layout = "~/Views/Shared/adminView.cshtml";
-
-}
 
 @{
     ViewBag.Title = "Edit-Room";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+ @{
+     if (ViewBag.CurrentUserTitle=="CA - Central Admin"){
+    
+         <h2>Edit pool Room</h2>
+        Layout = "~/Views/Shared/adminView.cshtml";
 
-<h2>Edit pool Room</h2>
-
-<p>
+     <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+     
+     }
+     
+     else {<h2>Add Private Room</h2>}
+     }
+
+
+
 <table>
     <tr>
         <th>
