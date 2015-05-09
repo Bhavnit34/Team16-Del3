@@ -1230,3 +1230,7 @@ C:\Users\colt.LUNET\Documents\GitHub\Team16-Del3\DBFirstMVC\bin\zh-Hant\System.S
 C:\Users\colt.LUNET\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\colt.LUNET\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 C:\Users\colt.LUNET\Documents\GitHub\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
+D:\Team16-Del3\DBFirstMVC\bin\PagedList.dll
+D:\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.dll
+D:\Team16-Del3\DBFirstMVC\bin\PagedList.xml
+D:\Team16-Del3\DBFirstMVC\bin\PagedList.Mvc.xml

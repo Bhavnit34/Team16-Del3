@@ -42,7 +42,7 @@ namespace DBFirstMVC.Controllers
                 {
                     if (actionName != "EditPool" && actionName != "Delete" && actionName != "EditRoom")
                     {
-                        TempData["Message"] = "You do not have admin right to access this page"; //This message will show once
+                        TempData["Message"] = "You do not have admin rights to access this page"; //This message will show once
                         filterContext.Result = new RedirectResult("~/Request/Index");
                     }
                 }
