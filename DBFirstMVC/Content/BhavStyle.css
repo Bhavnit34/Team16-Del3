@@ -10,13 +10,13 @@ select {
 }
 
 .mainHeader  img {
-	width:30%;
+	width:40%;
 	height:auto;
 	margin: 2% 0;
 }
 
 .mainHeader  nav{
-	background-color:#CC0066;
+	//background-color:#CC0066;
 	height: 40px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
