@@ -17,9 +17,7 @@ namespace DBFirstMVC.Controllers
 
 
         public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter, string priorityFilter)
-        {
-            if (sortOrder == null) //order by status as default
-                sortOrder = "status";            
+        {        
 
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;

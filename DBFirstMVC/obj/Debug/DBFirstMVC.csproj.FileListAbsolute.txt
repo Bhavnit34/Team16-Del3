@@ -559,7 +559,6 @@ C:\Users\cobp.LUNET.000\Desktop\Team16-Del3\DBFirstMVC\bin\Newtonsoft.Json.dll
 C:\Users\cobp.LUNET.000\Desktop\Team16-Del3\DBFirstMVC\bin\Antlr3.Runtime.pdb
 C:\Users\cobp.LUNET.000\Desktop\Team16-Del3\DBFirstMVC\bin\Newtonsoft.Json.xml
 C:\Users\cobp.LUNET.000\Desktop\Team16-Del3\DBFirstMVC\bin\System.Web.Optimization.xml
-C:\Users\cobp.LUNET.000\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\coas2\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.csprojResolveAssemblyReference.cache
 C:\Users\coas2\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.dll
 C:\Users\coas2\Desktop\Team16-Del3\DBFirstMVC\obj\Debug\DBFirstMVC.pdb
