@@ -50,8 +50,7 @@
 }
 </ol>
 <h2 >Allocated Rooms</h2>     
-<ol id="roomList1" style="background-color:lightyellow;">
-  
+<ol id="roomList1">
 @foreach(var item in Model.AllocatedRooms){
 
        <li><a style="cursor:pointer;" onclick="showRoomInfo(this.text);">@Html.DisplayFor(modelItem => item.RoomName)</a>  (@Html.DisplayFor(modelItem => item.GroupSize) students)   
@@ -102,7 +101,7 @@
 @Html.HiddenFor(model => model.Week.Week11)@Html.HiddenFor(model => model.Week.Week12)@Html.HiddenFor(model => model.Week.Week13)@Html.HiddenFor(model => model.Week.Week14)@Html.HiddenFor(model => model.Week.Week15)
 </div>
 
-<table>
+<table id="RequestTable">
       @{ var statusClass = "";
 
       var status = "";
@@ -326,7 +325,13 @@
 
             }
 
+            //color in modified request
+            if ($('#RequestTable').children().children().eq(2).children().last().text().indexOf("Modified") > -1)
+                $('#roomList1').attr("style", "background-color: lightyellow;");
+
+
         });
+
 
         //function to show room info of selected room
         function showRoomInfo(room) {
