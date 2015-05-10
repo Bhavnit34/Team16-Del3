@@ -21,7 +21,7 @@ namespace DBFirstMVC.Controllers
         //
         // GET: /Request/
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter, string priorityFilter)
         {
             if (sortOrder == null) //order by status as default
                 sortOrder = "status";
@@ -114,6 +114,16 @@ namespace DBFirstMVC.Controllers
                     requests = requests.Where(r => r.Semester == 2);
                     break;
                 default:
+                    break;
+            }
+
+            switch (priorityFilter)
+            {
+                case "true":
+                    requests = requests.Where(r => r.PriorityRequest == 1);
+                    break;
+                default:
+
                     break;
             }
             //applies round filter to query

@@ -68,6 +68,11 @@ Layout = "~/Views/Shared/adminView.cshtml";
                 @Html.RadioButton("semesterFilter", "", true) All
                 @Html.RadioButton("semesterFilter", "1", false) 1
                 @Html.RadioButton("semesterFilter", "2", false) 2
+                <div id="priorityFilterDiv" style="float:right;">
+                Priority:
+                @Html.CheckBox("priorityFilter", false)
+                </div>   
+
             </td>
             <td>
                 
@@ -292,11 +297,12 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
             $('#btnResetFilters').click(function () {
                 $('#SearchString').val("");
-                $('#yearSelectDiv').children().eq(0).prop('checked', true)
-                $('#statusFilterDiv').children().eq(0).prop('checked', true)
-                $('#roundFilterDiv').children().eq(0).prop('checked', true)
-                $('#typeFilterDiv').children().eq(0).prop('checked', true)
-                $('#semesterFilterDiv').children().eq(0).prop('checked', true)
+                $('#yearSelectDiv').children().eq(0).prop('checked', true);
+                $('#statusFilterDiv').children().eq(0).prop('checked', true);
+                $('#roundFilterDiv').children().eq(0).prop('checked', true);
+                $('#typeFilterDiv').children().eq(0).prop('checked', true);
+                $('#semesterFilterDiv').children().eq(0).prop('checked', true);
+                $('#priorityFilter').prop('checked', false);
             });
 
 
