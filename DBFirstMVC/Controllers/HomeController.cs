@@ -12,11 +12,6 @@ namespace DBFirstMVC.Controllers
         public ActionResult Index()
         {
             //get current round and semester
-            /*
-            @Scripts.Render("~/bundles/modernizr")
-            @Scripts.Render("~/bundles/jquery")
-             * 
-             */
             RoundAndSemester RandS = (from d in db.RoundAndSemesters
                                       where d.CurrentRound == true
                                       select d).FirstOrDefault();
@@ -30,6 +25,13 @@ namespace DBFirstMVC.Controllers
             }
             ViewBag.RoundEnd = RandS.EndDate.ToString().Substring(0, 10);
             ViewBag.CurrentSemester = RandS.Semester;
+
+            //get logged in state
+            if (Session["User"] != null)
+                ViewBag.LogOut = true;
+
+
+
             return View();
         }
 
