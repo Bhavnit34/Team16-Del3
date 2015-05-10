@@ -10,25 +10,61 @@
 <h2>Requests</h2>
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
 <a id="scrollToBottom">Bottom of Page</a>
-@using (Html.BeginForm())
-            {
-                <p>
-                    Find by module name/code: @Html.TextBox("SearchString")
-                    <input type="submit" value="Search" />
-                </p>
-            }
-@Html.ActionLink("Past/Present", "Index", new { yearSelect = ViewBag.YearFilter })
 
+@using (Html.BeginForm())
+         {
+<table style="float:left;">
+<tr>
+    <td>              
+        Find by module name/code: @Html.TextBox("SearchString")        
+    </td>   
+    <td>
+        Year:
+        @Html.RadioButton("yearSelect", "", true) Current Year
+        @Html.RadioButton("yearSelect", "past", false) Past Requests
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        Status: 
+        @Html.RadioButton("statusFilter", "", true) All
+        @Html.RadioButton("statusFilter", "approved", false) Approved
+        @Html.RadioButton("statusFilter", "pending", false) Pending        
+        @Html.RadioButton("statusFilter", "denied", false) Rejected
+        @Html.RadioButton("statusFilter", "modified", false) Approved but modified
+    </td>
+</tr>
+<tr>
+    <td>
+    Rounds:
+    @Html.RadioButton("roundFilter", "", true) All
+    @Html.RadioButton("roundFilter", "1", false) 1
+    @Html.RadioButton("roundFilter", "2", false) 2
+    @Html.RadioButton("roundFilter", "3", false) 3
+    @Html.RadioButton("roundFilter", "4", false) 4
+    @Html.RadioButton("roundFilter", "5", false) 5
+    </td>
+    <td>
+    Type:
+    @Html.RadioButton("typeFilter", "", true) All
+    @Html.RadioButton("typeFilter", "1", false) Lecture
+    @Html.RadioButton("typeFilter", "2", false) Tutorial
+    </td>
+</tr>
+<tr>
+    <td colspan="2">
+        <input type="submit" value="Apply Filters" style="float:right;" />
+    </td>
+</tr>
+</table>              
+            }
+        
 <table style="float:right;"> 
     <tr><td class="approved"></td><td>APPROVED</td></tr>
      <tr><td class="rejected"></td><td>REJECTED</td></tr>
        <tr><td class="pending"></td><td>PENDING</td></tr>
      <tr><td class="modified"></td><td>APPROVED BUT MODIFIED</td></tr>
     </table>
-
-<div id='Paging' style="text-align:center">
-    @Html.PagedListPager( (IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }) )
-</div>
 
 <table>
     <tr>
@@ -77,7 +113,6 @@
     {
         statusClass = "approved";
         status = "Approved";
-
     }
 
     else if (item.Status == 2.ToString())
@@ -88,16 +123,13 @@
     else if (item.Status == 3.ToString())
     {
         statusClass = "modified";
-        status = "Approved But Successful";
-
+        status = "Approved But Modified";
     }
 
     else
     {
         statusClass = "pending";
         status = "Pending";
-        
-
     }
 
 
@@ -110,15 +142,10 @@
     else if (item.DayID == 2)
     {
         day = "Tuesday";
-
-
     }
     else if (item.DayID == 3)
     {
         day = "Wednesday";
-
-
-
     }
 
     else if (item.DayID == 4)
@@ -166,14 +193,10 @@
             @item.SessionLength
         </td>
         <td>
-            @day
-           
+            @day           
         </td>
         <td>
             @time
-        </td>
-        <td>
-            @item.PeriodID
         </td>
         <td>
              @{
@@ -217,6 +240,10 @@
         </td>
     </tr>
 }
+</table>
+<div id='Paging' style="text-align:center">
+    @Html.PagedListPager( (IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }) )
+</div>
 <style type="text/css">
 
     .approved {
