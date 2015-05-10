@@ -53,8 +53,7 @@
                 lecturer.push($("#ModCode").val());
 
                 var strArr = lecturer.join("?");
-                alert(strArr);
-                //alert(lecturerID+" "+modcode);
+            
 
                 $.post('@Url.Action("DeleteLecturer1", "Request")', { id: strArr }, function (data) {
 

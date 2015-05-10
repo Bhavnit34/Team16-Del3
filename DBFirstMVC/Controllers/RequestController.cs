@@ -1181,33 +1181,12 @@ namespace DBFirstMVC.Controllers
             ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", userSession.Username);
             return View(module);
         }
-        [HttpPost]
+        [HttpPost]//edit module
         public ActionResult EditModule(Module module)
         {
 
 
-            //Delete rows with the ModCode that is going to be deleted from tables ModuleDegree and ModuleLecturer
-            var modDegree = db.ModuleDegrees.Where(a => a.ModCode == module.DeptCode).ToList();
-            var modLecturer = db.ModuleLecturers.Where(a => a.ModCode == module.DeptCode).ToList();
 
-            for (var i = 0; i < modDegree.Count; i++)
-            {
-                //find id of the row with the given modCode
-                var mID = modDegree[i].ModuleDegreeID;
-               ModuleDegree deg = db.ModuleDegrees.Find(mID);
-                //delete the row
-                db.ModuleDegrees.Remove(deg);
-                db.SaveChanges();
-            }
-            for (var i = 0; i < modLecturer.Count; i++)
-            {
-                //find id of the row with the given modCode
-                var lID = modLecturer[i].ModuleLecturerID;
-                ModuleLecturer lec = db.ModuleLecturers.Find(lID);
-                //delete the row
-                db.ModuleLecturers.Remove(lec);
-                db.SaveChanges();
-            }
             if (ModelState.IsValid)
             {
                 db.Entry(module).State = EntityState.Modified;
@@ -1284,12 +1263,7 @@ namespace DBFirstMVC.Controllers
         public ActionResult Edit(int id = 0)
         {
             Request request = db.Requests.Find(id);
-            /*
-            if(Convert.ToInt64(request.Status)> 0){
-                TempData["Message"] = "You cannot edit this request, it already has been processed";
-                return RedirectToAction("GetRequest", new { id = request.RequestID });
-            }
-            */
+          
                 
             RequestState state = new RequestState(); //This will be the model for the session
             if (request == null)

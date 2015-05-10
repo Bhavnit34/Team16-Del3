@@ -151,9 +151,9 @@
         case 9: time = "17:00";
             break;
     }
-    <tr>
-        <td  class ="@statusClass">
-            @item.User.Username
+  <tr >
+        <td class ="@statusClass">
+           @item.User.Username
         </td>
         <td>
             <b>@item.ModCode</b><br />
@@ -167,13 +167,9 @@
         </td>
         <td>
             @day
-           
         </td>
         <td>
             @time
-        </td>
-        <td>
-            @item.PeriodID
         </td>
         <td>
              @{
@@ -197,8 +193,6 @@
                 }
         
             }
-
-           
         </td>
         <td>
             @item.Semester
@@ -217,6 +211,7 @@
         </td>
     </tr>
 }
+    </table>
 <style type="text/css">
 
     .approved {
