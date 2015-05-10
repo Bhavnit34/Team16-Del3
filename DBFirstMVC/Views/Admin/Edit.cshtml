@@ -17,6 +17,64 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
     <fieldset>
         <legend>Request</legend>
+        @{
+        var day = "";
+        var time = "";
+
+       
+
+        
+        if (Model.DayID == 1)
+    {
+        day = "Monday";
+
+    }
+
+    else if (Model.DayID == 2)
+    {
+        day = "Tuesday";
+
+
+    }
+    else if (Model.DayID == 3)
+    {
+        day = "Wednesday";
+
+
+
+    }
+
+    else if (Model.DayID == 4)
+    {
+        day = "Thursday";
+    }
+    else
+    {
+        day = "Friday";
+    }
+       
+        switch (Model.PeriodID)
+    {
+        case 1: time = "9:00";
+            break;
+        case 2: time = "10:00";
+            break;
+        case 3: time = "11:00";
+            break;
+        case 4: time = "12:00";
+            break;
+        case 5: time = "13:00";
+            break;
+        case 6: time = "14:00";
+            break;
+        case 7: time = "15:00";
+            break;
+        case 8: time = "16:00";
+            break;
+        case 9: time = "17:00";
+            break;
+    }
+    }
 
         @Html.HiddenFor(model => model.RequestID)
 
@@ -60,16 +118,16 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.LabelFor(model => model.DayID, "Day")
         </div>
         <div class="editor-field">
-             @Html.DisplayFor(model => model.DayID)
+             @day
              @Html.HiddenFor(model => model.DayID)
             @Html.ValidationMessageFor(model => model.DayID)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.PeriodID, "Period")
+            @Html.LabelFor(model => model.PeriodID, "Time")
         </div>
         <div class="editor-field">
-              @Html.DisplayFor(model => model.PeriodID)
+              @time
              @Html.HiddenFor(model => model.PeriodID)
             @Html.ValidationMessageFor(model => model.PeriodID)
         </div>
@@ -78,7 +136,15 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.LabelFor(model => model.PriorityRequest, "Priority Request")
         </div>
         <div class="editor-field">
-             @Html.DisplayFor(model => model.PriorityRequest)
+              @{
+                    if(Model.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
              @Html.HiddenFor(model => model.PriorityRequest)
             @Html.ValidationMessageFor(model => model.PriorityRequest)
         </div>
@@ -87,7 +153,15 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.LabelFor(model => model.AdhocRequest, "AdHoc")
         </div>
         <div class="editor-field">
-              @Html.DisplayFor(model => model.AdhocRequest)
+              @{
+                    if(Model.AdhocRequest == 1){
+                        @Html.CheckBox("Adhoc",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Adhoc",false, new{@disabled = "disabled"})
+                    }
+        
+              }
              @Html.HiddenFor(model => model.AdhocRequest)
             @Html.ValidationMessageFor(model => model.AdhocRequest)
         </div>
@@ -110,17 +184,14 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @Html.ValidationMessageFor(model => model.Semester)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.WeekID, "Week")
-        </div>
-        <div class="editor-field">
-              @Html.DisplayFor(model => model.WeekID)
+   
+       
              @Html.HiddenFor(model => model.WeekID)
-            @Html.ValidationMessageFor(model => model.WeekID)
-        </div>
+         
+       
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RoundID)
+            @Html.LabelFor(model => model.RoundID, "Round")
         </div>
         <div class="editor-field">
             @Html.DisplayFor(model => model.RoundID)
@@ -131,6 +202,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
         <div class="editor-label">
             @Html.LabelFor(model => model.Status)
         </div>
+             
         <div class="editor-field">
                      @{
                             List<SelectListItem> listItems= new List<SelectListItem>();

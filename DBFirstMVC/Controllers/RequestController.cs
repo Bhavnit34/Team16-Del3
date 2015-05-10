@@ -21,7 +21,7 @@ namespace DBFirstMVC.Controllers
         //
         // GET: /Request/
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter, string priorityFilter)
         {
 
 
@@ -113,6 +113,16 @@ namespace DBFirstMVC.Controllers
                     requests = requests.Where(r => r.Semester == 2);
                     break;
                 default:
+                    break;
+            }
+
+            switch (priorityFilter)
+            {
+                case "true":
+                    requests = requests.Where(r => r.PriorityRequest == 1);
+                    break;
+                default:
+
                     break;
             }
             //applies round filter to query
@@ -1518,8 +1528,8 @@ namespace DBFirstMVC.Controllers
                     return RedirectToAction("GetModuleInfo/" + moduleLecturer.ModCode);
                 }
                 else {
-                    TempData["error"] = "Lecturer is already assigned for this module";
-                    ViewData["error"] = TempData["error"];
+                    TempData["Message"] = "Lecturer is already assigned for this module";
+                    //ViewData["error"] = TempData["error"];
                     ViewBag.id = moduleLecturer.ModCode;
                     User userSess = (User)HttpContext.Session["User"];
                     ViewBag.Dept = userSess.Username;
@@ -1611,8 +1621,8 @@ namespace DBFirstMVC.Controllers
                 else {
 
 
-                    TempData["error"] = "Degree is already assigned for this module";
-                    ViewData["error"] = TempData["error"];
+                    TempData["Message"] = "Degree is already assigned for this module";
+                   // ViewData["error"] = TempData["error"];
                     ViewBag.id = moduleDegree.ModCode;
                     User userSess = (User)HttpContext.Session["User"];
                     ViewBag.Dept = userSess.Username;
@@ -2015,7 +2025,7 @@ namespace DBFirstMVC.Controllers
             foreach (AllocatedRoom ar in AR)
             {
                 db.AllocatedRooms.Remove(ar);
-                db.SaveChanges();
+              
             }
 
 

@@ -16,10 +16,8 @@ namespace DBFirstMVC.Controllers
         private team16Entities db = new team16Entities();
 
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter)
-        {
-            if (sortOrder == null) //order by status as default
-                sortOrder = "status";            
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter, string priorityFilter)
+        {        
 
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
@@ -121,6 +119,16 @@ namespace DBFirstMVC.Controllers
                     requests = requests.Where(r => r.Semester == 2);
                     break;
                 default:
+                    break;
+            }
+
+            switch (priorityFilter)
+            {
+                case "true":
+                    requests = requests.Where(r => r.PriorityRequest == 1);
+                    break;
+                default:
+
                     break;
             }
 
@@ -388,7 +396,7 @@ namespace DBFirstMVC.Controllers
 
             return Json(result);
 
-            //this is where u finished 
+            
         }
         //assign room allocations for a particular room 
         [HttpPost]
@@ -716,9 +724,7 @@ namespace DBFirstMVC.Controllers
 
 
 
-            //}
-
-            //}
+         
 
             return Json(Url.Action("GetRequest", "Admin", new { id = "__id__" }));
 
@@ -808,10 +814,11 @@ namespace DBFirstMVC.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(facility).State = EntityState.Modified;
+                TempData["Message"] = "Facility" + " " + facility.FacilityName + " " + "edited.";
                 db.SaveChanges();
                 return RedirectToAction("ShowFacility");
             }
-
+           
             return View(facility);
         }
 
@@ -836,11 +843,7 @@ namespace DBFirstMVC.Controllers
             var fcltDelete = db.RoomFacilities.Where(a => a.FacilityID == id).ToList();
             var facRequest = db.FacilityRequests.Where(a => a.FacilityID == id).ToList();
 
-            //foreach (var vp in fcltDelete)
-            //  {
-            //  db.RoomFacilities.Remove(vp);
-            //  db.SaveChanges();
-            //}
+      
             for (var i = 0; i < fcltDelete.Count; i++)
             {
                 //find id of the row with the given requestID
@@ -865,10 +868,10 @@ namespace DBFirstMVC.Controllers
 
             Facility facility = db.Facilities.Find(id);
             db.Facilities.Remove(facility);
+            TempData["Message"] = "Facility" + " " + facility.FacilityName + " " + "deleted.";
             db.SaveChanges();
-
-
-
+         
+  
             return RedirectToAction("ShowFacility");
         }
 
@@ -888,6 +891,7 @@ namespace DBFirstMVC.Controllers
             {
                 db.Facilities.Add(facility);
                 db.SaveChanges();
+                TempData["Message"] = "New facility" + " " + facility.FacilityName + " " + "created.";
                 return RedirectToAction("ShowFacility");
             }
 
@@ -913,6 +917,7 @@ namespace DBFirstMVC.Controllers
             {
                 db.Rooms.Add(room);
                 db.SaveChanges();
+                TempData["Message"] = "New facility" + " " + room.RoomName + " " + "created.";
                 return RedirectToAction("EditPool");
             }
 
@@ -1005,17 +1010,7 @@ namespace DBFirstMVC.Controllers
 
             }
 
-            //   }
-            // else { //if status accepted or accepted but modified 
-
-
-
-
-
-
-
-            //  }
-
+    
 
             return View();
         }
@@ -1038,7 +1033,14 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult Edit(Request request)
         {
+            if (request.Status == null) {
 
+                TempData["Message"] = "Please select appropriate status.";
+                
+
+
+                return View(request);
+            }
 
 
 
@@ -1074,7 +1076,7 @@ namespace DBFirstMVC.Controllers
                 return HttpNotFound();
                 // return RedirectToAction("Index");
             }
-
+          
             ViewBag.BuildingCode = new SelectList(db.Buildings, "BuildingCode", "BuildingName", selected);
             ViewBag.DeptCode = new SelectList(db.Depts, "DeptCode", "DeptName", selected1);
             return View(room);
@@ -1100,9 +1102,10 @@ namespace DBFirstMVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             //Delete any associated room requests
+            //Delete any associated room requests
             var ReqToRooms = (from d in db.RequestToRooms
-                              where d.RequestID == id
-                              select d).ToList();
+                                  where d.RequestID == id
+                                  select d).ToList();
 
             for (var i = 0; i < ReqToRooms.Count; i++)
             {
@@ -1116,7 +1119,19 @@ namespace DBFirstMVC.Controllers
                 RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
                 db.RoomRequests.Remove(RoomRow);
                 db.SaveChanges();
+            } 
+
+            //Delete rows from AllocatedRooms table
+            var AR = from d in db.AllocatedRooms
+                     where d.RequestID == id
+                     select d;
+            foreach (AllocatedRoom ar in AR)
+            {
+                db.AllocatedRooms.Remove(ar);
+              
             }
+
+
 
             //Delete any associated facility requests
             var FacilityRequests = (from d in db.FacilityRequests
@@ -1138,8 +1153,10 @@ namespace DBFirstMVC.Controllers
             Request request = db.Requests.Find(id);
             db.Requests.Remove(request);
             db.SaveChanges();
+            TempData["Message"] = "Request" + " " + request.RequestID + " " + "deleted.";
             return RedirectToAction("Index");
         }
+
 
         //update changes into room table
         [HttpPost]
@@ -1149,6 +1166,7 @@ namespace DBFirstMVC.Controllers
             {
                 db.Entry(room).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Room" + " " + room.RoomName + " " + "edited.";
                 return RedirectToAction("EditPool");
             }
 
@@ -1194,7 +1212,7 @@ namespace DBFirstMVC.Controllers
                     }
                     db.SaveChanges();
                 }
-
+             
                 return RedirectToAction("ChangeRoundDates");
             }
 
@@ -1260,6 +1278,7 @@ namespace DBFirstMVC.Controllers
             Room room = db.Rooms.Find(id1);
             db.Rooms.Remove(room);
             db.SaveChanges();
+            TempData["Message"] = "Room" + " " + room.RoomName + " " + "deleted.";
             return RedirectToAction("EditPool");
         }
 
