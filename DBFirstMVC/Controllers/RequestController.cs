@@ -880,10 +880,11 @@ namespace DBFirstMVC.Controllers
         public ActionResult getMatchedRooms(string facList)
         {
             string[] facs = facList.Split(','); //turn string concatenated facilities into an array
-           
+            User userSession = (User)HttpContext.Session["User"]; //get current user to filter out pool rooms of other depts
+            var currentUser = userSession.Username;
             //Query to return all rooms that have at least one of the given facilities
             var room= from d in db.RoomFacilities
-                       where (facs.Any(fac => d.Facility.FacilityName.Equals(fac)))
+                       where (facs.Any(fac => d.Facility.FacilityName.Equals(fac)) && ((d.Room.DeptCode == null) || (d.Room.DeptCode == currentUser)) )
                        select d;
             var len = facs.Length;
 
