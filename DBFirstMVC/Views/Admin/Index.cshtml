@@ -252,7 +252,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
 </table>
 
-<div id='Paging' style="text-align:center">
+<div id='Paging' style="text-align:center" class="pager">
     @Html.PagedListPager((IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }))
 </div>
 
