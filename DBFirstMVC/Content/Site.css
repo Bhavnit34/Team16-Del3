@@ -125,12 +125,9 @@ font-family: Arial, sans-serif;
     width:120%;
     height:65em;
     position:relative;
-
     -webkit-border-radius: 19px 18px;
-//-moz-border-radius: 22px / 18px;
-//border-radius: 22px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:center;
+    text-align:center;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 #left {
@@ -138,15 +135,12 @@ text-align:center;
     float: left;
     width: 49em;
     height:18em;
-    margin-top:3px;
+    margin-top:1em;
     height: 200px;
-    background-color:none;
-
-    // -webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 19px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:center;
+    background-color:#415f66;
+    margin-left:2em;
+    text-align:center;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 
@@ -158,14 +152,11 @@ text-align:center;
 
 #pickweeks
 {
-    background-color:none;
+    background-color:#415f66;
     margin-top: 5em;
-   // border:double;
-
-   // -webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 20px / 19px;
-box-shadow: 2px 2px 6px rgba(0,0,0,10);
+    margin-left:2em;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    width:auto;
 }
 
 #facilities
@@ -173,15 +164,11 @@ box-shadow: 2px 2px 6px rgba(0,0,0,10);
    //border: double;
     margin-top: 30em;
     margin-bottom: 5px;
-    margin-left:5px;
+    margin-left:2em;
     width:17em;
-    background-color:none;
-
-// -webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 19px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:left;
+    background-color:#415f66;
+    text-align:left;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 #facListDiv
@@ -200,53 +187,42 @@ text-align:left;
 }
 
 #dayselect {
-    //border: double;
     width:18em;
     height:22em;
     margin-top:-13em;
     float:left;
-
-   //-webkit-border-radius: 22px / 19px;
-//-moz-border-radius: 22px / 19px;
-//border-radius: 22px / 19px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:center;
-background-color:none;
+    margin-left:-2.5em;
+    text-align:center;
+    background-color:#415f66;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 
 #right {
-   border:none;
+    border:none;
     padding-right:20em;
     width: 45em;
     float:right;
     margin-top:-32em;
-
-    //-webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 19px / 18px;
-box-shadow:none;
-background-color:none;
+    margin-left:2em;
+    box-shadow:none;
+    background-color:none;
    }
 
-#parks
-{
-   // border:double;
+#parks{
     float: left;
-   // -webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 19px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:center;
-background-color:none;
-margin-left:1em;
-width:50%;
-position:relative;
+    text-align:center;
+    background-color:#415f66;
+    margin-left:1em;
+    width:50%;
+    position:relative;
+    margin-left:2em;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
-#listOfRoomsDiv
-{
-    padding-bottom: 10px;
+#listOfRoomsDiv {
+   padding-bottom: 10px;
+   margin-left:10px;
 }
 
 #specialr
@@ -254,32 +230,12 @@ position:relative;
     //border:double;
     width:25em;
     height:18em;
-    margin-left: 32em;
-    //-webkit-border-radius: 19px 18px;
-//-moz-border-radius: 19px / 18px;
-//border-radius: 19px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-text-align:center;
-background-color:none;
+    margin-left: 34em;
+    text-align:center;
+    background-color:#415f66;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
-/*
-#priority
-{
-    
-    margin-top: 19em;
-    border:double;
-    width:60%;
-    position:relative;
-
-    -webkit-border-radius: 19px 18px;
--moz-border-radius: 19px / 18px;
-border-radius: 19px / 18px;
-box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-background-color:rgba(51, 0, 102, 1);
-}
-
-*/
 
 #buttons {
     float:left;
@@ -351,18 +307,13 @@ footer {
     background-color:rgba(51, 0, 102, 1);
     color:white;
     border:1px solid white;
-    text-align:center;
 }
 
 .freeTile {
     background-color:none;
     color:black;
     padding: 2em 1em 2em 1em;
-    text-align:center;
 }
-
-
-
 
 
 
@@ -401,13 +352,13 @@ ul#menu {
     background-color: #fff;
 }
 
-    .featured .content-wrapper {
-        background-color: #fff;
-        background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
-        background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+  .featured .content-wrapper {
+       // background-color: #fff;
+       // background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        // background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        // background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
+        // background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        // background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         color: #5D008F;
         padding: 20px 40px 30px 40px;
     }
@@ -463,7 +414,7 @@ ol.round {
 	        -webkit-border-radius:10px;
             background-color:#fff;
 	        display:inline-block;
-            width:17%;
+            width:19%;
             height:60px;
         }
 
@@ -473,10 +424,10 @@ ol.round {
 	        -moz-border-radius: 10px;
 	        -webkit-border-radius:10px;
             background-color:#fff;
-	        width:17%;
+	        width:18%;
             height:60px;
 	        display:inline-block;
-            margin-left:10em;
+            margin-left:8em;
         }
 
         ol.round li.three {
@@ -485,10 +436,10 @@ ol.round {
 	        -moz-border-radius: 10px;
 	        -webkit-border-radius:10px;
             background-color:#fff;
-	        width:17%;
+	        width:19%;
             height:60px;
 	        display:inline-block;
-            margin-left:11em;
+            margin-left:8em;
         }
 
 
@@ -539,7 +490,6 @@ aside {
 
 .label {
     font-weight: 700;
-  
 }
 
 /* login page */
@@ -633,7 +583,7 @@ label {
     font-size: 1.3em;
     font-weight: 600;
     text-decoration:underline;
-      text-align:center;
+    text-align:center;
 }
 
 label.checkbox {
@@ -769,7 +719,7 @@ th {
     }
 
     th a:link, th a:visited, th a:active, th a:hover {
-        color: #fff;
+        color: #rgba(51, 0, 102, 1);
         font-weight: 600;
         text-decoration: none;
         padding: 0;
