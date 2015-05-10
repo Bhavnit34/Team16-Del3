@@ -1016,9 +1016,10 @@ namespace DBFirstMVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             //Delete any associated room requests
+            //Delete any associated room requests
             var ReqToRooms = (from d in db.RequestToRooms
-                              where d.RequestID == id
-                              select d).ToList();
+                                  where d.RequestID == id
+                                  select d).ToList();
 
             for (var i = 0; i < ReqToRooms.Count; i++)
             {
@@ -1032,7 +1033,19 @@ namespace DBFirstMVC.Controllers
                 RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
                 db.RoomRequests.Remove(RoomRow);
                 db.SaveChanges();
+            } 
+
+            //Delete rows from AllocatedRooms table
+            var AR = from d in db.AllocatedRooms
+                     where d.RequestID == id
+                     select d;
+            foreach (AllocatedRoom ar in AR)
+            {
+                db.AllocatedRooms.Remove(ar);
+              
             }
+
+
 
             //Delete any associated facility requests
             var FacilityRequests = (from d in db.FacilityRequests
@@ -1056,6 +1069,7 @@ namespace DBFirstMVC.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
 
         //update changes into room table
         [HttpPost]

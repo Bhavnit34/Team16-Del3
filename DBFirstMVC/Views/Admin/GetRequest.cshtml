@@ -267,7 +267,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @time
         </td>
         <td>
-            <!--@Html.DisplayFor(modelItem => modelItem.Request.PriorityRequest)-->
+            
             @{
                     if(Model.Request.PriorityRequest == 1){
                         @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
