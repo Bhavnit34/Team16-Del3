@@ -12,6 +12,11 @@ namespace DBFirstMVC.Controllers
         public ActionResult Index()
         {
             //get current round and semester
+            /*
+            @Scripts.Render("~/bundles/modernizr")
+            @Scripts.Render("~/bundles/jquery")
+             * 
+             */
             RoundAndSemester RandS = (from d in db.RoundAndSemesters
                                       where d.CurrentRound == true
                                       select d).FirstOrDefault();
@@ -41,5 +46,6 @@ namespace DBFirstMVC.Controllers
 
             return View();
         }
+
     }
 }

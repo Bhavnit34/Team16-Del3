@@ -16,7 +16,7 @@ namespace DBFirstMVC.Controllers
         private team16Entities db = new team16Entities();
 
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter)
         {
             if (sortOrder == null) //order by status as default
                 sortOrder = "status";
@@ -77,6 +77,60 @@ namespace DBFirstMVC.Controllers
                     break;
                 default:
                     requests = requests.Where(r => r.Year == year);
+                    break;
+            }
+
+            //applies status filter to query
+            switch (statusFilter)
+            {
+                case "approved":
+                    requests = requests.Where(r => r.Status == "1");
+                    break;
+                case "denied":
+                    requests = requests.Where(r => r.Status == "2");
+                    break;
+                case "pending":
+                    requests = requests.Where(r => r.Status == "0");
+                    break;
+                case "modified":
+                    requests = requests.Where(r => r.Status == "3");
+                    break;
+                default:
+
+                    break;
+            }
+            //applies round filter to query
+            switch (roundFilter)
+            {
+                case "1":
+                    requests = requests.Where(r => r.SessionType == "Lecture");
+                    break;
+                case "2":
+                    requests = requests.Where(r => r.SessionType == "Tutorial");
+                    break;
+                default:
+                    break;
+            }
+
+            switch (roundFilter)
+            {
+                case "1":
+                    requests = requests.Where(r => r.RoundID == 1);
+                    break;
+                case "2":
+                    requests = requests.Where(r => r.RoundID == 2);
+                    break;
+                case "3":
+                    requests = requests.Where(r => r.RoundID == 3);
+                    break;
+                case "4":
+                    requests = requests.Where(r => r.RoundID == 4);
+                    break;
+                case "5":
+                    requests = requests.Where(r => r.RoundID == 5);
+                    break;
+                default:
+
                     break;
             }
 
