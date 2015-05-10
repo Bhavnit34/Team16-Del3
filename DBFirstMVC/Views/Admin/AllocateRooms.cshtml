@@ -384,6 +384,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
                     if ($(this).val() != "")
                         checkArray.push($(this).val());
                 });
+
                 function isEven(n) {
                     return (n % 2 == 0);
                 }
@@ -411,7 +412,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
                 if (flag == 0) {
                     if (size == '@ViewBag.GroupSize') {
-                        // alert(checkArray);
+                       
                         var strArr = checkArray.join("?");
                         $.post('@Url.Action("CheckRooms", "Admin")', { id: strArr }, function (data) {
 
@@ -425,7 +426,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
                                 alert("Room number/s :" + "\n" + showError + "do/does not exist or you exceeded capacity for the room/rooms");
 
                             }
-                                //****************check rooms 
+                               
                             else {
                                 var reqId = '@Model.Request.RequestID';
                     

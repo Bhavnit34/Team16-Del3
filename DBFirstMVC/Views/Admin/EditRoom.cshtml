@@ -30,8 +30,8 @@ else{
             @Html.LabelFor(model => model.RoomName)
         </div>
           <div class="editor-field">
-        @Html.EditorFor(model => model.RoomName)
-        @Html.ValidationMessageFor(model => model.RoomName)
+            @Html.TextBoxFor(model => model.RoomName, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.RoomName)
         </div>
          <div class="editor-label">
             @Html.LabelFor(model => model.BuildingCode, "Building")

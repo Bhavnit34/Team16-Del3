@@ -1000,7 +1000,7 @@ namespace DBFirstMVC.Controllers
             }
 
             //return View(request);
-            return View(new RequestInfo() { Request = request });
+            return View(request);
         }
 
 
@@ -1017,7 +1017,7 @@ namespace DBFirstMVC.Controllers
             {
                 db.Entry(request).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("GetRequest/" + request.RequestID);
             }
 
             return View(request);

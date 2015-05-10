@@ -142,21 +142,6 @@ Layout = "~/Views/Shared/adminView.cshtml";
 
                 }
 
-                //first version
-
-                // for (var i = 0; i < facilities.length; i++) {
-                //  var myID = facilities[i];
-                // var link = '@Html.ActionLink("Delete Facility", "DeleteRoomFac", new { id1 = "-1", id2="-2" })';
-                // link = link.replace("-1", myID);
-                // link = link.replace("-2", room);
-                // html += "<tr>";
-                // html += "<td>" + facilities[i] + "</td>";
-                // html += "<td>" + link + "</td>";
-                //html += "</tr>";
-
-                //  }
-
-
 
 
                 $.post('@Url.Action("GetAllFacility", "Admin")', function (data) {

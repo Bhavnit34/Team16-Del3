@@ -59,7 +59,7 @@
                 degree.push($("#ModCode").val());
 
                 var strArr = degree.join("?");
-                alert(strArr);
+
              
 
                 $.post('@Url.Action("DeleteDegree1", "Request")', { id:strArr }, function (data) {

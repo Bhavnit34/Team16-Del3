@@ -20,8 +20,8 @@
         </div>
            
           <div class="editor-field">
-        @Html.EditorFor(model => model.ModCode)
-        @Html.ValidationMessageFor(model => model.ModCode)
+        @Html.TextBoxFor(model => model.ModCode, new { @readonly = "readonly" } )
+        @Html.HiddenFor(model => model.ModCode)
       
         </div>
            
