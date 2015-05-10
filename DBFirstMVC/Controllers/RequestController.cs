@@ -21,7 +21,7 @@ namespace DBFirstMVC.Controllers
         //
         // GET: /Request/
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter)
         {
             if (sortOrder == null) //order by status as default
                 sortOrder = "status";
@@ -104,8 +104,20 @@ namespace DBFirstMVC.Controllers
                     
                     break;
             }
+
+            switch (semesterFilter)
+            {
+                case "1":
+                    requests = requests.Where(r => r.Semester == 1);
+                    break;
+                case "2":
+                    requests = requests.Where(r => r.Semester == 2);
+                    break;
+                default:
+                    break;
+            }
             //applies round filter to query
-            switch (roundFilter)
+            switch (typeFilter)
             {
                 case "1":
                     requests = requests.Where(r => r.SessionType == "Lecture");
@@ -133,6 +145,9 @@ namespace DBFirstMVC.Controllers
                     break;
                 case "5":
                     requests = requests.Where(r => r.RoundID == 5);
+                    break;
+                case "6":
+                    requests = requests.Where(r => r.RoundID == 6);
                     break;
                 default:
 
@@ -209,9 +224,22 @@ namespace DBFirstMVC.Controllers
                     requests = requests.OrderBy(r => r.Module.Title);
                     break;
             }
+            //controls page size
+            var pageSize = 10;
 
+            if (statusFilter == "" && roundFilter == "" && typeFilter == "" && semesterFilter == "" && searchString == "")
+            {
+                pageSize = 10;
+            }
+            else
+            {
+                pageSize = requests.Count();
+                if (pageSize < 1)
+                    pageSize = 1;
+            }
             //creates the page for the view
-            var requestPage = requests.ToPagedList(pageIndex, 10);
+            var requestPage = requests.ToPagedList(pageIndex, pageSize);
+            
             ViewBag.Page = requestPage;
 
             return View();
@@ -1163,8 +1191,14 @@ namespace DBFirstMVC.Controllers
             var row = db.Depts.Find(userSession.Username);
 
 
-            ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username));
-
+            
+            if (userSession.Username == "CA")
+            {
+                ViewBag.Modules = db.Modules;
+            }
+            else{
+                ViewBag.Modules = db.Modules.Where(a => a.DeptCode.Equals(userSession.Username));
+            }
 
 
             return View();

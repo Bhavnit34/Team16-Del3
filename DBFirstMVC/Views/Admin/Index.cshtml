@@ -28,14 +28,14 @@ Layout = "~/Views/Shared/adminView.cshtml";
             <td>
                 Find by module name/code: @Html.TextBox("SearchString")
             </td>
-            <td>
+            <td id="yearSelectDiv">
                 Year:
                 @Html.RadioButton("yearSelect", "", true) Current Year
                 @Html.RadioButton("yearSelect", "past", false) Past Requests
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="2" id="statusFilterDiv">
                 Status:
                 @Html.RadioButton("statusFilter", "", true) All
                 @Html.RadioButton("statusFilter", "approved", false) Approved
@@ -45,7 +45,7 @@ Layout = "~/Views/Shared/adminView.cshtml";
             </td>
         </tr>
         <tr>
-            <td>
+            <td id="roundFilterDiv">
                 Rounds:
                 @Html.RadioButton("roundFilter", "", true) All
                 @Html.RadioButton("roundFilter", "1", false) 1
@@ -53,8 +53,9 @@ Layout = "~/Views/Shared/adminView.cshtml";
                 @Html.RadioButton("roundFilter", "3", false) 3
                 @Html.RadioButton("roundFilter", "4", false) 4
                 @Html.RadioButton("roundFilter", "5", false) 5
+                @Html.RadioButton("roundFilter", "6", false) Adhoc
             </td>
-            <td>
+            <td id="typeFilterDiv">
                 Type:
                 @Html.RadioButton("typeFilter", "", true) All
                 @Html.RadioButton("typeFilter", "1", false) Lecture
@@ -62,8 +63,16 @@ Layout = "~/Views/Shared/adminView.cshtml";
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td id="semesterFilterDiv">
+                Semester:
+                @Html.RadioButton("semesterFilter", "", true) All
+                @Html.RadioButton("semesterFilter", "1", false) 1
+                @Html.RadioButton("semesterFilter", "2", false) 2
+            </td>
+            <td>
+                
                 <input type="submit" value="Apply Filters" style="float:right;" />
+                <input type="button" id="btnResetFilters" value="Reset Filters" style="float:right;" />
             </td>
         </tr>
     </table>
@@ -280,6 +289,19 @@ Layout = "~/Views/Shared/adminView.cshtml";
             $('#scrollToBottom').click(function () {
                 window.scrollTo(0, document.body.scrollHeight);
             });
+
+            $('#btnResetFilters').click(function () {
+                $('#SearchString').val("");
+                $('#yearSelectDiv').children().eq(0).prop('checked', true)
+                $('#statusFilterDiv').children().eq(0).prop('checked', true)
+                $('#roundFilterDiv').children().eq(0).prop('checked', true)
+                $('#typeFilterDiv').children().eq(0).prop('checked', true)
+                $('#semesterFilterDiv').children().eq(0).prop('checked', true)
+            });
+
+
+
         });
+
      </script>
     }

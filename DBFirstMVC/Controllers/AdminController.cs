@@ -16,14 +16,14 @@ namespace DBFirstMVC.Controllers
         private team16Entities db = new team16Entities();
 
 
-        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter)
+        public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter)
         {
             if (sortOrder == null) //order by status as default
-                sortOrder = "status";
+                sortOrder = "status";            
 
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
-
+       
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
@@ -40,7 +40,7 @@ namespace DBFirstMVC.Controllers
             ViewBag.PeriodSortParm = sortOrder == "period" ? "period_desc" : "period";
 
             //alternates year parameter for switch statement
-            ViewBag.YearFilter = String.IsNullOrEmpty(yearSelect) ? "past" : "";
+            //ViewBag.YearFilter = String.IsNullOrEmpty(yearSelect) ? "past" : "";
 
             var requests = from r in db.Requests
                            where r.UserID == userSession.UserID
@@ -99,14 +99,26 @@ namespace DBFirstMVC.Controllers
 
                     break;
             }
-            //applies round filter to query
-            switch (roundFilter)
+            //applies type filter to query
+            switch (typeFilter)
             {
                 case "1":
                     requests = requests.Where(r => r.SessionType == "Lecture");
                     break;
                 case "2":
                     requests = requests.Where(r => r.SessionType == "Tutorial");
+                    break;
+                default:
+                    break;
+            }
+
+            switch (semesterFilter)
+            {
+                case "1":
+                    requests = requests.Where(r => r.Semester == 1);
+                    break;
+                case "2":
+                    requests = requests.Where(r => r.Semester == 2);
                     break;
                 default:
                     break;
@@ -128,6 +140,9 @@ namespace DBFirstMVC.Controllers
                     break;
                 case "5":
                     requests = requests.Where(r => r.RoundID == 5);
+                    break;
+                case "6":
+                    requests = requests.Where(r => r.RoundID == 6);
                     break;
                 default:
 
@@ -204,12 +219,26 @@ namespace DBFirstMVC.Controllers
                     requests = requests.OrderBy(r => r.Module.Title);
                     break;
             }
+            
+            var pageSize = 10;
 
-            //creates the page for the view
-            var requestPage = requests.ToPagedList(pageIndex, 10);
-            ViewBag.Page = requestPage;
+            if ((statusFilter == "" && roundFilter == "" && typeFilter == "" && semesterFilter == "" && searchString == "") || (statusFilter == null))
+            {
+                pageSize = 10;
+            }
+            else {
+                pageSize = requests.Count();
+                if (pageSize < 1)
+                    pageSize = 1;
+            }
+                //creates the page for the view
+                var requestPage = requests.ToPagedList(pageIndex, pageSize);
 
-            return View();
+                ViewBag.Page = requestPage;
+
+                return View();
+            
+           
         }
 
 
