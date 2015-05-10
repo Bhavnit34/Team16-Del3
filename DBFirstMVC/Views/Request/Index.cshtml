@@ -5,8 +5,8 @@
     ViewBag.Title = "Index";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
-<link href="/team16web/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
+<link href="/team16web/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <h2>Requests</h2>
 @Html.ActionLink("Next Round", "NextRound", null, new { onclick="return confirm('Are you sure you want to process requests and move onto the next round?')" }) |
 <a id="scrollToBottom">Bottom of Page</a>
@@ -241,8 +241,10 @@
     </tr>
 }
 </table>
-<div id='Paging' style="text-align:center">
-    @Html.PagedListPager( (IPagedList)ViewBag.Page, page => Url.Action("Index", new { page }) )
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<div id='Paging' style="text-align:center;" class="pager">
+    
+    @Html.PagedListPager((IPagedList)ViewBag.Page, page => Url.Action("Index", new { page = page }))
 </div>
 <style type="text/css">
 

@@ -396,7 +396,16 @@ namespace DBFirstMVC.Controllers
 
            
             myRequest.Request.Status = "0";
-            myRequest.Request.Year = "2014/15";
+
+            //finds the current academic year
+            DateTime current = DateTime.Now;
+            string year = current.Year + "/" + (current.Year - 1999);
+
+            if (current.Month >= 1 && current.Month <= 6)
+            {
+                year = (current.Year - 1) + "/" + (current.Year - 2000);
+            }
+            myRequest.Request.Year = year;
 
             //take in the string array of weeks and add it to the week table (if it doesnt already exist)
             List<string> weeks = new List<string>();
