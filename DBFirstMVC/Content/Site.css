@@ -118,34 +118,174 @@ font-family: Arial, sans-serif;
 }
 
  #container {
-    background-color: #415f66;
+    background-color:#415f66;
     border-style: double;
     border-color: rgba(51, 0, 102, 1);
     color: #fff;
     width:120%;
-    height:50em;
+    height:65em;
+    position:relative;
+
+    -webkit-border-radius: 19px 18px;
+//-moz-border-radius: 22px / 18px;
+//border-radius: 22px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:center;
 }
 
 #left {
+ //border:double;
     float: left;
-    width: 100px;
-    margin-left:5px;
+    width: 49em;
+    height:18em;
+    margin-top:3px;
+    height: 200px;
+    background-color:none;
+
+    // -webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 19px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:center;
 }
+
+
+#studentsOnModuleDiv
+{
+    font-size: 15px;
+    padding-bottom:20px;
+}
+
+#pickweeks
+{
+    background-color:none;
+    margin-top: 5em;
+   // border:double;
+
+   // -webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 20px / 19px;
+box-shadow: 2px 2px 6px rgba(0,0,0,10);
+}
+
+#facilities
+{
+   //border: double;
+    margin-top: 30em;
+    margin-bottom: 5px;
+    margin-left:5px;
+    width:17em;
+    background-color:none;
+
+// -webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 19px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:left;
+}
+
+#facListDiv
+{
+    display:inline;
+    font-size:17px;
+}
+  
 
 #center {
     display: inline-block;
-    margin-left:38em;
     width: 100px;
+    float:left;
+    position:absolute;
+    margin-left:36em;
+}
+
+#dayselect {
+    //border: double;
+    width:18em;
+    height:22em;
+    margin-top:-13em;
+    float:left;
+
+   //-webkit-border-radius: 22px / 19px;
+//-moz-border-radius: 22px / 19px;
+//border-radius: 22px / 19px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:center;
+background-color:none;
 }
 
 
 #right {
-    float: right;
-    width: 250px;
-    //margin-top:50em;
+   border:none;
+    padding-right:20em;
+    width: 45em;
+    float:right;
+    margin-top:-32em;
+
+    //-webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 19px / 18px;
+box-shadow:none;
+background-color:none;
    }
 
+#parks
+{
+   // border:double;
+    float: left;
+   // -webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 19px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:center;
+background-color:none;
+margin-left:1em;
+width:50%;
+position:relative;
+}
 
+#listOfRoomsDiv
+{
+    padding-bottom: 10px;
+}
+
+#specialr
+{
+    //border:double;
+    width:25em;
+    height:18em;
+    margin-left: 32em;
+    //-webkit-border-radius: 19px 18px;
+//-moz-border-radius: 19px / 18px;
+//border-radius: 19px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+text-align:center;
+background-color:none;
+}
+
+/*
+#priority
+{
+    
+    margin-top: 19em;
+    border:double;
+    width:60%;
+    position:relative;
+
+    -webkit-border-radius: 19px 18px;
+-moz-border-radius: 19px / 18px;
+border-radius: 19px / 18px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+background-color:rgba(51, 0, 102, 1);
+}
+
+*/
+
+#buttons {
+    float:left;
+    border: none;
+    margin-top:15em;
+}
 
 footer {
     clear:initial;
@@ -154,17 +294,6 @@ footer {
     text-align:center;
 }
 
-#facListDiv
-{
-    display: grid;
-    font-size:15px;
-}
-
-#studentsOnModuleDiv
-{
-    font-size: 20px;
-    padding-bottom:20px;
-}
   
 /* site title
 ----------------------------------------------------------*/
@@ -222,11 +351,14 @@ footer {
     background-color:rgba(51, 0, 102, 1);
     color:white;
     border:1px solid white;
+    text-align:center;
 }
 
 .freeTile {
     background-color:none;
     color:black;
+    padding: 2em 1em 2em 1em;
+    text-align:center;
 }
 
 
@@ -407,6 +539,7 @@ aside {
 
 .label {
     font-weight: 700;
+  
 }
 
 /* login page */
@@ -500,6 +633,7 @@ label {
     font-size: 1.3em;
     font-weight: 600;
     text-decoration:underline;
+      text-align:center;
 }
 
 label.checkbox {
