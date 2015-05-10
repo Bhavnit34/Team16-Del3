@@ -23,7 +23,7 @@ a {
 
    a:link,{
         color: rgba(51, 0, 102, 1);
-        font-size:18px;
+        font-size:18.5px;
     }
 
 header, footer, hgroup,
@@ -161,7 +161,6 @@ font-family: Arial, sans-serif;
 
 #facilities
 {
-   //border: double;
     margin-top: 30em;
     margin-bottom: 5px;
     margin-left:2em;
@@ -217,7 +216,7 @@ font-family: Arial, sans-serif;
     width:50%;
     position:relative;
     margin-left:2em;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 #listOfRoomsDiv {
@@ -583,7 +582,6 @@ label {
     font-size: 1.3em;
     font-weight: 600;
     text-decoration:underline;
-    text-align:center;
 }
 
 label.checkbox {
