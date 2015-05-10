@@ -10,89 +10,192 @@
 <h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>Request</legend>
+         @{var status = "";
+        var day = "";
+        var time = "";
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.UserID)
+        if (Model.Status == 1.ToString())
+        {
+           
+            status = "Approved";
+
+        }
+
+        else if (Model.Status == 2.ToString())
+        {
+        
+            status = "Rejected";
+
+
+
+        }
+        else if (Model.Status == 3.ToString())
+        {
+       
+            status = "Approved But Modified";
+        }
+
+        else
+        {
+          
+            status = "Pending";
+
+        }
+        if (Model.DayID == 1)
+    {
+        day = "Monday";
+
+    }
+
+    else if (Model.DayID == 2)
+    {
+        day = "Tuesday";
+
+
+    }
+    else if (Model.DayID == 3)
+    {
+        day = "Wednesday";
+
+
+
+    }
+
+    else if (Model.DayID == 4)
+    {
+        day = "Thursday";
+    }
+    else
+    {
+        day = "Friday";
+    }
+       
+        switch (Model.PeriodID)
+    {
+        case 1: time = "9:00";
+            break;
+        case 2: time = "10:00";
+            break;
+        case 3: time = "11:00";
+            break;
+        case 4: time = "12:00";
+            break;
+        case 5: time = "13:00";
+            break;
+        case 6: time = "14:00";
+            break;
+        case 7: time = "15:00";
+            break;
+        case 8: time = "16:00";
+            break;
+        case 9: time = "17:00";
+            break;
+    }
+    }
+      <div class="display-label">
+   @Html.LabelFor(model => model.UserID, "User")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UserID)
+     @Html.DisplayFor(model => model.User.Dept.FullDept)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Module.Title)
+         @Html.LabelFor(model => model.Module.Title, "Module")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Module.Title)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SessionType)
+         @Html.LabelFor(model => model.SessionType, "Session")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SessionType)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SessionLength)
+         @Html.LabelFor(model => model.SessionLength,"Session Length")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SessionLength)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.DayID)
+         @Html.LabelFor(model => model.DayID, "Day")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.DayID)
+       @day
+        @Html.HiddenFor(model => model.DayID)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.PeriodID)
+         @Html.LabelFor(model => model.PeriodID, "Time")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.PeriodID)
+       @time
+          @Html.HiddenFor(model => model.PeriodID)
+
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.PriorityRequest)
+         @Html.LabelFor(model => model.PriorityRequest, "Priority Request")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.PriorityRequest)
+          @{
+                    if(Model.PriorityRequest == 1){
+                        @Html.CheckBox("Priority",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Priority",false, new{@disabled = "disabled"})
+                    }
+        
+              }
+        @Html.HiddenFor(model => model.PriorityRequest)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.AdhocRequest)
+         @Html.LabelFor(model => model.AdhocRequest, "Adhoc Request")
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.AdhocRequest)
+       @{
+                    if(Model.AdhocRequest == 1){
+                        @Html.CheckBox("Adhoc",true, new{@disabled = "disabled"})
+                    }
+                    else{
+                        @Html.CheckBox("Adhoc",false, new{@disabled = "disabled"})
+                    }
+        
+              }
+        @Html.HiddenFor(model => model.AdhocRequest)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.SpecialRequirements)
+         @Html.LabelFor(model => model.SpecialRequirements, "Special Requirements")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SpecialRequirements)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Semester)
+         @Html.LabelFor(model => model.Semester, "Semester")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Semester)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.RoundID)
+         @Html.LabelFor(model => model.RoundID,"Round")
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.RoundID)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
+         @Html.LabelFor(model => model.Status)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
+        @status
+       @Html.HiddenFor(model => model.Status)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {

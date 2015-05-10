@@ -2025,7 +2025,7 @@ namespace DBFirstMVC.Controllers
             foreach (AllocatedRoom ar in AR)
             {
                 db.AllocatedRooms.Remove(ar);
-                db.SaveChanges();
+              
             }
 
 
