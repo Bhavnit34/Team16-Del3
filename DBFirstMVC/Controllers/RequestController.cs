@@ -1528,8 +1528,8 @@ namespace DBFirstMVC.Controllers
                     return RedirectToAction("GetModuleInfo/" + moduleLecturer.ModCode);
                 }
                 else {
-                    TempData["error"] = "Lecturer is already assigned for this module";
-                    ViewData["error"] = TempData["error"];
+                    TempData["Message"] = "Lecturer is already assigned for this module";
+                    //ViewData["error"] = TempData["error"];
                     ViewBag.id = moduleLecturer.ModCode;
                     User userSess = (User)HttpContext.Session["User"];
                     ViewBag.Dept = userSess.Username;
@@ -1621,8 +1621,8 @@ namespace DBFirstMVC.Controllers
                 else {
 
 
-                    TempData["error"] = "Degree is already assigned for this module";
-                    ViewData["error"] = TempData["error"];
+                    TempData["Message"] = "Degree is already assigned for this module";
+                   // ViewData["error"] = TempData["error"];
                     ViewBag.id = moduleDegree.ModCode;
                     User userSess = (User)HttpContext.Session["User"];
                     ViewBag.Dept = userSess.Username;
