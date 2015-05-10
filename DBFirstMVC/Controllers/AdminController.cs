@@ -954,7 +954,14 @@ namespace DBFirstMVC.Controllers
         [HttpPost]
         public ActionResult Edit(Request request)
         {
+            if (request.Status == null) {
 
+                TempData["error"] = "Please select appropriate status.";
+                ViewData["error"] = TempData["error"];
+
+
+                return View(request);
+            }
 
 
 
