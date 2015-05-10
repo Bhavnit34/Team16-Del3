@@ -305,6 +305,7 @@
     <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\heroAccent.png" />
     <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\Images\LoughboroughUniversityLogo.ico" />
     <Content Include="Content\Images\luff1.png" />
     <Content Include="Content\Images\luff2.png" />
     <Content Include="Content\Images\NextArrow.png" />
@@ -388,6 +389,7 @@
     <Content Include="Images\luff2.png" />
     <Content Include="Images\NextArrow.png" />
     <Content Include="Images\PrevArrow.png" />
+    <Content Include="LoughboroughUniversityLogo.ico" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -514,6 +516,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LoughboroughUniversityLogo.ico</ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -526,7 +531,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>50543</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:52798/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

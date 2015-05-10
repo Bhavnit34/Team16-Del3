@@ -294,8 +294,8 @@
             $('#btnAddToRoom').hide();
             $('#btnCheckAvail').hide();
             $('#txtCheckAvail').hide();
-            $('#matchedRooms').hide();
-            $('#btnAddMatchedRoom').hide();
+            //$('#matchedRooms').hide();
+            //$('#btnAddMatchedRoom').hide();
             $('#btnCreate').hide(); 
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
             updateFac();
@@ -469,11 +469,16 @@
                 var id = $(this).attr('id');
                 var room = $('#Room').val();
 
-                if (room == null)
-                    return;
 
                 if (id == 'btnAddMatchedRoom')
                     room = $('#matchedRooms').val();
+
+                if (room == null) {
+                    alert('no room was selected');
+                    return;
+                }
+
+                
 
                 var roomID = room.replace(/\./g, '');
                 if (room.indexOf("Any") > -1) { //if the building is 'any'
@@ -492,6 +497,7 @@
                 //Check that the room doesnt already exist in the list
                 for (var i = 0; i < len; i++) {
                     if ($('#listOfRooms').children().children().eq(i).attr('id') == roomID)
+                        alert("This room is already in the list");
                         return;
                 }
 
@@ -501,7 +507,6 @@
                     alert("There are no more students left to allocate");
                     return;
                 }
-                
                 var roomSize = 0;
                 $.post('@Url.Action("getRoomSize", "Request")', { roomName: room }, function (data) {
                     roomSize = data;
@@ -530,7 +535,6 @@
                     html += "</tr>";
                     $('#listOfRooms').append(html);
                     $('#listOfRoomsDiv').show();
-
                     //set the student size and priority room if loading from a state
                     if ($('#hiddenroomList').val() != "") {
                         var rm = $('#hiddenroomList').val().split(','); //get array of rooms
@@ -698,8 +702,8 @@
                     }
                     if (results.length == 0) {
                         alert("no room has all of the chosen facilities");
-                        $('#matchedRooms').hide();
-                        $('#btnAddMatchedRoom').hide();
+                        //$('#matchedRooms').hide();
+                        //$('#btnAddMatchedRoom').hide();
                         return;
                     }
                     $('#matchedRooms').fadeOut(300);

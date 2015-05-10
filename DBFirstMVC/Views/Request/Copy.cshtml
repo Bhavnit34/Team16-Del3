@@ -227,8 +227,8 @@
             $('#btnAddToRoom').hide();
             $('#btnCheckAvail').hide();
             $('#txtCheckAvail').hide();
-            $('#matchedRooms').hide();
-            $('#btnAddMatchedRoom').hide();
+            //$('#matchedRooms').hide();
+           //$('#btnAddMatchedRoom').hide();
             $('#btnEdit').hide();
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
             updateFac();
@@ -390,11 +390,11 @@
                 var id = $(this).attr('id');
                 var room = $('#Room').val();
 
-                if (room == null)
-                    return;
-
                 if (id == 'btnAddMatchedRoom')
                     room = $('#matchedRooms').val();
+
+                if (room == null)
+                    return;
 
                 var roomID = room.replace(/\./g, '');
                 if (room.indexOf("Any") > -1) { //if the building is 'any'
@@ -613,8 +613,8 @@
                     }
                     if (results.length == 0) {
                         alert("no room has all of the chosen facilities");
-                        $('#matchedRooms').hide();
-                        $('#btnAddMatchedRoom').hide();
+                        //$('#matchedRooms').hide();
+                        //$('#btnAddMatchedRoom').hide();
                         return;
                     }
                     $('#matchedRooms').fadeOut(300);
