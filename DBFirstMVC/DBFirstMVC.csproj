@@ -299,6 +299,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\BhavStyle.css" />
+    <Content Include="Content\Images\accent.png" />
+    <Content Include="Content\Images\bullet.png" />
+    <Content Include="Content\Images\delete.png" />
+    <Content Include="Content\Images\favicon.ico" />
+    <Content Include="Content\Images\heroAccent.png" />
+    <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\Images\luff1.png" />
+    <Content Include="Content\Images\luff2.png" />
+    <Content Include="Content\Images\NextArrow.png" />
+    <Content Include="Content\Images\orderedList0.png" />
+    <Content Include="Content\Images\orderedList1.png" />
+    <Content Include="Content\Images\orderedList2.png" />
+    <Content Include="Content\Images\orderedList3.png" />
+    <Content Include="Content\Images\orderedList4.png" />
+    <Content Include="Content\Images\orderedList5.png" />
+    <Content Include="Content\Images\orderedList6.png" />
+    <Content Include="Content\Images\orderedList7.png" />
+    <Content Include="Content\Images\orderedList8.png" />
+    <Content Include="Content\Images\orderedList9.png" />
+    <Content Include="Content\Images\PrevArrow.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
