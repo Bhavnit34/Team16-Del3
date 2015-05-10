@@ -4,7 +4,16 @@
     ViewBag.Title = "Create a Request";
     ViewBag.CurrentUserTitle = @ViewBag.CurrentUser;
 }
+ @{
+     if (ViewBag.CurrentUserTitle=="CA - Central Admin"){
+    
 
+        Layout = "~/Views/Shared/adminView.cshtml";
+
+     
+     
+     }
+     }
 <script type="text/javascript" src="@Url.Content("/Scripts/weekSelector.js")"></script>
 <link rel="stylesheet" href="@Url.Content("/Content/jquery-ui.css")" type="text/css" />
 <link rel="stylesheet" href="@Url.Content("/Content/BhavStyle.css")" type="text/css" />
@@ -36,13 +45,12 @@
                         <div class="editor-field">
                             <input type="text" id="txtModSearch" placeholder="e.g. COA101" />
                             <input type="button" id="btnModSearch" value="Filter" />
+                            <br />
                             @Html.DropDownListFor(model => model.Request.ModCode, new SelectList(ViewBag.Modules, "ModCode", "FullModule"), "-- Select Module --")
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
-                        </div>
+                            <p id="studentsOnModuleDiv"><br /></p>
+                        </div>                                                             
                         
-                        <br /> 
-                    
-                        <div id="studentsOnModuleDiv"></div>
                         @{
      if (ViewBag.adhoc == 1)
      { 
@@ -59,20 +67,13 @@
      }
                         }
 
-
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
-                        </div>
                         
-                        <div class="editor-field">     
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
-    
-                            @Html.ValidationMessageFor(model => model.Request.SessionType)
-                        </div>
-
-                        <br />
-
+          <div id="center">
+                   <fieldset>
+                        <legend>Request</legend>
+                      
+                       
+                        <div id="dayselect">
                          <div class="editor-label">
                             @Html.LabelFor(model => model.Request.DayID, "Day")
                         </div>
@@ -115,18 +116,38 @@
                             @{ List<SelectListItem> SeshLengths = new List<SelectListItem>();}
                             @Html.DropDownListFor(model => model.Request.SessionLength, SeshLengths, "-- Select Length --", new { @class = "required" })
                             @Html.ValidationMessageFor(model => model.Request.SessionLength)
+                       
+                            <br />
+                            <br />
+                            <br />
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
+                        </div>
+                        
+                        <div class="editor-field">     
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
+                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
+    
+                            @Html.ValidationMessageFor(model => model.Request.SessionType)
                         </div>
 
-                        
-                         <br />
-                        
-                        <div>
+                             </div>
+
+                            </div>                       
+
+                    </fieldset>
+         
+        </div>
+
+
+                             <div id ="pickweeks">
                             <table>
                                 <tr>
 							        <td>
 								        <label>Pick weeks</label>								
 							        </td>
-							        <td colspan='4'>
+							        <td colspan='15'>
 								        <ol id="popupWeeks">
 									        <li class="ui-state-default myCircle">1</li>
 									        <li class="ui-state-default myCircle">2</li>
@@ -162,12 +183,9 @@
                 
    
         </div>
- 
-          <div id="right">
-                   <fieldset>
-                        <legend>Request</legend>
-                      
 
+                        <div id="facilities">
+                        
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Facilites")
                         </div>
@@ -177,9 +195,67 @@
                             {
                                 <input type="checkbox" name="facList"  value="@item.FacilityName" id="fac@(item.FacilityID)"> @item.FacilityName<br />
                             }
-                    <br />
-                        </div>                               
-                            <div class="editor-field">
+
+                                 <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
+                        
+                        <select id="matchedRooms"><option></option></select> <br />
+                        
+                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
+                        
+                        <input type="hidden" id="hiddenfacList" value="@ViewBag.facList" />
+
+
+                        </div>        
+
+                            </div>
+                                                
+                  
+
+
+         <div id="right">
+
+                    <fieldset>
+                        <legend>Request</legend>
+
+                      
+                 <div id="parks" >        
+                         <div class="editor-label">
+                            @Html.LabelFor(model => model.Parks, "Park")
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("Park", "--Select Park--")
+                            @Html.ValidationMessageFor(model => model.Parks)
+                    
+                        </div>
+                        <div class="editor-label" id="BuildingDiv"></div>
+                        <div class="editor-field">
+                            <select id="Building"></select><br /><!-- this will dynamically altered -->
+                        </div>
+                        <div class="editor-label" id="RoomDiv"></div>
+                        <div class="editor-field">
+                                 <input type="checkbox" id="btnCheckAvail" value="Show Free Rooms Only"/>
+                        <span id="txtCheckAvail">Show free rooms only</span><br />
+                        <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
+                        <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
+                            <select id="Room"></select><br /><!-- this will dynamically altered -->
+                                                <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                                                    <a id="studentsLeft" data-left="0" data-max="0"></a><br />
+                   
+                            
+                         
+                        <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
+                            <br />
+
+
+
+                        </div>
+                
+                       </div>
+       
+                        <div id="specialr"> 
+
+                                             
+            <div class="editor-field">
                                  <div class="editor-label">
                             @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
                         </div>
@@ -187,15 +263,8 @@
                             @Html.EditorFor(model => model.Request.SpecialRequirements)
                             @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
                         </div>
-                        
-                        <input type="button" id="btnFindRooms" value="Find Rooms" /><br />
-                        
-                        <select id="matchedRooms"></select>
-                        
-                        <input type="button" id="btnAddMatchedRoom" value="Add to List" />
-                        
-                        <input type="hidden" id="hiddenfacList" value="@ViewBag.facList" />
 
+                            <br />
                           <div class="editor-label">
                             @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
                         </div>
@@ -214,51 +283,20 @@
                               
                             }
                             @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
-                        </div>
+      </div>
 
-                           <p>
-        </p>
+                        <br />
+                        <br />
 
-                    </fieldset>
-         
-        </div>
+            
+                            <div id="buttons"> 
+                   
 
+            </fieldset>
 
-         <div id="center">
+    
+                                     <p>
 
-                    <fieldset>
-                        <legend>Request</legend>
-
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Parks, "Park")
-                        </div>
-                        <div class="editor-field">
-                            @Html.DropDownList("Park", "--Select Park--")
-                            @Html.ValidationMessageFor(model => model.Parks)
-                    
-                        </div>
-                        <div class="editor-label" id="BuildingDiv"></div>
-                        <div class="editor-field">
-                            <select id="Building"></select><br /><!-- this will dynamically altered -->
-                        </div>
-                        <div class="editor-label" id="RoomDiv"></div>
-                        <div class="editor-field">
-                            <select id="Room"></select><br /><!-- this will dynamically altered -->
-                        </div>
-                        <input type="button" id="btnAddToRoom" value="Add To List" />
-                        <a id="studentsLeft" data-left="0" data-max="0"></a><br />
-                        <input type="checkbox" id="btnCheckAvail" value="Show Free Rooms Only"/>
-                        <span id="txtCheckAvail">Show free rooms only</span>
-                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
-                        <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
-                        <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
-                        <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
-                    </fieldset>
-        
-         
-        </div>
-         </div>
-        <p>
             @{
                  if (ViewBag.adhoc == 1)
                  {
@@ -271,7 +309,12 @@
             <input type="submit" value="Create" id="btnCreate"  name='Command' />
             <input type="button" id="btnReset" value="Reset Page" />
         </p>
+                      
 
+             </div>
+
+         </div>
+     
  }
          
 

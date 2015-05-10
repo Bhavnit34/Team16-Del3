@@ -23,8 +23,7 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult Index(string sortOrder, string yearSelect, string searchString, int? page, string statusFilter, string roundFilter, string typeFilter, string semesterFilter, string priorityFilter)
         {
-            if (sortOrder == null) //order by status as default
-                sortOrder = "status";
+
 
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
@@ -32,12 +31,12 @@ namespace DBFirstMVC.Controllers
             User userSession = (User)HttpContext.Session["User"]; //This is needed to find the current user
 
             //These alternate sort parameter for switch statement
-            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewBag.StatusSortParm = String.IsNullOrEmpty(sortOrder) ? "status_desc" : ""; //default sort method
+            ViewBag.TitleSortParm= sortOrder == "title" ? "title_desc" : "title";
             ViewBag.UserSortParm = sortOrder == "user" ? "user_desc" : "user";
             ViewBag.LengthSortParm = sortOrder == "length" ? "length_desc" : "length";
             ViewBag.DaySortParm = sortOrder == "day" ? "day_desc" : "day";
             ViewBag.SemesterSortParm = sortOrder == "semester" ? "semester_desc" : "semester";
-            ViewBag.StatusSortParm = sortOrder == "status" ? "status_desc" : "status";
             ViewBag.RoundSortParm = sortOrder == "round" ? "round_desc" : "round";
             ViewBag.TypeSortParm = sortOrder == "type" ? "type_desc" : "type";
             ViewBag.PrioritySortParm = sortOrder == "priority" ? "priority_desc" : "priority";
@@ -167,6 +166,9 @@ namespace DBFirstMVC.Controllers
             //handles which sort method to use
             switch (sortOrder)
             {
+                case "title":
+                    requests = requests.OrderBy(r => r.Module.Title);
+                    break;
                 case "title_desc":
                     requests = requests.OrderByDescending(r => r.Module.Title);
                     break;
@@ -193,9 +195,6 @@ namespace DBFirstMVC.Controllers
                     break;
                 case "semester_desc":
                     requests = requests.OrderByDescending(r => r.Semester);
-                    break;
-                case "status":
-                    requests = requests.OrderBy(r => r.Status);
                     break;
                 case "status_desc":
                     requests = requests.OrderByDescending(r => r.Status);
@@ -230,14 +229,15 @@ namespace DBFirstMVC.Controllers
                 case "period_desc":
                     requests = requests.OrderByDescending(r => r.PeriodID);
                     break;
+                
                 default:
-                    requests = requests.OrderBy(r => r.Module.Title);
+                    requests = requests.OrderBy(r => r.Status);
                     break;
             }
             //controls page size
             var pageSize = 10;
 
-            if (statusFilter == "" && roundFilter == "" && typeFilter == "" && semesterFilter == "" && searchString == "")
+            if ((statusFilter == "" && roundFilter == "" && typeFilter == "" && semesterFilter == "" && searchString == "") || statusFilter == null)
             {
                 pageSize = 10;
             }
