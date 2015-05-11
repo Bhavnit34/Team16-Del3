@@ -25,7 +25,7 @@
      <div id="container">
   
        <div id="left">
-                    <fieldset>
+                    
                         <legend>Request</legend>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Request.ModCode, "Module")
@@ -42,8 +42,8 @@
                         </div>                                                             
                         
                         @{
-     if (ViewBag.adhoc == 1)
-     { 
+                         if (ViewBag.adhoc == 1)
+                         { 
                                 <div class="editor-label">
                                     @Html.LabelFor(model => model.Request.Semester)
                                 </div>
@@ -54,14 +54,12 @@
     
                                     @Html.ValidationMessageFor(model => model.Request.Semester)
                                 </div>
-     }
+                          }
                         }
-
                         
-          <div id="center">
-                   <fieldset>
-                        <legend>Request</legend>
-                      
+        </div> <!-- left -->
+
+ 
                        
                         <div id="dayselect">
                          <div class="editor-label">
@@ -70,12 +68,12 @@
 
                         <div class="editor-field">
                         @{
-     List<SelectListItem> listItems = new List<SelectListItem>();
-     listItems.Add(new SelectListItem { Text = "Monday", Value = "1" });
-     listItems.Add(new SelectListItem { Text = "Tuesday", Value = "2" });
-     listItems.Add(new SelectListItem { Text = "Wednesday", Value = "3" });
-     listItems.Add(new SelectListItem { Text = "Thursday", Value = "4" });
-     listItems.Add(new SelectListItem { Text = "Friday", Value = "5" });   
+                             List<SelectListItem> listItems = new List<SelectListItem>();
+                             listItems.Add(new SelectListItem { Text = "Monday", Value = "1" });
+                             listItems.Add(new SelectListItem { Text = "Tuesday", Value = "2" });
+                             listItems.Add(new SelectListItem { Text = "Wednesday", Value = "3" });
+                             listItems.Add(new SelectListItem { Text = "Thursday", Value = "4" });
+                             listItems.Add(new SelectListItem { Text = "Friday", Value = "5" });   
                         }
 
                         @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
@@ -111,28 +109,25 @@
                             <br />
                             <br />
 
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
-                        </div>
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Request.SessionType, "Session Type")
+                            </div>
                         
-                        <div class="editor-field">     
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
+                            <div class="editor-field">     
+                                <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
+                                <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
     
-                            @Html.ValidationMessageFor(model => model.Request.SessionType)
+                                @Html.ValidationMessageFor(model => model.Request.SessionType)
+                            </div>
+
                         </div>
 
-                             </div>
+                        </div>  <!-- day select -->                     
 
-                            </div>                       
-
-                    </fieldset>
-         
-        </div>
 
 
                              <div id ="pickweeks">
-                            <table>
+                            <table style="width:100%;">
                                 <tr>
 							        <td>
 								        <label>Pick weeks</label>								
@@ -169,10 +164,7 @@
                             <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
                         </div>
   
-                    </fieldset>
                 
-   
-        </div>
 
                         <div id="facilities">
                         
@@ -197,15 +189,9 @@
 
                         </div>        
 
-                            </div>
+                        </div>
                                                 
                   
-
-
-         <div id="right">
-
-                    <fieldset>
-                        <legend>Request</legend>
 
                       
                  <div id="parks">        
@@ -230,7 +216,7 @@
                         <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
                         <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
                         <select id="Room"></select><br /><!-- this will dynamically altered -->
-                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                        <div id="listOfRoomsDiv"><table id="listOfRooms" style="width:100%;"></table></div> <!-- this will dynamically altered -->
                         <a id="studentsLeft" data-left="0" data-max="0"></a><br />
                    
                             
@@ -247,71 +233,64 @@
                         <div id="specialr"> 
 
                                              
-            <div class="editor-field">
-                                 <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
-                        </div>
-          
-                            @Html.EditorFor(model => model.Request.SpecialRequirements)
-                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
-                        </div>
+                            <div class="editor-field">
+                                @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
+                            </div>
+                            <div class="editor-label">
+                                @Html.TextAreaFor(model => model.Request.SpecialRequirements)
+                                @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
+                            </div>
 
 
-                            <br />
-                          <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
-                        </div>
-                        <div class="editor-field">
-                            <!--<input type="checkbox" id="cbPriorityRequest" /> -->
-                            @{
-                            if (Model.Request.PriorityRequest == 1)
-                            {
-                                    @Html.CheckBox("cbPriorityRequest", true)
-                            }
-                            if (Model.Request.PriorityRequest != 1)
-                            {
-                                    @Html.CheckBox("cbPriorityRequest", false)
-                            }
+                                <br />
+                              <div class="editor-label">
+                                @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
+                            </div>
+                            <div class="editor-field">
+                                <!--<input type="checkbox" id="cbPriorityRequest" /> -->
+                                @{
+                                if (Model.Request.PriorityRequest == 1)
+                                {
+                                        @Html.CheckBox("cbPriorityRequest", true)
+                                }
+                                if (Model.Request.PriorityRequest != 1)
+                                {
+                                        @Html.CheckBox("cbPriorityRequest", false)
+                                }
 
                               
-                            }
-                            @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
-      </div>
+                                }
+                                @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
+                            </div>
+
+                         </div>
 
                         <br />
                         <br />
 
-            
-                            <div id="buttons"> 
-                   
+                         <div id="buttons">
+                            <p>
 
-            </fieldset>
-
+                                @{
+                                     if (ViewBag.adhoc == 1)
+                                     {
+                                                <input type="button" id="btnCheck" value="Create Ad-hoc" />
+                                     }
+                                     else{
+                                                <input type="button" id="btnCheck" value="Create" />
+                                     }
+                                }
+                                <input type="submit" value="Create" id="btnCreate"  name='Command' />
+                                <input type="button" id="btnReset" value="Reset Page" />
+                            </p>
+                         </div>
     
-                                     <p>
 
-            @{
-                 if (ViewBag.adhoc == 1)
-                 {
-                            <input type="button" id="btnCheck" value="Create Ad-hoc" />
-                 }
-                 else{
-                            <input type="button" id="btnCheck" value="Create" />
-                 }
-            }
-            <input type="submit" value="Create" id="btnCreate"  name='Command' />
-            <input type="button" id="btnReset" value="Reset Page" />
-        </p>
                       
 
-             </div>
-
          </div>
+}
      
-     
-     
- }
-         
 
 
 
