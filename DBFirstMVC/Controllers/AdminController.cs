@@ -915,6 +915,7 @@ namespace DBFirstMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                room.URL = "http://co-project.lboro.ac.uk/team11/Prakash/img/noImg.jpg";
                 db.Rooms.Add(room);
                 db.SaveChanges();
                 TempData["Message"] = "New room" + " " + room.RoomName + " " + "created.";

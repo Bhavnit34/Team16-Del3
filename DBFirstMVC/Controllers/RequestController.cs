@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 using PagedList;
 using PagedList.Mvc;
 
+
 namespace DBFirstMVC.Controllers
 {
     public class RequestController : BaseController //Inherits our own overrided controller. Please see BaseController
@@ -708,7 +709,7 @@ namespace DBFirstMVC.Controllers
                                                select clash.RequestID).FirstOrDefault();
 
 
-                            //If room is taken change teh status of the request that requested the room previously to rejected
+                            //If room is taken change the status of the request that requested the room previously to rejected
                             if (findClashes != 0)
                             {
                                 var obj = db.Requests.Where(c => c.RequestID == findClashes).First();
@@ -726,6 +727,7 @@ namespace DBFirstMVC.Controllers
                         //change the status to accepted 
                         Request req = db.Requests.First(p => p.RequestID == reqID);
                         req.Status = "1";
+                        TempData["Message"] = "This request contained a private room and therefore has been immediately allocated.";
                         db.SaveChanges();
 
                     
@@ -739,8 +741,8 @@ namespace DBFirstMVC.Controllers
 
                 }
 
-
-               TempData["Message"] = "Request " + newRequestID + " has been successfully created.";
+                
+               TempData["Message"] += " Request " + newRequestID + " has been successfully created.";
                Session.Remove("State"); //remove current saved request
                return RedirectToAction("Index"); //redirect to the list of requests
         }

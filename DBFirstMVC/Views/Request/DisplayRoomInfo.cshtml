@@ -69,15 +69,15 @@
         
                 }
             </td>
-
             @{
-                if (Model.Room.DeptCode != null)
-                {
-                    <td class="display-label">
-                        @Html.DisplayFor(model => model.Room.DeptCode)
-                    </td>
+                if(Model.Room.DeptCode != null){
+                  <td class="display-label">
+                  @Html.DisplayFor(model => model.Room.DeptCode)
+                  </td> 
                 }
             }
+                
+
         </tr>
    </table>
     <div style="float:right;">
