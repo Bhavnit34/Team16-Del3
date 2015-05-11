@@ -1324,45 +1324,60 @@ namespace DBFirstMVC.Controllers
         [HttpPost, ActionName("DeleteModule")]
         public ActionResult DeleteConfirmed1(string id)
         {
-            var modDegree = (from d in db.ModuleDegrees
-                              where d.ModCode == id
-                              select d).ToList();
-            var modLecturer = (from d in db.ModuleLecturers
-                             where d.ModCode == id
-                             select d).ToList();
 
 
-            for (var i = 0; i < modDegree.Count; i++)
+            var request = (from d in db.Requests
+                           where d.ModCode == id
+                           select d).ToList();
+
+
+            if (!request.Any())
             {
 
-                var rID = modDegree[i].ModuleDegreeID;
-                ModuleDegree row = db.ModuleDegrees.Where(a => a.ModuleDegreeID.Equals(rID)).FirstOrDefault();
-                db.ModuleDegrees.Remove(row);
+                var modDegree = (from d in db.ModuleDegrees
+                                 where d.ModCode == id
+                                 select d).ToList();
+                var modLecturer = (from d in db.ModuleLecturers
+                                   where d.ModCode == id
+                                   select d).ToList();
+
+
+                for (var i = 0; i < modDegree.Count; i++)
+                {
+
+                    var rID = modDegree[i].ModuleDegreeID;
+                    ModuleDegree row = db.ModuleDegrees.Where(a => a.ModuleDegreeID.Equals(rID)).FirstOrDefault();
+                    db.ModuleDegrees.Remove(row);
+                    db.SaveChanges();
+
+
+
+                }
+                for (var i = 0; i < modLecturer.Count; i++)
+                {
+
+                    var lID = modLecturer[i].ModuleLecturerID;
+                    ModuleLecturer row = db.ModuleLecturers.Where(a => a.ModuleLecturerID.Equals(lID)).FirstOrDefault();
+                    db.ModuleLecturers.Remove(row);
+                    db.SaveChanges();
+
+                }
+
+                Module module = db.Modules.Find(id);
+                db.Modules.Remove(module);
                 db.SaveChanges();
 
 
+                return RedirectToAction("Module");
+
 
             }
-            for (var i = 0; i < modLecturer.Count; i++)
-            {
 
-                var lID = modLecturer[i].ModuleLecturerID;
-                ModuleLecturer row = db.ModuleLecturers.Where(a => a.ModuleLecturerID.Equals(lID)).FirstOrDefault();
-                db.ModuleLecturers.Remove(row);
-                db.SaveChanges();
+            else {
 
+                TempData["Message"] = "You cannot remove module" + " " + id + " " + "as requests has been made for this module.";
+                return   RedirectToAction("GetModuleInfo/"+id);
             }
-           
-            Module module = db.Modules.Find(id);
-            db.Modules.Remove(module);
-            db.SaveChanges();
-
-
-
-
-
-
-            return RedirectToAction("Module");
         }
 
         //

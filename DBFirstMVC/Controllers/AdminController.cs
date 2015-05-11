@@ -917,7 +917,7 @@ namespace DBFirstMVC.Controllers
             {
                 db.Rooms.Add(room);
                 db.SaveChanges();
-                TempData["Message"] = "New facility" + " " + room.RoomName + " " + "created.";
+                TempData["Message"] = "New room" + " " + room.RoomName + " " + "created.";
                 return RedirectToAction("EditPool");
             }
 
@@ -1247,6 +1247,7 @@ namespace DBFirstMVC.Controllers
                                where d.RoomName == id1
                                select d).ToList();
 
+
             for (var i = 0; i < RoomRequest.Count; i++)
             {
                 //take each roomRequestID
@@ -1259,6 +1260,7 @@ namespace DBFirstMVC.Controllers
                 RoomRequest RoomRow = db.RoomRequests.Where(a => a.RoomRequestID.Equals(rID)).FirstOrDefault();
                 db.RoomRequests.Remove(RoomRow);
                 db.SaveChanges();
+               // 
             }
 
             var RoomFacility = (from d in db.RoomFacilities
@@ -1274,6 +1276,27 @@ namespace DBFirstMVC.Controllers
                 db.SaveChanges();
 
             }
+
+            var AlocRoom = (from d in db.AllocatedRooms
+                            where d.RoomName == id1
+                            select d).ToList();
+
+            for (var i = 0; i < AlocRoom.Count; i++)
+            {
+                var rID = AlocRoom[i].RequestID;
+                var aID = AlocRoom[i].AllocatedRoomID;
+                AllocatedRoom alocRow = db.AllocatedRooms.Where(a => a.AllocatedRoomID==aID).FirstOrDefault();
+               
+                
+                //if
+                db.AllocatedRooms.Remove(alocRow);
+                db.SaveChanges();
+                        var obj = db.Requests.Where(c => c.RequestID == rID).First();
+                        obj.Status = "0";
+                        db.SaveChanges();
+            }
+
+
 
             Room room = db.Rooms.Find(id1);
             db.Rooms.Remove(room);
