@@ -11,6 +11,7 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+    min-width: 960px;
 }
 
 a {
@@ -122,8 +123,8 @@ font-family: Arial, sans-serif;
     border-style: double;
     border-color: rgba(51, 0, 102, 1);
     color: #fff;
-    width:120%;
-    height:65em;
+    width:100%;
+    height:61em;
     position:relative;
     -webkit-border-radius: 19px 18px;
     text-align:center;
@@ -153,21 +154,24 @@ font-family: Arial, sans-serif;
 #pickweeks
 {
     background-color:#415f66;
-    margin-top: 5em;
+    margin-top: -9em;
     margin-left:2em;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
-    width:auto;
+    width:69%;
+    float:left;
 }
 
 #facilities
 {
-    margin-top: 30em;
+    margin-top: 28em;
     margin-bottom: 5px;
-    margin-left:2em;
+    margin-left:1em;
     width:17em;
     background-color:#415f66;
     text-align:left;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    float:left;
+    position:absolute;
 }
 
 #facListDiv
@@ -180,17 +184,15 @@ font-family: Arial, sans-serif;
 #center {
     display: inline-block;
     width: 100px;
-    float:left;
-    position:absolute;
     margin-left:36em;
 }
 
 #dayselect {
     width:18em;
-    height:22em;
-    margin-top:-13em;
+    height:24.5em;
+    margin-top:1em;
     float:left;
-    margin-left:-2.5em;
+    margin-left:1em;
     text-align:center;
     background-color:#415f66;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
@@ -212,34 +214,34 @@ font-family: Arial, sans-serif;
     float: left;
     text-align:center;
     background-color:#415f66;
-    margin-left:1em;
-    width:50%;
-    position:relative;
-    margin-left:2em;
+    margin-left:20em;
+    margin-top:28em;
+    width:39%;
+    position:absolute;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
 
 #listOfRoomsDiv {
    padding-bottom: 10px;
-   margin-left:10px;
 }
 
 #specialr
 {
-    //border:double;
-    width:25em;
-    height:18em;
-    margin-left: 34em;
+    width:19em;
+    height:16em;
+    margin-top:2em;
+    margin-left: 50em;
     text-align:center;
     background-color:#415f66;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    float:left;
 }
 
 
 #buttons {
-    float:left;
+    float:right;
     border: none;
-    margin-top:15em;
+    margin-top:12em;
 }
 
 footer {
@@ -600,7 +602,7 @@ input, textarea {
 
 textarea {
     font-family: inherit;
-    width: 500px;
+    width: 87%;
 }
 
     input:focus, textarea:focus {

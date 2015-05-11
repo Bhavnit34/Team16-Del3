@@ -12,7 +12,7 @@
  @using (Html.BeginForm("Copy","Request",FormMethod.Post)) {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
-      
+
      <div id="container">
   
        <div id="left">
@@ -30,120 +30,102 @@
                             @Html.ValidationMessageFor(model => model.Request.ModCode)
                         </div>
                         <div id="studentsOnModuleDiv"></div>
+
+       </div> <!-- left -->
+          
+                <div id="dayselect">
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Request.DayID, "Day")
+                    </div>
+                    <div class="editor-field">
+                    @{
+                        List<SelectListItem> listItems= new List<SelectListItem>();
+                        listItems.Add(new SelectListItem{Text = "Monday", Value = "1"});
+                        listItems.Add(new SelectListItem{Text = "Tuesday", Value = "2"});
+                        listItems.Add(new SelectListItem{Text = "Wednesday", Value = "3"});
+                        listItems.Add(new SelectListItem{Text = "Thursday", Value = "4"});
+                        listItems.Add(new SelectListItem{Text = "Friday", Value = "5"});   
+                    }
+
+                    @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
+
+                    @Html.ValidationMessageFor(model => model.Request.DayID)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Request.PeriodID, "Period")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
+                        @Html.ValidationMessageFor(model => model.Request.PeriodID)
+                    </div>
+
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SessionType, "Session Type")
-                        </div>
-                        <div class="editor-field">     
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
-                            <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
+                        @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
+                    </div>
+                    <div class="editor-field">
+                        <input id="hiddenLength" type="hidden" value="@ViewBag.Length" /> 
+                        @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
+                        @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
+                        @Html.ValidationMessageFor(model => model.Request.SessionLength)
+                    </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Request.SessionType, "Session Type")
+                    </div>
+                    <div class="editor-field">     
+                        <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true ) Lecture</label>
+                        <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
     
-                            @Html.ValidationMessageFor(model => model.Request.SessionType)
-                        </div>
+                        @Html.ValidationMessageFor(model => model.Request.SessionType)
+                    </div>
+                        
+                </div> <!-- day select -->
+                                     
 
-                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.DayID, "Day")
-                        </div>
-                        <div class="editor-field">
-                        @{
-                            List<SelectListItem> listItems= new List<SelectListItem>();
-                            listItems.Add(new SelectListItem{Text = "Monday", Value = "1"});
-                            listItems.Add(new SelectListItem{Text = "Tuesday", Value = "2"});
-                            listItems.Add(new SelectListItem{Text = "Wednesday", Value = "3"});
-                            listItems.Add(new SelectListItem{Text = "Thursday", Value = "4"});
-                            listItems.Add(new SelectListItem{Text = "Friday", Value = "5"});   
-                        }
+                 <div id="pickweeks">
+            <table style="width:100%;">
+                <tr>
+					<td>
+						<label>Pick weeks</label>								
+					</td>
+					<td colspan='4'>
+						<ol id="popupWeeks">
+							<li class="ui-state-default myCircle">1</li>
+							<li class="ui-state-default myCircle">2</li>
+							<li class="ui-state-default myCircle">3</li>
+							<li class="ui-state-default myCircle">4</li>
+							<li class="ui-state-default myCircle">5</li>
+							<li class="ui-state-default myCircle">6</li>
+							<li class="ui-state-default myCircle">7</li>
+							<li class="ui-state-default myCircle">8</li>
+							<li class="ui-state-default myCircle">9</li>
+							<li class="ui-state-default myCircle">10</li>
+							<li class="ui-state-default myCircle">11</li>
+							<li class="ui-state-default myCircle">12</li>
+							<li class="ui-state-default myCircle">13</li>
+							<li class="ui-state-default myCircle">14</li>
+							<li class="ui-state-default myCircle">15</li>
+						</ol>
+					</td>
+				</tr>
+                <tr>
+                    <td><input type="button" id="btnAllWeeks" value="All Weeks" /></td>
+                    <td><input type="button" id="btnEvenWeeks" value="Even Weeks" /></td>
+                    <td><input type="button" id="btnOddWeeks" value="Odd Weeks" /></td>
+                    <td><input type="button" id="btnDefaultWeeks" value="Default Weeks" /></td>
+                    <td><input type="button" id="btnClearAllWeeks" value="Clear All" /></td>
+                </tr>
+            </table>
+            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="@ViewBag.SelectedWeeks" /><!-- this will be passed to the controller -->
+            <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
+        </div> <!-- pick weeks -->
 
-                        @Html.DropDownListFor(model => model.Request.DayID, listItems, "-- Select Day --")
 
-                            @Html.ValidationMessageFor(model => model.Request.DayID)
-                        </div>
 
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.PeriodID, "Period")
-                        </div>
-                        <div class="editor-field">
-                            @Html.DropDownListFor(model => model.Request.PeriodID,ViewBag.Periods as IEnumerable<SelectListItem>,"--Select Period--",new {@class = "required" })
-                            @Html.ValidationMessageFor(model => model.Request.PeriodID)
-                        </div>
 
-                         <div class="editor-label">
-                           @Html.LabelFor(model => model.Request.SessionLength, "Session Length")
-                        </div>
-                        <div class="editor-field">
-                            <input id="hiddenLength" type="hidden" value="@ViewBag.Length" />
-                            @{ List<SelectListItem> SeshLengths= new List<SelectListItem>();}
-                            @Html.DropDownListFor(model => model.Request.SessionLength,SeshLengths,"-- Select Length --", new {@class = "required" })
-                            @Html.ValidationMessageFor(model => model.Request.SessionLength)
-                        </div>
-                        <div>
-                            <table>
-                                <tr>
-							        <td>
-								        <label>Pick weeks</label>								
-							        </td>
-							        <td colspan='4'>
-								        <ol id="popupWeeks">
-									        <li class="ui-state-default myCircle">1</li>
-									        <li class="ui-state-default myCircle">2</li>
-									        <li class="ui-state-default myCircle">3</li>
-									        <li class="ui-state-default myCircle">4</li>
-									        <li class="ui-state-default myCircle">5</li>
-									        <li class="ui-state-default myCircle">6</li>
-									        <li class="ui-state-default myCircle">7</li>
-									        <li class="ui-state-default myCircle">8</li>
-									        <li class="ui-state-default myCircle">9</li>
-									        <li class="ui-state-default myCircle">10</li>
-									        <li class="ui-state-default myCircle">11</li>
-									        <li class="ui-state-default myCircle">12</li>
-									        <li class="ui-state-default myCircle">13</li>
-									        <li class="ui-state-default myCircle">14</li>
-									        <li class="ui-state-default myCircle">15</li>
-								        </ol>
-							        </td>
-						        </tr>
-                                <tr>
-                                    <td><input type="button" id="btnAllWeeks" value="All Weeks" /></td>
-                                    <td><input type="button" id="btnEvenWeeks" value="Even Weeks" /></td>
-                                    <td><input type="button" id="btnOddWeeks" value="Odd Weeks" /></td>
-                                    <td><input type="button" id="btnDefaultWeeks" value="Default Weeks" /></td>
-                                    <td><input type="button" id="btnClearAllWeeks" value="Clear All" /></td>
-                                </tr>
-                            </table>
-                            <input type="hidden" id="selectedWeeks" name="selectedWeeks" value="@ViewBag.SelectedWeeks" /><!-- this will be passed to the controller -->
-                            <input type="hidden" id="hiddenSelectedWeeks" value="@ViewBag.SelectedWeeks" />
-                        </div>
-
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
-                        </div>
-                        <div class="editor-field">
-                            <!--<input type="checkbox" id="cbPriorityRequest" /> -->
-                            @{
-                                if(Model.Request.PriorityRequest == 1){
-                                    @Html.CheckBox("cbPriorityRequest",true)
-                                }
-                                if(Model.Request.PriorityRequest != 1){
-                                    @Html.CheckBox("cbPriorityRequest",false)
-                                }
-
-                              
-                            }
-                            @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
-                        </div>
-
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
-                        </div>
-                        <div class="editor-field">
-                            @Html.EditorFor(model => model.Request.SpecialRequirements)
-                            @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
-                        </div>
-                    </fieldset>
-                
-   
-        </div>
- 
-          <div id="right">
+         
+          <div id="facilities">
                     <fieldset>
                         <legend>Request</legend>
                       
@@ -165,11 +147,9 @@
          
         </div>
 
+              <div id="parks">
 
-         <div id="center">
-
-                    <fieldset>
-                        <legend>Request</legend>
+              
 
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Parks, "Park")
@@ -183,30 +163,74 @@
                         <div class="editor-field">
                             <select id="Building"></select><br /><!-- this will dynamically altered -->
                         </div>
+                        
                         <div class="editor-label" id="RoomDiv"></div>
-                        <div class="editor-field">
+                       
+                         <div class="editor-field">
                             <select id="Room"></select><br /><!-- this will dynamically altered -->
                         </div>
                         <input type="button" id="btnAddToRoom" value="Add To List" />
                         <a id="studentsLeft" data-left="0" data-max="0"></a><br />
                         <input type="checkbox" id="btnCheckAvail" value="Show Free Rooms Only"/>
                         <span id="txtCheckAvail">Show free rooms only</span>
-                        <div id="listOfRoomsDiv"><table id="listOfRooms"></table></div> <!-- this will dynamically altered -->
+                        <div id="listOfRoomsDiv"><table id="listOfRooms" style="width:100%;"></table></div> <!-- this will dynamically altered -->
                          <input type="hidden" id="hiddenroomList" value="@ViewBag.roomList" />
                         <input type="hidden" id="hiddensizeList" value="@ViewBag.sizeList" />
                         <input type="hidden" id="hiddenPriorityRoomName" value="@ViewBag.PriorityRoomName" />
-                    </fieldset>
-         
-         
-        </div>
-         </div>
+
+                </div> <!-- parks -->
+         <div id="specialr">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Request.PriorityRequest, "Priority Request")
+                            </div>
+                            <div class="editor-field">
+                                <!--<input type="checkbox" id="cbPriorityRequest" /> -->
+                                @{
+                                    if(Model.Request.PriorityRequest == 1){
+                                        @Html.CheckBox("cbPriorityRequest",true)
+                                    }
+                                    if(Model.Request.PriorityRequest != 1){
+                                        @Html.CheckBox("cbPriorityRequest",false)
+                                    }
+
+                              
+                                }
+                                @Html.ValidationMessageFor(model => model.Request.PriorityRequest)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.Request.SpecialRequirements, "Special Requirements")
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.Request.SpecialRequirements)
+                                @Html.ValidationMessageFor(model => model.Request.SpecialRequirements)
+                            </div>
+                        </div>
+               <div id ="buttons">
+        
         <p>
             <input type="button" id="btnCheck" value="Submit" />
             <input type="submit" value="Edit" id="btnEdit"  name='Command' />
             <input type="button" id="btnCancel" value="Cancel" data-requestID="@Model.Request.RequestID" />
+            <input type="button" id="btnReset" value="Reset Page" />
         </p>
-}
-         
+        
+</div>
+</div> <!-- container -->
+
+     
+     
+     
+ }
+      
+     
+     
+
+
+    
+     
+
+       
 
 
 
@@ -228,7 +252,7 @@
             $('#btnCheckAvail').hide();
             $('#txtCheckAvail').hide();
             //$('#matchedRooms').hide();
-           //$('#btnAddMatchedRoom').hide();
+            //$('#btnAddMatchedRoom').hide();
             $('#btnEdit').hide();
             $('#Request_SpecialRequirements').attr("Placeholder", "e.g. Dimmer Lights");
             updateFac();
@@ -307,6 +331,14 @@
                     var rooms = data;
                     AllRooms = rooms; //assign the global variable of all rooms to be re used when the availability tickbox is unchecked
                     html = "";
+
+                    //check if any rooms have been returned
+                    if (rooms.length == 0) {
+                        alert("All rooms in this building have been taken by another department as a pool room");
+                        return;
+                    }
+
+
                     //create a dropdown list of rooms
                     for (var i = 0; i < rooms.length; i++) {
                         html += "<option id='" + rooms[i] + "' value='" + rooms[i] + "'>" + rooms[i] + "</option>";
@@ -445,7 +477,7 @@
                     html += "<td><input type='checkbox' id='priority" + roomID + "' name='pRooms' value='true'/> Priority?</td>";
                     html += "<input type='hidden' id='priority" + roomID + "hidden' name='pRooms' value='false' />";
                     html += "<td><input type='button' id='info" + roomID + "' value='Info' name='Command' /></td>";
-                    html += "<td><img src='../../Content/Images/delete.png'  id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
+                    html += "<td><img src='../../Content/Images/delete.png' id='del" + roomID + "' onclick='deleteRoom(this.id);' height='15' width='15' style='padding-top: 7px;'/></td>";
                     html += "</tr>";
                     $('#listOfRooms').append(html);
                     $('#listOfRoomsDiv').show();
@@ -545,7 +577,18 @@
                             var url = '@Url.Action("DisplayRoomInfo","Request",new {id = "text"})';
                             window.location.href = url.replace("text", "?id=" + room + "&caller=Edit");
                         });
+
+
+
                     });
+
+
+
+
+
+
+
+
 
                     $("#students" + roomID).trigger("change");
 
@@ -874,6 +917,5 @@
     </script>
 
 }
-
 
 

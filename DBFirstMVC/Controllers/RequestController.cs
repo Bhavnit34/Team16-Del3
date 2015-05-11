@@ -2198,7 +2198,7 @@ namespace DBFirstMVC.Controllers
             request.PeriodID = myRequest.Request.PeriodID;
             request.SessionLength = myRequest.Request.SessionLength;
             request.SpecialRequirements = myRequest.Request.SpecialRequirements;
-            request.RoundID = ViewBag.CurrentRound;
+            request.RoundID = Convert.ToByte(ViewBag.CurrentRound);
             request.Semester = ViewBag.CurrentSemester;
 
             //finds current academic year
