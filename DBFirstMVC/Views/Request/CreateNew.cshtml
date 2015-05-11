@@ -430,7 +430,9 @@
 
                     return;
                 }
-                else {   
+                else {
+
+                  
                     //get inputs needed to begin checking
                     var building = $('#Building').val();
                     var dayID = $('#Request_DayID').val();
@@ -900,7 +902,14 @@
             if ($('#selectedWeeks').val() == "")
                 $("#btnDefaultWeeks").trigger('click');
 
+            if ($('#Request_PeriodID').val() != "")
+                $('#Request_PeriodID').trigger('change');
 
+            if ($('#Park').val() != "")
+                $('#Park').trigger('change');
+
+            if ($('#Building').val() != "")
+                $('#Building').trigger('change');
 
 
         }); //end document ready

@@ -968,8 +968,11 @@ namespace DBFirstMVC.Controllers
 
         public ActionResult CheckAvailability(string buildingChosen, string selectedWeeks, int day, int period, int length)
         {
+            User userSession = (User)HttpContext.Session["User"];
+            var user = userSession.Username;
+
             List<string> roomList = (from d in db.Rooms
-                     where (d.Building.BuildingName == buildingChosen)
+                     where ((d.Building.BuildingName == buildingChosen) && ((d.DeptCode == null) || (d.DeptCode == user)) )
                      select d.RoomName).ToList();
             //turn inputted string arrays into lists
             //List<string> roomList = rooms.Split(',').ToList<string>();
@@ -1039,7 +1042,7 @@ namespace DBFirstMVC.Controllers
                     bool passed = true;
 
                     //if the request overlaps with the requested times and is for the current semester
-                    if (((req_start <= period && req_end <= end && req_end >= period) || (req_start > period && req_start <= end)) && Convert.ToInt32(request[i].Semester) == semester)
+                    if (((req_start <= period && req_end <= end || req_end >= period) || (req_start > period && req_start <= end)) && Convert.ToInt32(request[i].Semester) == semester)
                     {
                         //checks weeks - if 1 of the weeks requested for the room is booked, room isnt available
                         if (request[i].Week1 == truth && chosenWeeks.Contains("1") == true)

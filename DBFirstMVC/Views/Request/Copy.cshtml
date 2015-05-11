@@ -840,6 +840,14 @@
             if ($('#selectedWeeks').val() == "")
                 $("#btnDefaultWeeks").trigger('click');
 
+            if ($('#Request_PeriodID').val() != "")
+                $('#Request_PeriodID').trigger('change');
+
+            if ($('#Park').val() != "")
+                $('#Park').trigger('change');
+
+            if ($('#Building').val() != "")
+                $('#Building').trigger('change');
 
 
 
