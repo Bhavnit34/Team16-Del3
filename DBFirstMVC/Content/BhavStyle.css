@@ -165,6 +165,7 @@ select {
     color: rgba(51, 0, 102, 1); 
     line-height:25px;
     text-align:center;
+    cursor:pointer;
 }
 
 #popupPendingDiv{
