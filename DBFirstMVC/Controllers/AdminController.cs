@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
+using System.Data.Objects.SqlClient;
 
 namespace DBFirstMVC.Controllers
 {
@@ -55,7 +56,8 @@ namespace DBFirstMVC.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 requests = requests.Where(s => s.Module.Title.Contains(searchString)
-                                       || s.Module.ModCode.Contains(searchString));
+                                       || s.Module.ModCode.Contains(searchString)
+                                       || SqlFunctions.StringConvert((double)s.RequestID).Contains(searchString));
             }
 
             //finds the current academic year

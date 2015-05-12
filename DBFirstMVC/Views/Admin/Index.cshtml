@@ -256,9 +256,6 @@ Layout = "~/Views/Shared/adminView.cshtml";
             @status
         </td>
         <td class ="@statusClass">
-            @{
-                if(Convert.ToInt16(item.Status) == 0){ @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) <span>|</span> }
-            }
             @Html.ActionLink("View", "GetRequest", new { id = item.RequestID })
         </td>
     </tr>

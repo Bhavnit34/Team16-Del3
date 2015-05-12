@@ -113,7 +113,7 @@
                             </div>
                         
                             <div class="editor-field">     
-                                <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", true) Lecture</label>
+                                <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Lecture", new { @checked = true }) Lecture</label>
                                 <label>@Html.RadioButtonFor(model => model.Request.SessionType, "Tutorial", false) Tutorial</label> 
     
                                 @Html.ValidationMessageFor(model => model.Request.SessionType)
